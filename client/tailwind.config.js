@@ -2,7 +2,9 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    backgroundImage: {
+      "login-img": "url('./assets/stamps-img.jpg')",
+    },
   },
   plugins: [],
 };

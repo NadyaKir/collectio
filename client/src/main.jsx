@@ -8,11 +8,14 @@ import {
 } from "react-router-dom";
 import App from "./App.jsx";
 import "./index.css";
+import LoginPage from "./pages/LoginPage.jsx";
+import RegisterPage from "./pages/RegisterPage.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route path="/" element={<App />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
     </Route>
   )
 );
