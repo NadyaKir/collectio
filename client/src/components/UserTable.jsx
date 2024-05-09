@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getStatusColor } from "../utils/helpers";
+import { getStatusColor } from "../utils/colorHelper";
 
 export default function UserTable() {
   const [users, setUsers] = useState([
@@ -32,7 +32,7 @@ export default function UserTable() {
     },
   ]);
   return (
-    <div className="overflow-x-auto relative flex-1">
+    <div className="overflow-x-auto relative flex-1 border rounded-md">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr className="text-center">
