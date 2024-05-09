@@ -6,5 +6,4 @@ export default {
       "login-img": "url('./assets/stamps-img.jpg')",
     },
   },
-  plugins: [],
 };

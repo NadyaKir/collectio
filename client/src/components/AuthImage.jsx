@@ -14,7 +14,7 @@ export default function AuthImage() {
                 z-0"
       ></div>
       <div className="bg-login-img bg-cover bg-center h-screen w-full px-20 flex-col relative">
-        <div class="absolute inset-0 bg-black opacity-50 z-0"></div>
+        <div className="absolute inset-0 bg-black opacity-50 z-0"></div>
         <div className="flex flex-col justify-center h-screen relative z-10">
           <h1 className="text-white font-bold text-4xl font-sans">
             Discover, Collect, Share: <br /> Your Collections, Your Story.
