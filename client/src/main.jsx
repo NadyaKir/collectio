@@ -12,6 +12,8 @@ import LoginPage from "./pages/LoginPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import AdminPage from "./pages/AdminPage.jsx";
+import CollectionsPage from "./pages/CollectionsPage.jsx";
+import CollectionPage from "./pages/CollectionPage.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -20,6 +22,8 @@ const router = createBrowserRouter(
       <Route path="/users" element={<AdminPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+      <Route path="/collections" element={<CollectionsPage />} />
+      <Route path="/collections/collection/:id" element={<CollectionPage />} />
     </Route>
   )
 );
