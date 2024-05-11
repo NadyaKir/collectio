@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 
 const itemSchema = new mongoose.Schema({
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    auto: true,
+    required: true,
+  },
   title: { type: String, required: true },
   content: { type: String, required: true },
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
@@ -9,4 +14,6 @@ const itemSchema = new mongoose.Schema({
   likes: { type: Number, default: 0 },
 });
 
-module.exports = mongoose.model("Item", itemSchema);
+const Item = mongoose.model("Item", itemSchema);
+
+export default Item;

@@ -7,7 +7,7 @@ import {
   CheckOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
-import ToolButton from "./ToolButton";
+import ToolButton from "./Toolbar/ToolButton";
 import { Input } from "antd";
 const { TextArea } = Input;
 import ReactMarkdown from "react-markdown";

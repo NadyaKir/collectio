@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ThemeIcon from "../assets/day-and-night.png";
+import ThemeIcon from "../../assets/day-and-night.png";
 
 export default function ThemeSwitcher() {
   const [isDarkMode, setIsDarkMode] = useState(false);

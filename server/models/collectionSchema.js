@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 
 const collectionSchema = new mongoose.Schema({
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    auto: true,
+    required: true,
+  },
   title: { type: String, required: true },
   description: { type: String },
   theme: {
@@ -13,4 +18,6 @@ const collectionSchema = new mongoose.Schema({
   items: [{ type: mongoose.Schema.Types.ObjectId, ref: "Item" }],
 });
 
-module.exports = mongoose.model("Collection", collectionSchema);
+const Collection = mongoose.model("Collection", collectionSchema);
+
+export default Collection;

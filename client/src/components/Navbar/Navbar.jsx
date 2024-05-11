@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import LanguageSwitcher from "../LanguageSwitcher";
-import ThemeSwitcher from "../ThemeSwitcher";
-import Container from "./Container";
+import LanguageSwitcher from "./LanguageSwitcher";
+import ThemeSwitcher from "./ThemeSwitcher";
+import Container from "../Layout/Container";
 
 export default function Navbar() {
   return (

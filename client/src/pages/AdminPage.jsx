@@ -1,6 +1,6 @@
 import Header from "../components/Layout/Header";
-import ToolBar from "../components/ToolBar";
-import ToolButton from "../components/ToolButton";
+import ToolBar from "../components/Toolbar/ToolBar";
+import ToolButton from "../components/Toolbar/ToolButton";
 import UserTable from "../components/UserTable";
 import {
   LockOutlined,

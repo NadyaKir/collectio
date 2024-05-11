@@ -4,13 +4,18 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import cors from "cors";
-import route from "./routes/routes.js";
+import authRoute from "./routes/authRoutes.js";
 
 const app = express();
 const server = http.createServer(app);
 
 app.use(bodyParser.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
@@ -27,4 +32,4 @@ mongoose
   })
   .catch((error) => console.error(error));
 
-app.use("/api", route);
+app.use("/api/auth", authRoute);
