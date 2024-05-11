@@ -4,8 +4,10 @@ import {
   Route,
   RouterProvider,
   createBrowserRouter,
-  createRoutesFromElements,
+  createRoutesFromChildren,
 } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./store/store";
 import App from "./App.jsx";
 import "./index.css";
 import LoginPage from "./pages/LoginPage.jsx";
@@ -15,19 +17,27 @@ import AdminPage from "./pages/AdminPage.jsx";
 import CollectionsPage from "./pages/CollectionsPage.jsx";
 import CollectionPage from "./pages/CollectionPage.jsx";
 
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route path="/" element={<App />}>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/users" element={<AdminPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/collections" element={<CollectionsPage />} />
-      <Route path="/collections/collection/:id" element={<CollectionPage />} />
-    </Route>
-  )
+const appRoutes = (
+  <Route path="/" element={<App />}>
+    <Route path="/" element={<HomePage />} />
+    <Route path="/users" element={<AdminPage />} />
+    <Route path="/collections" element={<CollectionsPage />} />
+    <Route path="/collections/collection/:id" element={<CollectionPage />} />
+  </Route>
 );
 
+const authRoutes = (
+  <>
+    <Route path="/register" element={<RegisterPage />} />
+    <Route path="/login" element={<LoginPage />} />
+  </>
+);
+
+const routes = createRoutesFromChildren([appRoutes, authRoutes]);
+const router = createBrowserRouter(routes);
+
 createRoot(document.getElementById("root")).render(
-  <RouterProvider router={router}></RouterProvider>
+  <Provider store={store}>
+    <RouterProvider router={router}></RouterProvider>
+  </Provider>
 );

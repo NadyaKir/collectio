@@ -1,9 +1,9 @@
 import React from "react";
 import CollectionList from "../components/CollectionList";
 import ToolBar from "../components/ToolBar";
-import PageLayuout from "../components/Layout/PageLayuout";
 import ToolButton from "../components/ToolButton";
-import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
+import Header from "../components/Layout/Header";
 
 const collections = [
   {
@@ -60,14 +60,15 @@ const collections = [
 
 const CollectionsPage = () => {
   return (
-    <PageLayuout title="My collections">
+    <>
+      <Header title="Collections" />
       <ToolBar>
         <ToolButton title="Add">
           <PlusOutlined />
         </ToolButton>
       </ToolBar>
       <CollectionList collections={collections} />
-    </PageLayuout>
+    </>
   );
 };
 

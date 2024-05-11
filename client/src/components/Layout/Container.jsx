@@ -1,5 +1,11 @@
 import React from "react";
-
-export default function Container({ children }) {
-  return <div className="flex flex-wrap w-full px-10">{children}</div>;
+import { Outlet } from "react-router-dom";
+export default function Container() {
+  return (
+    <>
+      <div className="w-full px-10 mb-8">
+        <Outlet />
+      </div>
+    </>
+  );
 }

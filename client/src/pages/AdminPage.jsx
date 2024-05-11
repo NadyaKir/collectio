@@ -1,4 +1,4 @@
-import PageLayuout from "../components/Layout/PageLayuout";
+import Header from "../components/Layout/Header";
 import ToolBar from "../components/ToolBar";
 import ToolButton from "../components/ToolButton";
 import UserTable from "../components/UserTable";
@@ -15,20 +15,19 @@ export default function AdminPage() {
 
   return (
     <div className="flex flex-col w-full">
-      <PageLayuout title="Users">
-        <ToolBar>
-          <ToolButton handleAction={onBlock} title="Block">
-            <LockOutlined />
-          </ToolButton>
-          <ToolButton handleAction={onUnblock} title="Unblock">
-            <UnlockOutlined />
-          </ToolButton>
-          <ToolButton handleAction={onDelete} title="Delete">
-            <DeleteOutlined />
-          </ToolButton>
-        </ToolBar>
-        <UserTable />
-      </PageLayuout>
+      <Header title="Users" />
+      <ToolBar>
+        <ToolButton handleAction={onBlock} title="Block">
+          <LockOutlined />
+        </ToolButton>
+        <ToolButton handleAction={onUnblock} title="Unblock">
+          <UnlockOutlined />
+        </ToolButton>
+        <ToolButton handleAction={onDelete} title="Delete">
+          <DeleteOutlined />
+        </ToolButton>
+      </ToolBar>
+      <UserTable />
     </div>
   );
 }
