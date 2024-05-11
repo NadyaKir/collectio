@@ -14,7 +14,7 @@ export default function AdminPage() {
   const onDelete = () => {};
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full ">
       <Header title="Users" />
       <ToolBar>
         <ToolButton handleAction={onBlock} title="Block">

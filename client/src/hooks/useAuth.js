@@ -4,6 +4,7 @@ import { setAuthenticated } from "../store/authSlice";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { SERVER_URL } from "../utils/config";
 
 const useAuth = () => {
   const [error, setError] = useState("");
@@ -20,7 +21,7 @@ const useAuth = () => {
 
   const register = async (formData) => {
     try {
-      await axios.post("http://localhost:8081/api/auth/register", formData);
+      await axios.post(`${SERVER_URL}/api/auth/register`, formData);
       navigate("/login");
     } catch (error) {
       setError(error.response.data.message || "An error occurred");
@@ -30,7 +31,7 @@ const useAuth = () => {
   const signin = async (formData) => {
     try {
       const response = await axios.post(
-        "http://localhost:8081/api/auth/login",
+        `${SERVER_URL}/api/auth/login`,
         formData
       );
       const token = response.data.token;

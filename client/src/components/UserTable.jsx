@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { getStatusColor } from "../utils/colorHelper";
 import { useUsers } from "../hooks/useUsers";
+import axios from "axios";
+import { SERVER_URL } from "../utils/config";
 
 export default function UserTable() {
-  const { users } = useUsers();
+  const { users, setUsers } = useUsers();
 
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
@@ -32,6 +34,37 @@ export default function UserTable() {
       setSelectedUsers(selectedUsers.filter((id) => id !== userId));
     } else {
       setSelectedUsers([...selectedUsers, userId]);
+    }
+  };
+
+  const handleChangeRole = async (userId, role) => {
+    const isAdmin = role === "admin";
+
+    try {
+      const updatedUsers = users.map((user) => {
+        if (user._id === userId) {
+          return { ...user, isAdmin: isAdmin };
+        }
+        return user;
+      });
+      setUsers(updatedUsers);
+
+      await axios.put(`${SERVER_URL}/api/users/setRole`, {
+        userId,
+        isAdmin,
+      });
+    } catch (error) {
+      const prevUserRole = users.find((user) => user._id === userId).isAdmin;
+      setUsers(
+        users.map((user) => {
+          if (user._id === userId) {
+            return { ...user, isAdmin: !prevUserRole };
+          }
+          return user;
+        })
+      );
+
+      console.error("Failed to update user role:", error);
     }
   };
 
@@ -67,7 +100,7 @@ export default function UserTable() {
               Status
             </th>
             <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Admin
+              Role
             </th>
           </tr>
         </thead>
@@ -104,7 +137,14 @@ export default function UserTable() {
                 </div>
               </td>
               <td className="px-4 py-2 whitespace-nowrap">
-                {user.isAdmin ? "Yes" : "No"}
+                <select
+                  value={user.isAdmin ? "admin" : "user"}
+                  onChange={(e) => handleChangeRole(user._id, e.target.value)}
+                  className="block w-full py-1 px-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                >
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
+                </select>
               </td>
             </tr>
           ))}
