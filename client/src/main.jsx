@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 import App from "./App.jsx";
 import "./index.css";
+import ProtectedRoutes from "./routes/protectedRoutes.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import HomePage from "./pages/HomePage.jsx";
@@ -20,7 +21,9 @@ import CollectionPage from "./pages/CollectionPage.jsx";
 const appRoutes = (
   <Route path="/" element={<App />}>
     <Route path="/" element={<HomePage />} />
-    <Route path="/users" element={<AdminPage />} />
+    <Route element={<ProtectedRoutes />}>
+      <Route path="/users" element={<AdminPage />} />
+    </Route>
     <Route path="/collections" element={<CollectionsPage />} />
     <Route path="/collections/collection/:id" element={<CollectionPage />} />
   </Route>

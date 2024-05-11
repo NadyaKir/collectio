@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function AuthImage() {
   return (
@@ -19,7 +20,7 @@ export default function AuthImage() {
           <h1 className="text-white font-bold text-4xl font-sans">
             Discover, Collect, Share: <br /> Your Collections, Your Story.
           </h1>
-          <p className="text-white mt-8">
+          <p className="text-white mt-4 mb-8">
             Empowering collectors to connect, curate, and cherish memories.
             <br />
             Dive into our app to explore, organize, and share your passions with

@@ -20,10 +20,7 @@ const useAuth = () => {
 
   const register = async (formData) => {
     try {
-      const response = await axios.post(
-        "http://localhost:8081/api/auth/register",
-        formData
-      );
+      await axios.post("http://localhost:8081/api/auth/register", formData);
       navigate("/login");
     } catch (error) {
       setError(error.response.data.message || "An error occurred");
