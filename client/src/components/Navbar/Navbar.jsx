@@ -11,7 +11,7 @@ export default function Navbar() {
 
   return (
     <nav className="flex items-center justify-between flex-wrap bg-white py-4 shadow border-solid border-t-2 border-teal-700 mb-8">
-      <div className="flex w-full justify-between mx-10">
+      <div className="lg:flex w-full justify-between mx-10">
         <div className="flex mx-10 justify-between lg:w-auto w-full lg:border-b-0 pr-2 border-solid border-b-2 border-gray-300 pb-5 lg:pb-0">
           <div className="flex items-center flex-shrink-0 text-gray-800 mr-16">
             <span className="font-semibold text-xl tracking-tight">
@@ -53,22 +53,22 @@ export default function Navbar() {
             {isAdmin && isAuthenticated && (
               <Link
                 to="/users"
-                className="block mt-4 lg:inline-block lg:mt-0 px-4 py-2 rounded hover:text-teal-700 mr-2"
+                className="block mt-4 lg:inline-block lg:mt-0 px-2 py-2 rounded hover:text-teal-700 mr-2"
               >
                 Users
               </Link>
             )}
             <Link
               to="/collections"
-              className="block mt-4 lg:inline-block lg:mt-0 px-4 py-2 rounded hover:text-teal-700 mr-2"
+              className="block mt-4 lg:inline-block lg:mt-0 px-2 py-2 rounded hover:text-teal-700 mr-2"
             >
               My collections
             </Link>
           </div>
           <div className="flex">
             <Link
-              to="/login"
-              class="block text-md py-2 rounded ml-2 font-bold hover:text-teal-700 mt-4lg:mt-0"
+              to={isAuthenticated ? "/" : "/login"}
+              class="block text-md p-2 rounded ml-2 border border-teal-600 font-bold hover:text-teal-700 mt-4lg:mt-0"
             >
               <button onClick={signout}>
                 {isAuthenticated ? "Sign out" : "Sign in"}
