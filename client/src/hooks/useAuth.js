@@ -29,11 +29,13 @@ const useAuth = () => {
   };
 
   const signin = async (formData) => {
+    const { email, password } = formData;
     try {
-      const response = await axios.post(
-        `${SERVER_URL}/api/auth/login`,
-        formData
-      );
+      const response = await axios.post(`${SERVER_URL}/api/auth/login`, {
+        email,
+        password,
+        lastLoginDate: new Date(),
+      });
       const token = response.data.token;
       Cookies.set("token", token, { expires: 7 });
       dispatch(setAuthenticated(true));

@@ -26,7 +26,7 @@ export const register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, lastLoginDate } = req.body;
   try {
     const user = await User.findOne({ email });
     if (!user) {
@@ -37,6 +37,9 @@ export const login = async (req, res) => {
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Wrong password" });
     }
+
+    user.lastLoginDate = lastLoginDate;
+    await user.save();
 
     const token = jwt.sign(
       { userId: user._id, isAdmin: user.isAdmin },
