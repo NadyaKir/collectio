@@ -5,6 +5,9 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import cors from "cors";
 import authRoute from "./routes/authRoutes.js";
+import userRoute from "./routes/usersRoutes.js";
+
+dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
@@ -12,11 +15,10 @@ const server = http.createServer(app);
 app.use(bodyParser.json());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL,
     credentials: true,
   })
 );
-dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 const URL = process.env.MONGOURL;
@@ -33,3 +35,4 @@ mongoose
   .catch((error) => console.error(error));
 
 app.use("/api/auth", authRoute);
+app.use("/api/users", userRoute);

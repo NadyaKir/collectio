@@ -1,36 +1,40 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getStatusColor } from "../utils/colorHelper";
+import { useUsers } from "../hooks/useUsers";
 
 export default function UserTable() {
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      username: "john_doe",
-      email: "john@example.com",
-      registrationDate: "2023-01-15",
-      lastLoginDate: "2024-05-07",
-      status: "Active",
-      isAdmin: true,
-    },
-    {
-      id: 2,
-      username: "jane_smith",
-      email: "jane@example.com",
-      registrationDate: "2023-02-20",
-      lastLoginDate: "2024-05-08",
-      status: "Blocked",
-      isAdmin: false,
-    },
-    {
-      id: 3,
-      username: "jane_smith",
-      email: "jane@example.com",
-      registrationDate: "2023-02-20",
-      lastLoginDate: "2024-05-08",
-      status: "Blocked",
-      isAdmin: false,
-    },
-  ]);
+  const { users } = useUsers();
+
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [selectAll, setSelectAll] = useState(false);
+
+  console.log(selectedUsers);
+
+  useEffect(() => {
+    if (selectedUsers.length === users.length && users.length !== 0) {
+      setSelectAll(true);
+    } else {
+      setSelectAll(false);
+    }
+  }, [selectedUsers, users]);
+
+  const handleSelectAll = () => {
+    setSelectAll(!selectAll);
+    if (!selectAll) {
+      setSelectedUsers(users.map((user) => user._id));
+    } else {
+      setSelectedUsers([]);
+    }
+  };
+
+  const handleSelectUser = (userId) => {
+    if (selectedUsers.includes(userId)) {
+      setSelectedUsers(selectedUsers.filter((id) => id !== userId));
+    } else {
+      setSelectedUsers([...selectedUsers, userId]);
+    }
+  };
+
   return (
     <div className="overflow-x-auto relative flex-1 border rounded-md">
       <table className="min-w-full divide-y divide-gray-200">
@@ -39,7 +43,9 @@ export default function UserTable() {
             <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
               <input
                 type="checkbox"
-                className="form-checkbox h-5 w-5 text-blue-600"
+                className="form-checkbox h-5 w-5"
+                checked={selectAll}
+                onChange={handleSelectAll}
               />
             </th>
             <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -68,30 +74,32 @@ export default function UserTable() {
 
         <tbody className="bg-white divide-y divide-gray-200">
           {users.map((user) => (
-            <tr key={user.id} className="text-center hover:bg-gray-50">
+            <tr key={user._id} className="text-center hover:bg-gray-50">
               <td className="px-4 py-2 whitespace-nowrap">
                 <input
                   type="checkbox"
-                  className="form-checkbox h-5 w-5 text-blue-600"
+                  className="form-checkbox h-5 w-5"
+                  checked={selectedUsers.includes(user._id)}
+                  onChange={() => handleSelectUser(user._id)}
                 />
               </td>
-              <td className="px-4 py-2 whitespace-nowrap">{user.id}</td>
+              <td className="px-4 py-2 whitespace-nowrap">{user._id}</td>
               <td className="px-4 py-2 whitespace-nowrap">{user.username}</td>
               <td className="px-4 py-2 whitespace-nowrap">{user.email}</td>
               <td className="px-4 py-2 whitespace-nowrap">
                 {user.registrationDate}
               </td>
               <td className="px-4 py-2 whitespace-nowrap">
-                {user.lastLoginDate}
+                {user.lastLoginDate ? user.lastLoginDate : "-"}
               </td>
               <td className="px-4 py-2 whitespace-nowrap">
                 <div className="flex justify-center items-center">
                   <span
                     className={`inline-block w-16 text-center rounded-full px-2 py-1 text-xs font-semibold ${getStatusColor(
-                      user.status
+                      user.isBlocked
                     )}`}
                   >
-                    {user.status}
+                    {user.isBlocked ? "Blocked" : "Active"}
                   </span>
                 </div>
               </td>

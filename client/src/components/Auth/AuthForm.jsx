@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import generateValidationSchema from "../../utils/generateValidationSchema";
 
-export default function AuthForm({ title, onSubmit, error, setError }) {
+export default function AuthForm({ title, onSubmit, error }) {
   const initialValues = {
     username: "",
     email: "",

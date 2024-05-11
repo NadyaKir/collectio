@@ -2,9 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import LanguageSwitcher from "./LanguageSwitcher";
 import ThemeSwitcher from "./ThemeSwitcher";
-import Container from "../Layout/Container";
+import useAuth from "../../hooks/useAuth";
 
 export default function Navbar() {
+  const { isAuthenticated, signout } = useAuth();
+
   return (
     <nav className="flex items-center justify-between flex-wrap bg-white py-4 shadow border-solid border-t-2 border-teal-700 mb-8">
       <div className="flex mx-10 justify-between lg:w-auto w-full lg:border-b-0 pr-2 border-solid border-b-2 border-gray-300 pb-5 lg:pb-0">
@@ -51,21 +53,21 @@ export default function Navbar() {
           </Link>
         </div>
         <div className="flex">
-          <Link
-            to="/login"
-            class="block text-md py-2 rounded ml-2 font-bold hover:text-teal-700 mt-4lg:mt-0"
-          >
-            Sign in
-          </Link>
-          <Link
-            onClick={() => {
-              localStorage.setItem("token", "");
-            }}
-            to="/login"
-            class="block text-md py-2 rounded ml-2 font-bold hover:text-teal-700 mt-4lg:mt-0"
-          >
-            Logout
-          </Link>
+          {isAuthenticated ? (
+            <Link
+              to="/login"
+              class="block text-md py-2 rounded ml-2 font-bold hover:text-teal-700 mt-4lg:mt-0"
+            >
+              <button onClick={signout}>Sign out</button>
+            </Link>
+          ) : (
+            <Link
+              to="/login"
+              class="block text-md py-2 rounded ml-2 font-bold hover:text-teal-700 mt-4lg:mt-0"
+            >
+              <button>Sign in</button>
+            </Link>
+          )}
         </div>
 
         <LanguageSwitcher />
