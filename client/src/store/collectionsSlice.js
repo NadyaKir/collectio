@@ -1,17 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const collectionsSlice = createSlice({
+const collectionsSlice = createSlice({
   name: "collections",
   initialState: {
-    isEditing: false,
+    collections: [],
+    editingCollections: [],
   },
   reducers: {
-    setIsEditing: (state, _) => {
-      state.isEditing = !state.isEditing;
+    setCollections: (state, action) => {
+      state.collections = action.payload;
+    },
+    toggleEdit: (state, action) => {
+      const { payload: cardId } = action;
+      const index = state.editingCollections.indexOf(cardId);
+      if (index !== -1) {
+        state.editingCollections.splice(index, 1);
+      } else {
+        state.editingCollections.push(cardId);
+      }
     },
   },
 });
 
-export const { setIsEditing } = collectionsSlice.actions;
+export const { setCollections, toggleEdit } = collectionsSlice.actions;
 
 export default collectionsSlice.reducer;

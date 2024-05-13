@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+const enumCategories = ["Books", "Signs", "Silverware", "Other"];
+
 const collectionSchema = new mongoose.Schema({
   _id: {
     type: mongoose.Schema.Types.ObjectId,
@@ -8,9 +10,9 @@ const collectionSchema = new mongoose.Schema({
   },
   title: { type: String, required: true },
   description: { type: String },
-  theme: {
+  category: {
     type: String,
-    enum: ["Books", "Signs", "Silverware", "Other"],
+    enum: enumCategories,
     required: true,
   },
   image: { type: String },

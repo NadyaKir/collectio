@@ -1,11 +1,11 @@
 import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
-import getRoleFromToken from "../utils/getRoleFromToken";
+import getTokenData from "../utils/getTokenData";
 
 const ProtectedRoutes = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const isAdmin = getRoleFromToken();
+  const { isAdmin } = getTokenData;
 
   if (isAuthenticated && isAdmin) {
     return <Outlet />;

@@ -5,7 +5,9 @@ import ToolButton from "../components/Toolbar/ToolButton";
 import { PlusOutlined } from "@ant-design/icons";
 import Header from "../components/Layout/Header";
 
-const collections = [
+import { useNavigate } from "react-router-dom";
+
+const collections2 = [
   {
     _id: 1,
     name: "Books Collection",
@@ -59,15 +61,20 @@ const collections = [
 ];
 
 const CollectionsPage = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <Header title="Collections" />
       <ToolBar>
-        <ToolButton title="Add">
+        <ToolButton
+          title="Add"
+          handleAction={() => navigate("/collections/add")}
+        >
           <PlusOutlined />
         </ToolButton>
       </ToolBar>
-      <CollectionList collections={collections} />
+      <CollectionList />
     </>
   );
 };

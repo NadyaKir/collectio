@@ -17,6 +17,7 @@ import HomePage from "./pages/HomePage.jsx";
 import AdminPage from "./pages/AdminPage.jsx";
 import CollectionsPage from "./pages/CollectionsPage.jsx";
 import CollectionPage from "./pages/CollectionPage.jsx";
+import NewCollectionPage from "./pages/NewCollectionPage.jsx";
 
 const appRoutes = (
   <Route path="/" element={<App />}>
@@ -25,6 +26,7 @@ const appRoutes = (
       <Route path="/users" element={<AdminPage />} />
     </Route>
     <Route path="/collections" element={<CollectionsPage />} />
+    <Route path="/collections/add" element={<NewCollectionPage />} />
     <Route path="/collections/collection/:id" element={<CollectionPage />} />
   </Route>
 );

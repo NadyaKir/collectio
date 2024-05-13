@@ -3,13 +3,13 @@ import { getStatusColor } from "../utils/colorHelper";
 import { useUsers } from "../hooks/useUsers";
 import axios from "axios";
 import { SERVER_URL } from "../utils/config";
+import useAuth from "../hooks/useAuth";
 
 export default function UserTable() {
   const { users, setUsers } = useUsers();
-
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
-
+  const { signin, signout } = useAuth();
   console.log(selectedUsers);
 
   useEffect(() => {
@@ -37,6 +37,14 @@ export default function UserTable() {
     }
   };
 
+  const handleRowClick = (userId) => {
+    const updatedSelectedUsers = selectedUsers.includes(userId)
+      ? selectedUsers.filter((id) => id !== userId)
+      : [...selectedUsers, userId];
+    setSelectedUsers(updatedSelectedUsers);
+  };
+
+  //TODO: refresh token after change role!!!
   const handleChangeRole = async (userId, role) => {
     const isAdmin = role === "admin";
 
@@ -53,6 +61,22 @@ export default function UserTable() {
         userId,
         isAdmin,
       });
+
+      const currentUser = users.find((user) => user._id === userId);
+      console.log(currentUser);
+
+      const newToken = await signin({
+        email: currentUser.email,
+        password: currentUser.password,
+        lastLoginDate: currentUser.lastLoginDate,
+      });
+
+      console.log(newToken);
+
+      if (userId === currentUser._id && !isAdmin) {
+        signout();
+        return;
+      }
     } catch (error) {
       const prevUserRole = users.find((user) => user._id === userId).isAdmin;
       setUsers(
@@ -107,7 +131,11 @@ export default function UserTable() {
 
         <tbody className="bg-white divide-y divide-gray-200">
           {users.map((user) => (
-            <tr key={user._id} className="text-center hover:bg-gray-50">
+            <tr
+              key={user._id}
+              className="text-left hover:bg-gray-100 cursor-pointer"
+              onClick={() => handleRowClick(user._id)}
+            >
               <td className="px-4 py-2 whitespace-nowrap">
                 <input
                   type="checkbox"
@@ -140,6 +168,7 @@ export default function UserTable() {
                 <select
                   value={user.isAdmin ? "admin" : "user"}
                   onChange={(e) => handleChangeRole(user._id, e.target.value)}
+                  onClick={(e) => e.stopPropagation()}
                   className="block w-full py-1 px-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
                   <option value="user">User</option>

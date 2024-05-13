@@ -1,13 +1,16 @@
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 
-const getRoleFromToken = () => {
+const getTokenData = () => {
   const token = Cookies.get("token");
   if (token) {
     const decodedToken = jwtDecode(token);
-    return decodedToken.isAdmin;
+    return {
+      userId: decodedToken.userId,
+      isAdmin: decodedToken.isAdmin,
+    };
   }
-  return false;
+  return null;
 };
 
-export default getRoleFromToken;
+export default getTokenData();
