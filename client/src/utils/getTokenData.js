@@ -13,4 +13,4 @@ const getTokenData = () => {
   return null;
 };
 
-export default getTokenData();
+export default getTokenData;
