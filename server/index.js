@@ -13,7 +13,8 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(
   cors({
     origin: process.env.CLIENT_URL,

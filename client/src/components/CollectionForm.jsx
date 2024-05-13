@@ -38,10 +38,10 @@ const CollectionForm = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     console.log(values);
     const image64 = await fileToBase64(values.image);
-    const base64StringNoWrap = image64.replace(/\n/g, "");
+    // const base64StringNoWrap = image64.replace(/\n/g, "");
     const updatedValuesWithBase64Image = {
       ...values,
-      image: base64StringNoWrap,
+      image: image64,
       createdBy: userId,
     };
 

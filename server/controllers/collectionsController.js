@@ -14,6 +14,10 @@ const uploadImageToImgbb = async (image) => {
       {
         method: "POST",
         body: data,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+        },
       }
     );
     const responseData = await response.json();
@@ -26,19 +30,19 @@ const uploadImageToImgbb = async (image) => {
   // try {
   //   const formData = new FormData();
   //   // formData.append("key", "e676a0d847387b12712d9187b1f08f85");
-  //   formData.append("image", imageData);
+  //   formData.append("image", image);
 
   //   const response = await axios.post(
   //     "https://api.imgbb.com/1/upload?key=e676a0d847387b12712d9187b1f08f85",
   //     formData,
   //     {
   //       headers: {
+  //         Accept: "application/json",
   //         "Content-Type": "multipart/form-data",
   //       },
   //     }
   //   );
 
-  //   // Проверяем, был ли успешным запрос
   //   if (
   //     response.status === 200 &&
   //     response.data &&
