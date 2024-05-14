@@ -8,9 +8,8 @@ import getTokenData from "../../utils/getTokenData";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated, signout } = useAuth();
-
-  //TODO: fix cheking is user admin or not
-  const isAdmin = true;
+  const { isAdmin } = getTokenData();
+  console.log(isAdmin);
 
   const handleIsOpen = () => {
     setIsOpen(!isOpen);

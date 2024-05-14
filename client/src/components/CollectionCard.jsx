@@ -28,9 +28,12 @@ import {
 import { useCategories } from "../hooks/useCategories";
 import { useCollections } from "../hooks/useCollections";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { fileToBase64 } from "file64";
+import { setCollections } from "../store/collectionsSlice";
 
 export default function CollectionCard(props) {
   const { _id, title, image, category, description } = props;
+  const collections = useSelector((state) => state.collections.collections);
 
   const ref = useRef(null);
   const dispatch = useDispatch();
@@ -64,45 +67,45 @@ export default function CollectionCard(props) {
     }
   };
 
-  const handleSaveClick = async (updatedCollection) => {
-    if (updatedCollection.image instanceof File) {
-      const reader = new FileReader();
-      reader.onload = async function (event) {
-        const base64Image = event.target.result;
+  //TODO:update collection list after saving
+  const handleSaveClick = async (values) => {
+    console.log(values);
 
-        const updatedCollectionWithBase64Image = {
-          ...updatedCollection,
-          image: base64Image,
-        };
+    const image64 =
+      values.image instanceof File
+        ? await fileToBase64(values.image)
+        : values.image;
 
-        try {
-          console.log(updatedCollectionWithBase64Image);
-          const response = await axios.put(
-            `${SERVER_URL}/api/collections/${_id}`,
-            updatedCollectionWithBase64Image
-          );
-          console.log("Data successfully saved:", response.data);
+    console.log("Image:", image64);
 
-          dispatch(toggleEdit(_id));
-          setSelectedImage(null);
-        } catch (error) {
-          console.error("Error saving data:", error);
+    const updatedCollectionWithBase64Image = {
+      ...values,
+      image: image64,
+    };
+    console.log("---");
+
+    console.log(updatedCollectionWithBase64Image);
+
+    try {
+      console.log(updatedCollectionWithBase64Image);
+      const response = await axios.put(
+        `${SERVER_URL}/api/collections/${_id}`,
+        updatedCollectionWithBase64Image
+      );
+      console.log("Data successfully saved:", response.data);
+
+      const updatedCollections = collections.map((collection) => {
+        if (collection._id === _id) {
+          return response.data;
+        } else {
+          return collection;
         }
-      };
-      reader.readAsDataURL(updatedCollection.image);
-    } else {
-      try {
-        const response = await axios.put(
-          `${SERVER_URL}/api/collections/${_id}`,
-          updatedCollection
-        );
-        console.log("Data successfully saved:", response.data);
-
-        dispatch(toggleEdit(_id));
-        setSelectedImage(null);
-      } catch (error) {
-        console.error("Error saving data:", error);
-      }
+      });
+      dispatch(setCollections(updatedCollections));
+      dispatch(toggleEdit(_id));
+      setSelectedImage(null);
+    } catch (error) {
+      console.error("Error saving data:", error);
     }
   };
 
@@ -221,7 +224,7 @@ export default function CollectionCard(props) {
                     <div className="w-full">
                       <MDXEditor
                         ref={ref}
-                        markdown={formikProps.values.description}
+                        markdown={description}
                         onChange={(value) =>
                           formikProps.setFieldValue("description", value)
                         }

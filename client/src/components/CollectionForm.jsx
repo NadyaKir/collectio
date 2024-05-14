@@ -7,12 +7,13 @@ import getTokenData from "../utils/getTokenData";
 import { useNavigate } from "react-router-dom";
 import { Input } from "antd";
 import { fileToBase64 } from "file64";
+import defaultImage from "../assets/placeholder-image.png";
 
 const CollectionForm = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(defaultImage);
   const navigate = useNavigate();
 
-  const { userId } = getTokenData;
+  const { userId } = getTokenData();
 
   const initialValues = {
     title: "",
@@ -25,27 +26,23 @@ const CollectionForm = () => {
     title: Yup.string().required("Title is required"),
     description: Yup.string(),
     category: Yup.string().required("Category is required"),
-    image: Yup.mixed().test(
-      "fileFormat",
-      "Unsupported file format",
-      (value) => {
+    image: Yup.mixed()
+      .nullable()
+      .test("fileFormat", "Unsupported file format", (value) => {
         if (!value) return true;
         return ["image/jpeg", "image/png"].includes(value.type);
-      }
-    ),
+      }),
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    console.log(values);
-    const image64 = await fileToBase64(values.image);
-    // const base64StringNoWrap = image64.replace(/\n/g, "");
+    const image64 = values.image ? await fileToBase64(values.image) : "";
+
     const updatedValuesWithBase64Image = {
       ...values,
       image: image64,
       createdBy: userId,
     };
 
-    console.log("client", updatedValuesWithBase64Image);
     try {
       await axios.post(
         `${SERVER_URL}/api/collections/addCollection`,
@@ -136,7 +133,7 @@ const CollectionForm = () => {
                     const file = e.target.files[0];
                     setFieldValue("image", file);
                     const imageUrl = URL.createObjectURL(file);
-                    setSelectedImage(imageUrl);
+                    setSelectedImage(imageUrl ? imageUrl : selectedImage);
                   }}
                 />
                 <ErrorMessage

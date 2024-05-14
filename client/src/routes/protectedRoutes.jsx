@@ -5,7 +5,7 @@ import getTokenData from "../utils/getTokenData";
 
 const ProtectedRoutes = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const { isAdmin } = getTokenData;
+  const { isAdmin } = getTokenData();
 
   if (isAuthenticated && isAdmin) {
     return <Outlet />;
