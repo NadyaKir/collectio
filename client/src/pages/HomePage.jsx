@@ -1,14 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Chip from "../components/Chip";
+import axios from "axios";
+import { SERVER_URL } from "../utils/config";
 
 export default function HomePage() {
-  const tags = [
-    { _id: "1", name: "Tag 1" },
-    { _id: "2", name: "Tag 2" },
-    { _id: "3", name: "Tag 3" },
-    { _id: "4", name: "Tag 4" },
-  ];
+  const [tags, setTags] = useState([]);
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const response = await axios.get(`${SERVER_URL}/api/tags`);
+
+        const tags = response.data;
+
+        console.log(tags);
+        setTags(tags);
+        return tags;
+      } catch (error) {
+        console.error("Fetch tags error:", error);
+        throw error;
+      }
+    };
+
+    fetchTags();
+  }, []);
 
   return (
     <div className="p-4">

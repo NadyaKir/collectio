@@ -8,6 +8,7 @@ import authRoute from "./routes/authRoutes.js";
 import userRoute from "./routes/usersRoutes.js";
 import collectionRoute from "./routes/collectionsRoutes.js";
 import itemRoute from "./routes/itemsRoutes.js";
+import tagRoute from "./routes/tagsRoutes.js";
 
 dotenv.config();
 
@@ -41,3 +42,4 @@ app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/collections", collectionRoute);
 app.use("/api/items", itemRoute);
+app.use("/api/tags", tagRoute);

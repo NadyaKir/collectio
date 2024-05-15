@@ -5,7 +5,7 @@ export default function Chip({ title, marginRight, dismissible }) {
     <div
       className={`relative grid select-none items-center whitespace-nowrap rounded-lg bg-teal-600 hover:bg-teal-700 py-1.5 px-3 font-sans text-xs font-bold uppercase text-white ${marginRight}`}
     >
-      <span className={`${dismissible ? "mr-5" : "mr-0"}`}>{title}</span>
+      <span className={`${dismissible ? "mr-5" : "mr-0"}`}>#{title}</span>
       {dismissible && (
         <button
           className="absolute top-2/4 right-1 mx-px h-5 max-h-[32px] w-5 max-w-[32px] -translate-y-2/4 select-none rounded-md text-center align-middle font-sans text-xs font-medium uppercase text-white transition-all hover:bg-white/10 active:bg-white/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
