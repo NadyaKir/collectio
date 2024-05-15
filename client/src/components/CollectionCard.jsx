@@ -67,32 +67,24 @@ export default function CollectionCard(props) {
     }
   };
 
-  //TODO:update collection list after saving
+  //TODO: make fix of the cyclic values errorwhen save
   const handleSaveClick = async (values) => {
-    console.log(values);
+    console.log("values", values);
 
     const image64 =
       values.image instanceof File
         ? await fileToBase64(values.image)
         : values.image;
 
-    console.log("Image:", image64);
-
     const updatedCollectionWithBase64Image = {
       ...values,
       image: image64,
     };
-    console.log("---");
-
-    console.log(updatedCollectionWithBase64Image);
-
     try {
-      console.log(updatedCollectionWithBase64Image);
       const response = await axios.put(
         `${SERVER_URL}/api/collections/${_id}`,
         updatedCollectionWithBase64Image
       );
-      console.log("Data successfully saved:", response.data);
 
       const updatedCollections = collections.map((collection) => {
         if (collection._id === _id) {
@@ -101,6 +93,7 @@ export default function CollectionCard(props) {
           return collection;
         }
       });
+
       dispatch(setCollections(updatedCollections));
       dispatch(toggleEdit(_id));
       setSelectedImage(null);
@@ -128,7 +121,14 @@ export default function CollectionCard(props) {
           <div className="flex flex-col justify-between h-full border p-4 rounded-lg">
             <div className="flex flex-col h-full">
               <div className="flex justify-between mb-2">
-                {!isEditing && <h2 className="text-xl font-bold">{title}</h2>}
+                {!isEditing && (
+                  <Link
+                    className="text-xl font-bold hover:text-teal-600"
+                    to={`/collections/${_id}/items`}
+                  >
+                    {title}
+                  </Link>
+                )}
                 {isEditing && (
                   <div className="w-full">
                     <Field
@@ -192,8 +192,10 @@ export default function CollectionCard(props) {
                           type="file"
                           onChange={(e) => {
                             const file = e.target.files[0];
+                            console.log("file", file);
                             formikProps.setFieldValue("image", file);
                             const imageUrl = URL.createObjectURL(file);
+                            console.log(imageUrl);
                             setSelectedImage(imageUrl);
                           }}
                         />
@@ -248,16 +250,6 @@ export default function CollectionCard(props) {
                   )}
                 </div>
               </div>
-            </div>
-            <div className={`${isEditing ? "hidden" : ""} ml-auto`}>
-              {!isEditing && (
-                <Link
-                  className="text-lg font-medium hover:text-teal-600"
-                  to={`/collection/${_id}`}
-                >
-                  Show
-                </Link>
-              )}
             </div>
           </div>
         </Form>

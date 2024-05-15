@@ -9,7 +9,7 @@ import {
 
 const collectionRoute = express.Router();
 
-collectionRoute.get("/getAllCollections", getAllCollections);
+collectionRoute.get("/", getAllCollections);
 collectionRoute.get("/categories", categories);
 collectionRoute.post("/addCollection", addCollection);
 collectionRoute.put("/:id", updateCollection);

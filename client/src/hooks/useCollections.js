@@ -12,9 +12,7 @@ export const useCollections = () => {
   useEffect(() => {
     const fetchCollections = async () => {
       try {
-        const response = await axios.get(
-          `${SERVER_URL}/api/collections/getAllCollections`
-        );
+        const response = await axios.get(`${SERVER_URL}/api/collections/`);
         dispatch(setCollections(response.data));
       } catch (error) {
         console.error("Error fetching collections:", error);

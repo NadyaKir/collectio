@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@material-tailwind/html": "^2.2.2",
     "@mdxeditor/editor": "^3.0.6",
     "@reduxjs/toolkit": "^2.2.3",
     "antd": "^5.17.0",

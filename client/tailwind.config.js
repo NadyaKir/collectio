@@ -1,5 +1,6 @@
-/** @type {import('tailwindcss').Config} */
-export default {
+const withMT = require("@material-tailwind/html/utils/withMT");
+
+module.exports = withMT({
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   darkMode: "class",
   theme: {
@@ -7,4 +8,4 @@ export default {
       "login-img": "url('./assets/stamps-img.jpg')",
     },
   },
-};
+});

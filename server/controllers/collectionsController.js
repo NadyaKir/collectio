@@ -66,13 +66,15 @@ export const updateCollection = async (req, res) => {
     const result = await Collection.findByIdAndUpdate(id, updateCollection, {
       new: true,
     });
-    console.log("result это", result);
+
     res.json(result);
   } catch (error) {
     console.error("Error updating collection:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+//TODO:delete collection with it's items
 export const deleteCollection = async (req, res) => {
   const { id } = req.params;
   try {

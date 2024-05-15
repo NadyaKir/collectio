@@ -9,7 +9,6 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated, signout } = useAuth();
   const { isAdmin } = getTokenData();
-  console.log(isAdmin);
 
   const handleIsOpen = () => {
     setIsOpen(!isOpen);
