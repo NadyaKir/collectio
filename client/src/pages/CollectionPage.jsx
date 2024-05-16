@@ -15,9 +15,11 @@ import Link from "antd/es/typography/Link";
 import { useDispatch, useSelector } from "react-redux";
 import { SERVER_URL } from "../utils/config";
 import { setItems } from "../store/itemSlice";
+import Chip from "../components/Chip";
 
 export default function CollectionPage() {
   const items = useSelector((state) => state.items.items);
+  const [tags, setTags] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [editingItems, setEditingItems] = useState([]);
@@ -29,9 +31,35 @@ export default function CollectionPage() {
     const fetchItems = async () => {
       try {
         const response = await axios.get(
-          `${SERVER_URL}/api/items//collection/${collectionId}`
+          `${SERVER_URL}/api/items/collection/${collectionId}`
         );
-        dispatch(setItems(response.data.items));
+
+        const items = response.data.items;
+
+        const tagIds = items.reduce((acc, item) => {
+          acc.push(...item.tags);
+          return acc;
+        }, []);
+
+        const tagNamesResponse = await axios.post(
+          `${SERVER_URL}/api/tags/names`,
+          { tagIds }
+        );
+
+        const tagMap = {};
+        tagNamesResponse.data.tags.forEach((tag) => {
+          tagMap[tag._id] = tag;
+        });
+
+        const updatedItems = items.map((item) => ({
+          ...item,
+          tags: item.tags.map((tagId) => ({
+            _id: tagId,
+            name: tagMap[tagId].name,
+          })),
+        }));
+
+        dispatch(setItems(updatedItems));
       } catch (error) {
         console.error("Error fetching items:", error);
       }
@@ -95,6 +123,7 @@ export default function CollectionPage() {
         >
           <PlusOutlined />
         </ToolButton>
+        <ToolButton>Delete all</ToolButton>
       </ToolBar>
       <div className="overflow-x-auto relative flex-1 border rounded-md">
         <table className="min-w-full divide-y divide-gray-200">
@@ -115,6 +144,9 @@ export default function CollectionPage() {
                 Name
               </th>
               <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Tags
+              </th>
+              <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
@@ -127,7 +159,7 @@ export default function CollectionPage() {
                 className={`text-left ${
                   editingItems.includes(item._id)
                     ? ""
-                    : "hover:bg-gray-100 cursor-pointer"
+                    : "hover:bg-gray-100 cursor-pointer h-16"
                 }`}
                 onClick={() => handleRowClick(item._id)}
               >
@@ -145,7 +177,8 @@ export default function CollectionPage() {
                     {item._id}
                   </Link>
                 </td>
-                <td className="px-4 py-2 whitespace-nowrap w-1/2">
+
+                <td className="px-4 py-2 whitespace-nowrap w-1/4">
                   {editingItems.includes(item._id) ? (
                     <input
                       type="text"
@@ -155,6 +188,20 @@ export default function CollectionPage() {
                   ) : (
                     item.title
                   )}
+                </td>
+                <td className="px-4 py-2 whitespace-nowrap w-1/4">
+                  <div className="flex items-center">
+                    {item.tags.map((tag, index) => (
+                      <Chip
+                        key={tag._id}
+                        title={tag.name}
+                        marginRight={
+                          index === item.tags.length - 1 ? "mr-0" : "mr-2"
+                        }
+                        dismissible={false}
+                      />
+                    ))}
+                  </div>
                 </td>
                 <td className="text-center px-4 py-2 whitespace-nowrap w-1/4">
                   {editingItems.includes(item._id) ? (

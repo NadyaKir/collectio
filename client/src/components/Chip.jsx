@@ -1,9 +1,14 @@
 import React from "react";
 
 export default function Chip({ title, marginRight, dismissible }) {
+  const handleClick = (e) => {
+    e.stopPropagation();
+  };
+
   return (
     <div
       className={`relative grid select-none items-center whitespace-nowrap rounded-lg bg-teal-600 hover:bg-teal-700 py-1.5 px-3 font-sans text-xs font-bold uppercase text-white ${marginRight}`}
+      onClick={handleClick}
     >
       <span className={`${dismissible ? "mr-5" : "mr-0"}`}>#{title}</span>
       {dismissible && (

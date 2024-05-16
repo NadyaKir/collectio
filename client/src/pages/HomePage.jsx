@@ -13,9 +13,9 @@ export default function HomePage() {
         const response = await axios.get(`${SERVER_URL}/api/tags`);
 
         const tags = response.data;
+        const reversedTags = [...tags].reverse();
 
-        console.log(tags);
-        setTags(tags);
+        setTags(reversedTags);
         return tags;
       } catch (error) {
         console.error("Fetch tags error:", error);
@@ -47,19 +47,11 @@ export default function HomePage() {
         <div className="flex flex-wrap items-center">
           {tags.map((tag, index) => (
             <Link key={tag._id}>
-              {index === tags.length - 1 ? (
-                <Chip
-                  title={tag.name}
-                  marginRight={"mr-0"}
-                  dismissible={false}
-                />
-              ) : (
-                <Chip
-                  title={tag.name}
-                  marginRight={"mr-2"}
-                  dismissible={false}
-                />
-              )}
+              <Chip
+                title={tag.name}
+                marginRight={index === tags.length - 1 ? "mr-0" : "mr-2"}
+                dismissible={false}
+              />
             </Link>
           ))}
         </div>
