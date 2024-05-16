@@ -1,20 +1,23 @@
 import React from "react";
 
-export default function Chip({ title, marginRight, dismissible }) {
+export default function Chip({ title, marginRight, dismissible, onClick }) {
   const handleClick = (e) => {
     e.stopPropagation();
   };
 
   return (
     <div
-      className={`relative grid select-none items-center whitespace-nowrap rounded-lg bg-teal-600 hover:bg-teal-700 py-1.5 px-3 font-sans text-xs font-bold uppercase text-white ${marginRight}`}
+      className={`relative grid select-none items-center whitespace-nowrap rounded-xl border border-gray-300 bg-gray-100 hover:border-gray-500 py-1.5 px-3 font-sans text-xs uppercase text-black ${marginRight} mt-4`}
       onClick={handleClick}
     >
-      <span className={`${dismissible ? "mr-5" : "mr-0"}`}>#{title}</span>
+      <span className={`${dismissible ? "mr-5" : "mr-0"} overflow-auto`}>
+        #{title}
+      </span>
       {dismissible && (
         <button
-          className="absolute top-2/4 right-1 mx-px h-5 max-h-[32px] w-5 max-w-[32px] -translate-y-2/4 select-none rounded-md text-center align-middle font-sans text-xs font-medium uppercase text-white transition-all hover:bg-white/10 active:bg-white/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+          className="absolute top-2/4 right-1 mx-px h-5 max-h-[32px] w-5 max-w-[32px] -translate-y-2/4 select-none rounded-md text-center align-middle font-sans text-xs font-medium uppercase text-black transition-all hover:bg-white/10 active:bg-white/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
           type="button"
+          onClick={onClick}
         >
           <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
             <svg

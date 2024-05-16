@@ -5,7 +5,7 @@ import { SERVER_URL } from "../utils/config";
 import axios from "axios";
 import getTokenData from "../utils/getTokenData";
 import { useNavigate } from "react-router-dom";
-import { Input } from "antd";
+import { Button, Input } from "antd";
 import { fileToBase64 } from "file64";
 import defaultImage from "../assets/placeholder-image.png";
 
@@ -144,8 +144,9 @@ const CollectionForm = () => {
               </div>
               <button
                 type="submit"
+                htmlType="submit"
                 disabled={isSubmitting}
-                className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+                className="bg-teal-500 text-white py-2 px-4 rounded-md hover:bg-teal-600"
               >
                 {isSubmitting ? "Adding..." : "Add Collection"}
               </button>
