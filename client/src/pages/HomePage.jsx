@@ -49,21 +49,31 @@ export default function HomePage() {
     <div className="p-4">
       <div className="mb-8">
         <h2 className="text-xl font-bold mb-2">Last items:</h2>
-        <ul>
+        <div className="grid grid-cols-5 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {lastItems.map((item) => (
-            <li key={item._id}>
+            <div
+              key={item._id}
+              className="flex flex-col justify-between h-full border p-4 rounded-lg"
+            >
+              <h2 className="text-xl font-bold">
+                {" "}
+                <Link className=" hover:text-teal-600">{item.title}</Link>
+              </h2>
               <div>
-                <strong>Item Title:</strong> {item.title}
+                Collection:{" "}
+                <Link className=" hover:text-teal-600">
+                  {item.collectionId.title}
+                </Link>
               </div>
               <div>
-                <strong>Collection Title:</strong> {item.collectionId.title}
+                Created by:{" "}
+                <Link className="text-lg hover:text-teal-600">
+                  {item.createdBy.username}
+                </Link>
               </div>
-              <div>
-                <strong>Created By:</strong> {item.createdBy.username}
-              </div>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
       <div className="mb-8">
         <h2 className="text-xl font-bold mb-2">The biggest collections:</h2>

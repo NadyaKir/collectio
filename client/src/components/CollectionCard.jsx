@@ -73,7 +73,6 @@ export default function CollectionCard(props) {
       {(formikProps) => (
         <Form>
           <div className="flex flex-col justify-between h-full border p-4 rounded-lg">
-            {}
             <div className="flex flex-col h-full">
               <div className="flex justify-between mb-2">
                 {!isEditing && (
