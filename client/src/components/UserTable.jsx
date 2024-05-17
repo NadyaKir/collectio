@@ -4,6 +4,7 @@ import { useUsers } from "../hooks/useUsers";
 import axios from "axios";
 import { SERVER_URL } from "../utils/config";
 import useAuth from "../hooks/useAuth";
+import getTokenData from "../utils/getTokenData";
 
 export default function UserTable() {
   const { users, setUsers } = useUsers();
@@ -11,6 +12,8 @@ export default function UserTable() {
   const [selectAll, setSelectAll] = useState(false);
   const { signin, signout } = useAuth();
   console.log(selectedUsers);
+
+  const { userId } = getTokenData();
 
   useEffect(() => {
     if (selectedUsers.length === users.length && users.length !== 0) {
@@ -44,7 +47,6 @@ export default function UserTable() {
     setSelectedUsers(updatedSelectedUsers);
   };
 
-  //TODO: refresh token after change role!!!
   const handleChangeRole = async (userId, role) => {
     const isAdmin = role === "admin";
 
@@ -146,7 +148,14 @@ export default function UserTable() {
               </td>
               <td className="px-4 py-2 whitespace-nowrap">{user._id}</td>
               <td className="px-4 py-2 whitespace-nowrap">{user.username}</td>
-              <td className="px-4 py-2 whitespace-nowrap">{user.email}</td>
+              <td
+                className={`px-4 py-2 whitespace-nowrap ${
+                  userId === user._id ? "font-bold" : ""
+                }`}
+              >
+                {user.email}
+                {userId === user._id ? " (you)" : ""}
+              </td>
               <td className="px-4 py-2 whitespace-nowrap">
                 {user.registrationDate}
               </td>
