@@ -24,7 +24,7 @@ export const useCollectionActions = (dispatch) => {
     };
     try {
       const response = await axios.put(
-        `${SERVER_URL}/api/collections/${_id}`,
+        `${SERVER_URL}/api/collections/update/${_id}`,
         updatedCollectionWithBase64Image
       );
 
@@ -44,10 +44,11 @@ export const useCollectionActions = (dispatch) => {
   };
 
   const handleDeleteClick = async (_id) => {
+    console.log(_id);
     setIsLoading(true);
     setError(null);
     try {
-      await axios.delete(`${SERVER_URL}/api/collections/${_id}`);
+      await axios.delete(`${SERVER_URL}/api/collections/delete/${_id}`);
       dispatch(
         setCollections(
           collections.filter((collection) => collection._id !== _id)

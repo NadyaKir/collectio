@@ -12,7 +12,7 @@ const collectionRoute = express.Router();
 collectionRoute.get("/", getAllCollections);
 collectionRoute.get("/:userId", getCollectionsByUser);
 collectionRoute.post("/addCollection", addCollection);
-collectionRoute.put("/:id", updateCollection);
-collectionRoute.delete("/:id", deleteCollection);
+collectionRoute.put("/update/:id", updateCollection);
+collectionRoute.delete("/delete/:id", deleteCollection);
 
 export default collectionRoute;

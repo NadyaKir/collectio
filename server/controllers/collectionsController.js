@@ -1,4 +1,5 @@
 import Collection from "../models/collectionSchema.js";
+import Item from "../models/itemSchema.js";
 import dotenv from "dotenv";
 import uploadImageToImgbb from "../utils/fileUpload.js";
 
@@ -76,14 +77,24 @@ export const updateCollection = async (req, res) => {
   }
 };
 
-//TODO:delete collection with it's items
 export const deleteCollection = async (req, res) => {
   const { id } = req.params;
+
   try {
-    await Collection.findByIdAndDelete(id);
-    res.status(204).send();
+    await Item.deleteMany({ collectionId: id });
+
+    const deletedCollection = await Collection.findByIdAndDelete(id);
+
+    if (!deletedCollection) {
+      return res.status(404).json({ message: "Collection not found" });
+    }
+
+    return res.status(200).json({
+      message:
+        "All items of the collection and the collection itself deleted successfully",
+    });
   } catch (error) {
-    console.error("Error deleting collection:", error);
-    res.status(500).json({ message: "Error deleting collection" });
+    console.error("Error deleting items and collection:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
