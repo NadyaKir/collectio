@@ -13,6 +13,18 @@ export const getAllCollections = async (_, res) => {
   }
 };
 
+export const getCollectionsByUser = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    const collections = await Collection.find({ createdBy: userId });
+
+    res.json(collections);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 export const categories = async (_, res) => {
   try {
     const categories = Collection.schema.path("category").enumValues;

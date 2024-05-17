@@ -4,7 +4,6 @@ import ToolBar from "../components/Toolbar/ToolBar";
 import ToolButton from "../components/Toolbar/ToolButton";
 import { PlusOutlined } from "@ant-design/icons";
 import Header from "../components/Layout/Header";
-
 import { useNavigate } from "react-router-dom";
 
 const CollectionsPage = () => {

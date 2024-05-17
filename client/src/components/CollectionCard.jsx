@@ -26,7 +26,6 @@ import {
   CreateLink,
 } from "@mdxeditor/editor";
 import { useCategories } from "../hooks/useCategories";
-import { useCollections } from "../hooks/useCollections";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { fileToBase64 } from "file64";
 import { setCollections } from "../store/collectionsSlice";
@@ -38,7 +37,6 @@ export default function CollectionCard(props) {
   const ref = useRef(null);
   const dispatch = useDispatch();
 
-  const { handleDelete } = useCollections();
   const { categories } = useCategories();
 
   const [selectedImage, setSelectedImage] = useState(null);
@@ -56,8 +54,15 @@ export default function CollectionCard(props) {
     setSelectedImage(null);
   };
 
+  const handleDelete = (deletedId) => {
+    dispatch(
+      setCollections(
+        collections.filter((collection) => collection._id !== deletedId)
+      )
+    );
+  };
+
   const handleDeleteClick = async () => {
-    console.log(_id);
     try {
       await axios.delete(`${SERVER_URL}/api/collections/${_id}`);
       handleDelete(_id);
