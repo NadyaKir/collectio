@@ -1,10 +1,9 @@
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 
-export default function Spinner({ spinning }) {
+export default function Spinner() {
   return (
     <Spin
-      spinning={spinning}
       indicator={
         <LoadingOutlined
           style={{
