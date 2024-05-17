@@ -58,6 +58,7 @@ const CollectionForm = () => {
     setSubmitting(false);
   };
 
+  //TODO: fix setCategory
   return (
     <Formik
       initialValues={initialValues}

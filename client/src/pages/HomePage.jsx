@@ -3,9 +3,13 @@ import { Link } from "react-router-dom";
 import Chip from "../components/Chip";
 import axios from "axios";
 import { SERVER_URL } from "../utils/config";
+import { useDispatch, useSelector } from "react-redux";
+import { setLastItems } from "../store/itemSlice";
 
 export default function HomePage() {
   const [tags, setTags] = useState([]);
+  const dispatch = useDispatch();
+  const lastItems = useSelector((state) => state.items.lastItems);
 
   useEffect(() => {
     const fetchTags = async () => {
@@ -26,13 +30,39 @@ export default function HomePage() {
     fetchTags();
   }, []);
 
+  useEffect(() => {
+    const fetchLastItems = async () => {
+      try {
+        const response = await axios.get(`${SERVER_URL}/api/items`);
+
+        const items = response.data.items;
+        dispatch(setLastItems(items));
+      } catch (error) {
+        console.error("Fetch tags error:", error);
+        throw error;
+      }
+    };
+    fetchLastItems();
+  }, []);
+
   return (
     <div className="p-4">
       <div className="mb-8">
         <h2 className="text-xl font-bold mb-2">Last items:</h2>
         <ul>
-          <li>Col 1</li>
-          <li>Col 2</li>
+          {lastItems.map((item) => (
+            <li key={item._id}>
+              <div>
+                <strong>Item Title:</strong> {item.title}
+              </div>
+              <div>
+                <strong>Collection Title:</strong> {item.collectionId.title}
+              </div>
+              <div>
+                <strong>Created By:</strong> {item.createdBy.username}
+              </div>
+            </li>
+          ))}
         </ul>
       </div>
       <div className="mb-8">

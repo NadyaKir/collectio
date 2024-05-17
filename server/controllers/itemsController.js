@@ -38,7 +38,21 @@ export const addItem = async (req, res) => {
   }
 };
 
-export const getAllItems = async (req, res) => {
+export const getAllLastItems = async (req, res) => {
+  try {
+    const items = await Item.find()
+      .sort({ createdAt: -1 })
+      .populate("collectionId")
+      .populate("createdBy");
+
+    res.status(200).json({ items });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching items" });
+  }
+};
+
+export const getAllCollectionItems = async (req, res) => {
   try {
     const { collectionId } = req.params;
     const items = await Item.find({ collectionId });

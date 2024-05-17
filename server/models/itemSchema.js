@@ -7,6 +7,10 @@ const itemSchema = new mongoose.Schema({
     required: true,
   },
   title: { type: String, required: true },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
   tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tag" }],
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   collectionId: { type: mongoose.Schema.Types.ObjectId, ref: "Collection" },
