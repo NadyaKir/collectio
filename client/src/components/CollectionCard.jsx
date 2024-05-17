@@ -10,11 +10,8 @@ import {
 import ToolButton from "./Toolbar/ToolButton";
 import { Input } from "antd";
 import ReactMarkdown from "react-markdown";
-import { useState } from "react";
 import { useRef } from "react";
 import { headingsPlugin } from "@mdxeditor/editor";
-import axios from "axios";
-import { SERVER_URL } from "../utils/config";
 import "@mdxeditor/editor/style.css";
 import {
   MDXEditor,
@@ -25,21 +22,25 @@ import {
   linkDialogPlugin,
   CreateLink,
 } from "@mdxeditor/editor";
-import { useCategories } from "../hooks/useCategories";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { fileToBase64 } from "file64";
-import { setCollections } from "../store/collectionsSlice";
+import { useCollectionActions } from "../hooks/useCollectionActions";
 
 export default function CollectionCard(props) {
   const { _id, title, image, category, description } = props;
-  const collections = useSelector((state) => state.collections.collections);
-
-  const ref = useRef(null);
+  const categories = useSelector((state) => state.collections.categories);
   const dispatch = useDispatch();
 
-  const { categories } = useCategories();
+  const {
+    collections,
+    handleSaveClick,
+    handleDeleteClick,
+    isLoading,
+    error,
+    selectedImage,
+    setSelectedImage,
+  } = useCollectionActions(dispatch);
 
-  const [selectedImage, setSelectedImage] = useState(null);
+  const ref = useRef(null);
 
   const isEditing = useSelector((state) =>
     state.collections.editingCollections.includes(_id)
@@ -54,59 +55,6 @@ export default function CollectionCard(props) {
     setSelectedImage(null);
   };
 
-  const handleDelete = (deletedId) => {
-    dispatch(
-      setCollections(
-        collections.filter((collection) => collection._id !== deletedId)
-      )
-    );
-  };
-
-  const handleDeleteClick = async () => {
-    try {
-      await axios.delete(`${SERVER_URL}/api/collections/${_id}`);
-      handleDelete(_id);
-      console.log("Collection deleted successfully");
-    } catch (error) {
-      console.error("Error deleting collection:", error);
-    }
-  };
-
-  //TODO: make fix of the cyclic values errorwhen save
-  const handleSaveClick = async (values) => {
-    console.log("values", values);
-
-    const image64 =
-      values.image instanceof File
-        ? await fileToBase64(values.image)
-        : values.image;
-
-    const updatedCollectionWithBase64Image = {
-      ...values,
-      image: image64,
-    };
-    try {
-      const response = await axios.put(
-        `${SERVER_URL}/api/collections/${_id}`,
-        updatedCollectionWithBase64Image
-      );
-
-      const updatedCollections = collections.map((collection) => {
-        if (collection._id === _id) {
-          return response.data;
-        } else {
-          return collection;
-        }
-      });
-
-      dispatch(setCollections(updatedCollections));
-      dispatch(toggleEdit(_id));
-      setSelectedImage(null);
-    } catch (error) {
-      console.error("Error saving data:", error);
-    }
-  };
-
   return (
     <Formik
       initialValues={{
@@ -116,14 +64,16 @@ export default function CollectionCard(props) {
         category: props.category,
       }}
       onSubmit={(values, { setSubmitting }) => {
-        handleSaveClick(values);
+        handleSaveClick(values, _id);
         setSubmitting(false);
+        dispatch(toggleEdit(_id));
       }}
       validationSchema=""
     >
       {(formikProps) => (
         <Form>
           <div className="flex flex-col justify-between h-full border p-4 rounded-lg">
+            {}
             <div className="flex flex-col h-full">
               <div className="flex justify-between mb-2">
                 {!isEditing && (
@@ -142,7 +92,6 @@ export default function CollectionCard(props) {
                       name="title"
                       value={formikProps.values.title}
                       onChange={formikProps.handleChange}
-                      onBlur={formikProps.handleBlur}
                       className="w-5/6 px-1 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
                       required
                     />
@@ -156,7 +105,12 @@ export default function CollectionCard(props) {
                   )}
                   {isEditing && (
                     <div className="flex">
-                      <ToolButton title="Save" handleAction={handleSaveClick}>
+                      <ToolButton
+                        title="Save"
+                        handleAction={() => {
+                          formikProps.submitForm();
+                        }}
+                      >
                         <CheckOutlined />
                       </ToolButton>
                       <ToolButton
@@ -168,7 +122,7 @@ export default function CollectionCard(props) {
                     </div>
                   )}
                   {!isEditing && (
-                    <ToolButton handleAction={handleDeleteClick}>
+                    <ToolButton handleAction={() => handleDeleteClick(_id)}>
                       <DeleteOutlined title="Delete" />
                     </ToolButton>
                   )}
@@ -194,6 +148,8 @@ export default function CollectionCard(props) {
                     <div className="flex flex-col items-center">
                       <div className="w-full mt-2">
                         <Input
+                          id="image"
+                          name="image"
                           type="file"
                           onChange={(e) => {
                             const file = e.target.files[0];
@@ -208,6 +164,8 @@ export default function CollectionCard(props) {
                       <div className="flex w-full">
                         <p className="font-bold mt-2 mr-2">Category:</p>
                         <select
+                          id="category"
+                          name="category"
                           value={formikProps.values.category}
                           onChange={(e) => {
                             const value = e.target.value;
@@ -230,6 +188,8 @@ export default function CollectionCard(props) {
                   {isEditing && (
                     <div className="w-full">
                       <MDXEditor
+                        id="description"
+                        name="description"
                         ref={ref}
                         markdown={description}
                         onChange={(value) =>

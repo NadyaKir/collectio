@@ -5,12 +5,14 @@ import { SERVER_URL } from "../utils/config";
 import axios from "axios";
 import getTokenData from "../utils/getTokenData";
 import { useNavigate } from "react-router-dom";
-import { Button, Input } from "antd";
+import { Input } from "antd";
 import { fileToBase64 } from "file64";
 import defaultImage from "../assets/placeholder-image.png";
+import { useSelector } from "react-redux";
 
 const CollectionForm = () => {
   const [selectedImage, setSelectedImage] = useState(defaultImage);
+  const categories = useSelector((state) => state.collections.categories);
   const navigate = useNavigate();
 
   const { userId } = getTokenData();
@@ -110,11 +112,11 @@ const CollectionForm = () => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
                   required
                 >
-                  <option value="">Select category</option>
-                  <option value="Books">Books</option>
-                  <option value="Signs">Signs</option>
-                  <option value="Silverware">Silverware</option>
-                  <option value="Other">Other</option>
+                  {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
                 </Field>
                 <ErrorMessage
                   name="category"
@@ -144,7 +146,6 @@ const CollectionForm = () => {
               </div>
               <button
                 type="submit"
-                htmlType="submit"
                 disabled={isSubmitting}
                 className="bg-teal-500 text-white py-2 px-4 rounded-md hover:bg-teal-600"
               >

@@ -25,16 +25,6 @@ export const getCollectionsByUser = async (req, res) => {
   }
 };
 
-export const categories = async (_, res) => {
-  try {
-    const categories = Collection.schema.path("category").enumValues;
-    res.json(categories);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server Error" });
-  }
-};
-
 export const addCollection = async (req, res) => {
   const newCollectionData = req.body;
 
