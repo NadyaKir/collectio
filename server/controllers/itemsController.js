@@ -42,6 +42,7 @@ export const getAllLastItems = async (req, res) => {
   try {
     const items = await Item.find()
       .sort({ createdAt: -1 })
+      .limit(10)
       .populate("collectionId")
       .populate("createdBy");
 
