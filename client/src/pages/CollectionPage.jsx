@@ -19,11 +19,11 @@ import Chip from "../components/Chip";
 
 export default function CollectionPage() {
   const items = useSelector((state) => state.items.items);
-  const [tags, setTags] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [editingItems, setEditingItems] = useState([]);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { collectionId } = useParams();
 
@@ -101,14 +101,28 @@ export default function CollectionPage() {
     }
   };
 
-  const handleDeleteItem = (itemId) => {
-    const updatedItems = items.filter((item) => item._id !== itemId);
-    dispatch(setItems(updatedItems));
-  };
-  const navigate = useNavigate();
-
   const handleRowClick = (itemId) => {
     navigate(`/collections/${collectionId}/items/${itemId}`);
+  };
+
+  const handleDeleteItems = async (itemId) => {
+    const itemIdsToDelete = itemId ? [itemId] : [];
+
+    const selectedIds =
+      itemIdsToDelete.length > 0 ? itemIdsToDelete : selectedItems;
+
+    try {
+      const response = await axios.delete(`${SERVER_URL}/api/items/delete`, {
+        data: { itemIds: selectedIds },
+      });
+      const updatedItems = items.filter(
+        (item) => !selectedIds.includes(item._id)
+      );
+      dispatch(setItems(updatedItems));
+      setSelectedItems([]);
+    } catch (error) {
+      console.error("Error deleting items:", error);
+    }
   };
 
   return (
@@ -123,7 +137,15 @@ export default function CollectionPage() {
         >
           <PlusOutlined />
         </ToolButton>
-        <ToolButton>Delete all</ToolButton>
+        <ToolButton
+          handleAction={() =>
+            handleDeleteItems(
+              selectedItems.length > 0 ? undefined : selectedItems
+            )
+          }
+        >
+          Delete all
+        </ToolButton>
       </ToolBar>
       <div className="overflow-x-auto relative flex-1 border rounded-md">
         <table className="min-w-full divide-y divide-gray-200">
@@ -235,7 +257,7 @@ export default function CollectionPage() {
                       </button>
                       <button
                         onClick={(e) => {
-                          handleDeleteItem(item._id);
+                          handleDeleteItems(item._id);
                           e.stopPropagation();
                         }}
                       >
