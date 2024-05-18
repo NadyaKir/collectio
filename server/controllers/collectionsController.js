@@ -26,6 +26,35 @@ export const getCollectionsByUser = async (req, res) => {
   }
 };
 
+export const getTopCollections = async (req, res) => {
+  try {
+    const topCollections = await Collection.aggregate([
+      {
+        $lookup: {
+          from: "items",
+          localField: "_id", // Поле в текущей коллекции, которое содержит _id коллекции
+          foreignField: "collectionId", // Поле в коллекции items, ссылающееся на _id текущей коллекции
+          as: "itemsData",
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          numberOfItems: { $size: "$itemsData" },
+        },
+      },
+      { $sort: { numberOfItems: -1 } },
+      { $limit: 5 },
+    ]);
+
+    res.json(topCollections);
+  } catch (error) {
+    console.error("Error while getting top collections:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 export const addCollection = async (req, res) => {
   const newCollectionData = req.body;
 

@@ -6,10 +6,14 @@ const collectionsSlice = createSlice({
     categories: ["Books", "Signs", "Silverware", "Other"],
     collections: [],
     editingCollections: [],
+    topCollections: [],
   },
   reducers: {
     setCollections: (state, action) => {
       state.collections = action.payload;
+    },
+    setTopCollections: (state, action) => {
+      state.topCollections = action.payload;
     },
     toggleEdit: (state, action) => {
       const { payload: cardId } = action;
@@ -23,6 +27,7 @@ const collectionsSlice = createSlice({
   },
 });
 
-export const { setCollections, toggleEdit } = collectionsSlice.actions;
+export const { setCollections, setTopCollections, toggleEdit } =
+  collectionsSlice.actions;
 
 export default collectionsSlice.reducer;
