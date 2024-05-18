@@ -1,34 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Chip from "../components/Chip";
 import axios from "axios";
 import { SERVER_URL } from "../utils/config";
 import { useDispatch, useSelector } from "react-redux";
 import { setLastItems } from "../store/itemSlice";
+import TagsCloud from "../components/TagsCloud";
 
 export default function HomePage() {
-  const [tags, setTags] = useState([]);
   const dispatch = useDispatch();
   const lastItems = useSelector((state) => state.items.lastItems);
-
-  useEffect(() => {
-    const fetchTags = async () => {
-      try {
-        const response = await axios.get(`${SERVER_URL}/api/tags`);
-
-        const tags = response.data;
-        const reversedTags = [...tags].reverse();
-
-        setTags(reversedTags);
-        return tags;
-      } catch (error) {
-        console.error("Fetch tags error:", error);
-        throw error;
-      }
-    };
-
-    fetchTags();
-  }, []);
 
   useEffect(() => {
     const fetchLastItems = async () => {
@@ -49,7 +29,7 @@ export default function HomePage() {
     <div className="p-4">
       <div className="mb-8">
         <h2 className="text-xl font-bold mb-2">Last items:</h2>
-        <div className="grid grid-cols-5 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div className="grid  xs:grid-col-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {lastItems.map((item) => (
             <div
               key={item._id}
@@ -85,7 +65,8 @@ export default function HomePage() {
       <div>
         <h2 className="text-xl font-bold mb-2">Tags cloud:</h2>
         <div className="flex flex-wrap items-center">
-          {tags.map((tag, index) => (
+          <TagsCloud />
+          {/* {tags.map((tag, index) => (
             <Link key={tag._id}>
               <Chip
                 title={tag.name}
@@ -93,7 +74,7 @@ export default function HomePage() {
                 dismissible={false}
               />
             </Link>
-          ))}
+          ))} */}
         </div>
       </div>
     </div>
