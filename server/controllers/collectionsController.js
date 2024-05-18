@@ -32,8 +32,8 @@ export const getTopCollections = async (req, res) => {
       {
         $lookup: {
           from: "items",
-          localField: "_id", // Поле в текущей коллекции, которое содержит _id коллекции
-          foreignField: "collectionId", // Поле в коллекции items, ссылающееся на _id текущей коллекции
+          localField: "_id",
+          foreignField: "collectionId",
           as: "itemsData",
         },
       },
