@@ -30,7 +30,7 @@ export default function TopCollections() {
     <div>
       <ul>
         {topCollections.map((collection) => (
-          <Link>
+          <Link key={collection._id}>
             <li>{collection.title}</li>
           </Link>
         ))}
