@@ -26,7 +26,7 @@ export const getCollectionsByUser = async (req, res) => {
   }
 };
 
-export const getTopCollections = async (req, res) => {
+export const getTopCollections = async (_, res) => {
   try {
     const topCollections = await Collection.aggregate([
       {
@@ -38,10 +38,34 @@ export const getTopCollections = async (req, res) => {
         },
       },
       {
+        $addFields: {
+          numberOfItems: { $size: "$itemsData" },
+        },
+      },
+      {
+        $match: {
+          numberOfItems: { $gt: 0 },
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "createdBy",
+          foreignField: "_id",
+          as: "userData",
+        },
+      },
+      {
+        $addFields: {
+          userName: { $arrayElemAt: ["$userData.username", 0] },
+        },
+      },
+      {
         $project: {
           _id: 1,
           title: 1,
-          numberOfItems: { $size: "$itemsData" },
+          numberOfItems: 1,
+          userName: 1,
         },
       },
       { $sort: { numberOfItems: -1 } },

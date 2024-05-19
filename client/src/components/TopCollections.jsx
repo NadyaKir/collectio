@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { SERVER_URL } from "../utils/config";
@@ -17,7 +17,6 @@ export default function TopCollections() {
         const response = await axios.get(`${SERVER_URL}/api/collections/top`);
 
         const topCollections = response.data;
-        console.log(topCollections);
         dispatch(setTopCollections(topCollections));
       } catch (error) {
         console.error("Error while getting top collections:", error);
@@ -25,16 +24,52 @@ export default function TopCollections() {
     };
 
     fetchTopCollections();
-  }, []);
+  }, [dispatch]);
+
   return (
-    <div>
-      <ul>
-        {topCollections.map((collection) => (
-          <Link to={``} key={collection._id}>
-            <li>{collection.title}</li>
-          </Link>
+    <table className="w-full divide-y divide-gray-200">
+      <thead className="">
+        <tr className="text-center">
+          <th className="py-1 px-1">Position</th>
+          <th className="py-1 px-1">Title</th>
+          <th className="py-1 px-1">Number of items</th>
+          <th className="py-1 px-1">Created by</th>
+        </tr>
+      </thead>
+      <tbody>
+        {topCollections.map((collection, index) => (
+          <tr key={collection._id} className="border-b border-gray-300">
+            <td className="py-1 px-1 text-center">
+              <span
+                className={`inline-flex items-center justify-center w-8 h-8  bg-gray-100 rounded-full ${
+                  index < 3
+                    ? index === 0
+                      ? "bg-yellow-400"
+                      : index === 1
+                      ? "bg-gray-300"
+                      : "bg-yellow-600"
+                    : ""
+                }`}
+              >
+                <span className="text-xs">{index + 1}</span>
+              </span>
+            </td>
+            <td className="py-2 px-1 text-center">
+              <Link className="hover:text-teal-700 cursor-pointer">
+                {collection.title}
+              </Link>
+            </td>
+            <td className="py-2 px-1 font-bold text-center">
+              {collection.numberOfItems}
+            </td>
+            <td className="py-2 px-1 text-center">
+              <Link className="hover:text-teal-700 cursor-pointer">
+                {collection.userName}
+              </Link>
+            </td>
+          </tr>
         ))}
-      </ul>
-    </div>
+      </tbody>
+    </table>
   );
 }
