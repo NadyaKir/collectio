@@ -12,23 +12,28 @@ export const useCollections = () => {
   const { userId } = getToketData();
   const collections = useSelector((state) => state.collections.collections);
 
-  useEffect(() => {
-    const fetchUserCollections = async () => {
-      try {
-        const response = await axios.get(
-          `${SERVER_URL}/api/collections/${userId}`
-        );
-        dispatch(setCollections(response.data));
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching collections:", error);
-        setError(error);
-        setIsLoading(false);
-      }
-    };
+  const fetchUserCollections = async () => {
+    try {
+      const response = await axios.get(
+        `${SERVER_URL}/api/collections/${userId}`
+      );
+      dispatch(setCollections(response.data));
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching collections:", error);
+      setError(error);
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchUserCollections();
   }, []);
 
-  return { collections, isLoading, error };
+  return {
+    collections,
+    fetchUserCollections,
+    isLoading,
+    error,
+  };
 };

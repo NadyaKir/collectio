@@ -68,18 +68,20 @@ export default function Navbar() {
                   Users
                 </Link>
               )}
-              <Link
-                to="/collections"
-                className="block my-3 lg:my-0 lg:inline-block rounded hover:text-teal-700 lg:mr-3"
-              >
-                My collections
-              </Link>
+              {isAuthenticated && (
+                <Link
+                  to="/collections"
+                  className="block my-3 lg:my-0 lg:inline-block rounded hover:text-teal-700 lg:mr-3"
+                >
+                  My collections
+                </Link>
+              )}
             </div>
             <div className="flex mb-4 lg:mb-0">
               <button onClick={signout}>
                 <Link
                   to={isAuthenticated ? "/" : "/login"}
-                  className="block text-md p-2 rounded border border-teal-600 font-bold hover:text-teal-700 mt-4lg:mt-0"
+                  className="block text-md p-2 rounded border border-teal-600 font-bold hover:text-teal-700 mt-4 lg:mt-0"
                 >
                   {isAuthenticated ? "Sign out" : "Sign in"}
                 </Link>

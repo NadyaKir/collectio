@@ -24,7 +24,7 @@ const uploadImageToImgbb = async (image) => {
 
     return responseData.data.url;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 

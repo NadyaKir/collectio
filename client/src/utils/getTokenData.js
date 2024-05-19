@@ -10,7 +10,10 @@ const getTokenData = () => {
       isAdmin: decodedToken.isAdmin,
     };
   }
-  return null;
+  return {
+    userId: null,
+    isAdmin: false,
+  };
 };
 
 export default getTokenData;

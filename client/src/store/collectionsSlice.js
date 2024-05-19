@@ -15,19 +15,9 @@ const collectionsSlice = createSlice({
     setTopCollections: (state, action) => {
       state.topCollections = action.payload;
     },
-    toggleEdit: (state, action) => {
-      const { payload: cardId } = action;
-      const index = state.editingCollections.indexOf(cardId);
-      if (index !== -1) {
-        state.editingCollections.splice(index, 1);
-      } else {
-        state.editingCollections.push(cardId);
-      }
-    },
   },
 });
 
-export const { setCollections, setTopCollections, toggleEdit } =
-  collectionsSlice.actions;
+export const { setCollections, setTopCollections } = collectionsSlice.actions;
 
 export default collectionsSlice.reducer;

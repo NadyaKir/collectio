@@ -7,8 +7,6 @@ import { fileToBase64 } from "file64";
 
 export const useCollectionActions = (dispatch) => {
   const [selectedImage, setSelectedImage] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const collections = useSelector((state) => state.collections.collections);
 
@@ -44,9 +42,6 @@ export const useCollectionActions = (dispatch) => {
   };
 
   const handleDeleteClick = async (_id) => {
-    console.log(_id);
-    setIsLoading(true);
-    setError(null);
     try {
       await axios.delete(`${SERVER_URL}/api/collections/delete/${_id}`);
       dispatch(
@@ -56,19 +51,14 @@ export const useCollectionActions = (dispatch) => {
       );
       console.log("Collection deleted successfully");
     } catch (error) {
-      setError(error);
       console.error("Error deleting collection:", error);
     } finally {
-      setIsLoading(false);
     }
   };
 
   return {
-    collections,
     handleSaveClick,
     handleDeleteClick,
-    isLoading,
-    error,
     selectedImage,
     setSelectedImage,
   };

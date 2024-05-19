@@ -106,24 +106,32 @@ export const updateCollection = async (req, res) => {
   }
 };
 
-export const deleteCollection = async (req, res) => {
-  const { id } = req.params;
+export const deleteCollections = async (req, res) => {
+  const { collectionsIds } = req.body;
 
   try {
-    await Item.deleteMany({ collectionId: id });
+    if (!collectionsIds || collectionsIds.length === 0) {
+      return res.status(400).json({ message: "No collection IDs provided" });
+    }
 
-    const deletedCollection = await Collection.findByIdAndDelete(id);
+    for (const collectionId of collectionsIds) {
+      await Item.deleteMany({ collectionId });
 
-    if (!deletedCollection) {
-      return res.status(404).json({ message: "Collection not found" });
+      const deletedCollections = await Collection.deleteMany({
+        _id: { $in: collectionsIds },
+      });
+
+      if (!deletedCollections) {
+        console.log(`Collection with ID ${collectionId} not found`);
+      }
     }
 
     return res.status(200).json({
       message:
-        "All items of the collection and the collection itself deleted successfully",
+        "All items in the collections and the collections themselves were deleted successfully",
     });
   } catch (error) {
-    console.error("Error deleting items and collection:", error);
+    console.error("Error deleting items and collections:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };

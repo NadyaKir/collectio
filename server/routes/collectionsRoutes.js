@@ -2,7 +2,7 @@ import express from "express";
 import {
   getAllCollections,
   addCollection,
-  deleteCollection,
+  deleteCollections,
   updateCollection,
   getCollectionsByUser,
   getTopCollections,
@@ -15,6 +15,6 @@ collectionRoute.get("/top", getTopCollections);
 collectionRoute.get("/:userId", getCollectionsByUser);
 collectionRoute.post("/addCollection", addCollection);
 collectionRoute.put("/update/:id", updateCollection);
-collectionRoute.delete("/delete/:id", deleteCollection);
+collectionRoute.delete("/delete", deleteCollections);
 
 export default collectionRoute;
