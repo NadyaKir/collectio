@@ -14,6 +14,22 @@ export const getAllCollections = async (_, res) => {
   }
 };
 
+export const getCollection = async (req, res) => {
+  try {
+    const collectionId = req.params.collectionId;
+
+    const collection = await Collection.findById(collectionId);
+
+    if (!collection) {
+      return res.status(404).json({ message: "Collection not found" });
+    }
+
+    res.json(collection);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 export const getCollectionsByUser = async (req, res) => {
   try {
     const userId = req.params.userId;

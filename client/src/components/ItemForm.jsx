@@ -13,13 +13,10 @@ const ItemForm = () => {
   const { collectionId } = useParams();
   const navigate = useNavigate();
 
-  console.log(tags);
   const initialValues = {
     title: "",
     tag: "",
   };
-
-  console.log(initialValues);
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     console.log(values);

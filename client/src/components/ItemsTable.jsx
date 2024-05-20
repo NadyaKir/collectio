@@ -228,10 +228,7 @@ export default function ItemsTable() {
           </table>
         </div>
         {isLoading && items.length === 0 && (
-          <div
-            div
-            className="flex flex-1 h-full justify-center items-center text-gray-500"
-          >
+          <div className="flex flex-1 h-full justify-center items-center text-gray-500">
             <Spinner />
           </div>
         )}
