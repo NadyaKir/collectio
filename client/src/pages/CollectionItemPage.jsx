@@ -24,5 +24,9 @@ export default function CollectionItemPage() {
     fetchItem();
   }, []);
 
-  return <div>{<ItemCard item={item} />}</div>;
+  return (
+    <div>
+      <ItemCard item={item} />
+    </div>
+  );
 }

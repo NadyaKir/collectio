@@ -38,6 +38,48 @@ export const addItem = async (req, res) => {
   }
 };
 
+export const updateItem = async (req, res) => {
+  const { id } = req.params;
+  const { title, tags } = req.body;
+
+  try {
+    const item = await Item.findById(id);
+
+    if (!item) {
+      return res.status(404).json({ message: "Item not found" });
+    }
+
+    if (title) {
+      item.title = title;
+    }
+
+    if (tags && Array.isArray(tags)) {
+      for (const tag of tags) {
+        const existingTag = item.tags.find(
+          (itemTag) => itemTag.name === tag.name
+        );
+
+        if (!existingTag) {
+          let newTag = await Tag.findOne({ name: tag.name });
+
+          if (!newTag) {
+            newTag = new Tag({ name: tag.name });
+            await newTag.save();
+          }
+
+          item.tags.push(newTag);
+        }
+      }
+    }
+
+    await item.save();
+
+    res.json(item);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 export const getAllLastItems = async (req, res) => {
   try {
     const items = await Item.find()

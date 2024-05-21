@@ -6,13 +6,13 @@ import {
   updateCollection,
   getCollectionsByUser,
   getTopCollections,
-  getCollection,
+  getCollectionById,
 } from "../controllers/collectionsController.js";
 
 const collectionRoute = express.Router();
 
 collectionRoute.get("/", getAllCollections);
-collectionRoute.get("/collection/:collectionId", getCollection);
+collectionRoute.get("/collection/:collectionId", getCollectionById);
 collectionRoute.get("/top", getTopCollections);
 collectionRoute.get("/:userId", getCollectionsByUser);
 collectionRoute.post("/addCollection", addCollection);

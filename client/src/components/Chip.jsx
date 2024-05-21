@@ -1,13 +1,20 @@
 import React from "react";
 
-export default function Chip({ title, marginRight, dismissible, onClick }) {
+export default function Chip({
+  title,
+  marginRight,
+  dismissible,
+  onClick,
+  chipAction,
+}) {
   const handleClick = (e) => {
     e.stopPropagation();
+    chipAction();
   };
 
   return (
     <div
-      className={`relative grid select-none items-center whitespace-nowrap rounded-xl border border-gray-300 bg-gray-100 hover:border-gray-500 py-1.5 px-3 font-sans text-xs uppercase text-black ${marginRight} mt-4`}
+      className={`relative grid select-none items-center whitespace-nowrap rounded-xl border border-gray-300 bg-gray-100 hover:border-gray-500 py-1.5 px-3 font-sans text-xs uppercase text-black ${marginRight}`}
       onClick={handleClick}
     >
       <span className={`${dismissible ? "mr-5" : "mr-0"} overflow-auto`}>
@@ -17,7 +24,10 @@ export default function Chip({ title, marginRight, dismissible, onClick }) {
         <button
           className="absolute top-2/4 right-1 mx-px h-5 max-h-[32px] w-5 max-w-[32px] -translate-y-2/4 select-none rounded-md text-center align-middle font-sans text-xs font-medium uppercase text-black transition-all hover:bg-white/10 active:bg-white/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
           type="button"
-          onClick={onClick}
+          onClick={(e) => {
+            e.stopPropagation();
+            onClick();
+          }}
         >
           <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
             <svg

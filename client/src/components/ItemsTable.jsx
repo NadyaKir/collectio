@@ -18,7 +18,6 @@ import Spinner from "../components/Spinner";
 export default function ItemsTable() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
-  const [editingItems, setEditingItems] = useState([]);
   const navigate = useNavigate();
 
   const { collectionId } = useParams();
@@ -50,11 +49,7 @@ export default function ItemsTable() {
   };
 
   const handleEditItem = (itemId) => {
-    if (editingItems.includes(itemId)) {
-      setEditingItems(editingItems.filter((id) => id !== itemId));
-    } else {
-      setEditingItems([...editingItems, itemId]);
-    }
+    navigate(`/collections/${collectionId}/items/update/${itemId}`);
   };
 
   const handleRowClick = (itemId) => {
@@ -134,11 +129,7 @@ export default function ItemsTable() {
               {items.map((item) => (
                 <tr
                   key={item._id}
-                  className={`text-left ${
-                    editingItems.includes(item._id)
-                      ? ""
-                      : "hover:bg-gray-100 cursor-pointer h-16"
-                  }`}
+                  className="text-left hover:bg-gray-100 cursor-pointer h-16"
                   onClick={() => handleRowClick(item._id)}
                 >
                   <td className="px-4 py-2 whitespace-nowrap">
@@ -157,70 +148,43 @@ export default function ItemsTable() {
                   </td>
 
                   <td className="px-4 py-2 whitespace-nowrap w-1/4">
-                    {editingItems.includes(item._id) ? (
-                      <input
-                        type="text"
-                        defaultValue={item.title}
-                        onClick={(e) => e.stopPropagation()}
-                      />
-                    ) : (
-                      item.title
-                    )}
+                    {item.title}
                   </td>
-                  <td className="px-4 py-2 whitespace-nowrap w-1/4">
+                  <td className="text-center px-4 py-2 whitespace-nowrap w-1/4">
                     <div className="flex items-center">
-                      {item.tags.map((tag, index) => (
-                        <Chip
-                          key={tag._id}
-                          title={tag.name}
-                          marginRight={
-                            index === item.tags.length - 1 ? "mr-0" : "mr-2"
-                          }
-                          dismissible={false}
-                        />
-                      ))}
+                      {item.tags.length > 0 ? (
+                        item.tags.map((tag, index) => (
+                          <Chip
+                            key={tag._id}
+                            title={tag.name}
+                            marginRight={
+                              index === item.tags.length - 1 ? "mr-0" : "mr-2"
+                            }
+                            dismissible={false}
+                          />
+                        ))
+                      ) : (
+                        <span className="w-full">No tags</span>
+                      )}
                     </div>
                   </td>
                   <td className="text-center px-4 py-2 whitespace-nowrap w-1/4">
-                    {editingItems.includes(item._id) ? (
-                      <div>
-                        <button
-                          onClick={(e) => {
-                            handleEditItem(item._id);
-                            e.stopPropagation();
-                          }}
-                        >
-                          <SaveOutlined className="text-2xl mr-4 text-teal-600 hover:text-teal-700" />
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            handleEditItem(item._id);
-                            e.stopPropagation();
-                          }}
-                        >
-                          <CloseOutlined className="text-2xl text-teal-600 hover:text-teal-700" />
-                        </button>
-                      </div>
-                    ) : (
-                      <>
-                        <button
-                          onClick={(e) => {
-                            handleEditItem(item._id);
-                            e.stopPropagation();
-                          }}
-                        >
-                          <EditOutlined className="text-2xl mr-4 text-gray-500 hover:text-gray-700" />
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            handleDeleteItems(item._id);
-                            e.stopPropagation();
-                          }}
-                        >
-                          <DeleteOutlined className="text-2xl text-gray-500 hover:text-gray-700" />
-                        </button>
-                      </>
-                    )}
+                    <button
+                      onClick={(e) => {
+                        handleEditItem(item._id);
+                        e.stopPropagation();
+                      }}
+                    >
+                      <EditOutlined className="text-2xl mr-4 text-gray-500 hover:text-gray-700" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        handleDeleteItems(item._id);
+                        e.stopPropagation();
+                      }}
+                    >
+                      <DeleteOutlined className="text-2xl text-gray-500 hover:text-gray-700" />
+                    </button>
                   </td>
                 </tr>
               ))}

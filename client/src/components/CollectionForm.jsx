@@ -24,24 +24,17 @@ import MDEditor from "@uiw/react-md-editor";
 const CollectionForm = ({ initialValues }) => {
   const { userId } = getTokenData();
   const { collectionId } = useParams();
-
+  const categories = useSelector((state) => state.collections.categories);
   const [selectedImage, setSelectedImage] = useState(
     initialValues.image ? initialValues.image : defaultImage
   );
+  const navigate = useNavigate();
 
   useEffect(() => {
     setSelectedImage(initialValues.image);
   }, [initialValues]);
 
-  const categories = useSelector((state) => state.collections.categories);
-
-  const navigate = useNavigate();
-
-  console.log("CF", initialValues);
-
   const handleSubmit = async (values, { setSubmitting }) => {
-    console.log(values.image);
-
     const image64 =
       values.image !== null
         ? values.image instanceof File
@@ -51,7 +44,6 @@ const CollectionForm = ({ initialValues }) => {
           : ""
         : "";
 
-    console.log("values", values);
     const updatedValuesWithBase64Image = {
       ...values,
       image: image64,
@@ -247,7 +239,7 @@ const CollectionForm = ({ initialValues }) => {
                     : "Update collection"
                   : isSubmitting
                   ? "Adding..."
-                  : "Add Collection"}
+                  : "Add collection"}
               </button>
             </Form>
           </div>

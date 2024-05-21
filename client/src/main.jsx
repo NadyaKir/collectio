@@ -17,10 +17,11 @@ import HomePage from "./pages/HomePage.jsx";
 import AdminPage from "./pages/AdminPage.jsx";
 import CollectionsPage from "./pages/CollectionsPage.jsx";
 import CollectionPage from "./pages/CollectionPage.jsx";
-import NewCollectionPage from "./pages/NewCollectionPage.jsx";
+import AddCollectionPage from "./pages/AddCollectionPage.jsx";
 import CollectionItemPage from "./pages/CollectionItemPage.jsx";
-import ItemForm from "./components/ItemForm.jsx";
 import UpdateCollectionPage from "./pages/UpdateCollectionPage.jsx";
+import UpdateItemPage from "./pages/UpdateItemPage.jsx";
+import AddItemPage from "./pages/AddItemPage.jsx";
 
 const appRoutes = (
   <Route path="/" element={<App />}>
@@ -29,7 +30,7 @@ const appRoutes = (
       <Route path="/users" element={<AdminPage />} />
     </Route>
     <Route path="/collections" element={<CollectionsPage />} />
-    <Route path="/collections/add" element={<NewCollectionPage />} />
+    <Route path="/collections/add" element={<AddCollectionPage />} />
     <Route
       path="/collections/update/:collectionId"
       element={<UpdateCollectionPage />}
@@ -44,7 +45,11 @@ const appRoutes = (
     />
     <Route
       path="/collections/:collectionId/items/addItem"
-      element={<ItemForm />}
+      element={<AddItemPage />}
+    />
+    <Route
+      path="/collections/:collectionId/items/update/:itemId"
+      element={<UpdateItemPage />}
     />
   </Route>
 );

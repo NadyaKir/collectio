@@ -14,7 +14,7 @@ export const getAllCollections = async (_, res) => {
   }
 };
 
-export const getCollection = async (req, res) => {
+export const getCollectionById = async (req, res) => {
   try {
     const collectionId = req.params.collectionId;
 
