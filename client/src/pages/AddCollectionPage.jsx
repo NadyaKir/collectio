@@ -3,7 +3,7 @@ import CollectionForm from "../components/CollectionForm";
 import { useFetchCollection } from "../hooks/useFetchCollection";
 
 export default function NewCollectionPage() {
-  const { initialValues } = useFetchCollection();
+  const initialValues = useFetchCollection();
 
   return (
     <>

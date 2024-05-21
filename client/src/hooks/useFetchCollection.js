@@ -21,10 +21,10 @@ export const useFetchCollection = (collectionId) => {
           const collectionData = response.data;
 
           setInitialValues({
-            title: collectionData.title || "",
-            description: collectionData.description || "",
-            category: collectionData.category || "",
-            image: collectionData.image || null,
+            title: collectionData.title,
+            description: collectionData.description,
+            category: collectionData.category,
+            image: collectionData.image,
           });
         }
       } catch (error) {
@@ -34,6 +34,6 @@ export const useFetchCollection = (collectionId) => {
 
     fetchCollection();
   }, [collectionId]);
-
+  console.log(initialValues);
   return initialValues;
 };
