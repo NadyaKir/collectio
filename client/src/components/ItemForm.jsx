@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Formik, Form, Field } from "formik";
+import * as Yup from "yup";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Input } from "antd";
 import axios from "axios";
 import { SERVER_URL } from "../utils/config";
@@ -94,13 +95,26 @@ const ItemForm = ({ initialValues, tags, setTags }) => {
     }
   };
 
+  const validationSchema = Yup.object().shape({
+    title: Yup.string().required("Title is required"),
+  });
+
   return (
     <div className="flex justify-center items-center h-full">
       <div className="w-full">
-        <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
           {({ values, isSubmitting, setFieldValue }) => (
             <Form className="flex flex-col items-center">
               <div className="mb-4 w-full  max-w-md">
+                <ErrorMessage
+                  name="title"
+                  component="div"
+                  className="text-red-500"
+                />
                 <Field
                   id="title"
                   name="title"
