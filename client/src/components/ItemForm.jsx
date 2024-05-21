@@ -6,12 +6,18 @@ import { SERVER_URL } from "../utils/config";
 import { useNavigate, useParams } from "react-router-dom";
 import getTokenData from "../utils/getTokenData";
 import Chip from "./Chip";
+import { useFetchTags } from "../hooks/useFetchTags";
+import { useSelector } from "react-redux";
 
 const ItemForm = ({ initialValues, tags, setTags }) => {
   const [editingTagIndex, setEditingTagIndex] = useState(null);
   const { userId } = getTokenData();
   const { collectionId, itemId } = useParams();
   const navigate = useNavigate();
+
+  useFetchTags();
+
+  const availableTags = useSelector((state) => state.tags.tags);
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     if (itemId) {
@@ -59,9 +65,17 @@ const ItemForm = ({ initialValues, tags, setTags }) => {
     setFieldValue("tags", tags[index].name);
   };
 
+  const handleTagClick = (tag) => {
+    console.log("tag");
+    if (!tags.some((t) => t.name === tag.name)) {
+      setTags([...tags, tag]);
+    }
+  };
+
   const handleKeyDown = (e, setFieldValue) => {
     if (editingTagIndex !== null) {
       if (e.key === " ") {
+        e.preventDefault();
         const updatedTags = [...tags];
         updatedTags[editingTagIndex].name = e.target.value.trim();
         setTags(updatedTags);
@@ -70,6 +84,7 @@ const ItemForm = ({ initialValues, tags, setTags }) => {
       }
     } else {
       if (e.key === " ") {
+        e.preventDefault();
         const newTag = e.target.value.trim();
         if (newTag !== "") {
           setTags([...tags, { _id: null, name: newTag }]);
@@ -98,21 +113,45 @@ const ItemForm = ({ initialValues, tags, setTags }) => {
               <div className="mb-4 w-full  max-w-md">
                 <Field name="tags">
                   {({ field }) => (
-                    <Input
-                      {...field}
-                      onChange={(e) => setFieldValue("tags", e.target.value)}
-                      onKeyDown={(e) => handleKeyDown(e, setFieldValue)}
-                      size="medium"
-                      autoFocus
-                      placeholder={
-                        itemId
-                          ? "Enter <Space> to add tag or click on one to change"
-                          : "Enter <Space> to add tag"
-                      }
-                    />
+                    <>
+                      <Input
+                        {...field}
+                        onChange={(e) => {
+                          const selectedTag = availableTags.find(
+                            (tag) => tag.name === e.target.value
+                          );
+                          if (selectedTag) {
+                            handleTagClick(selectedTag);
+                            setFieldValue("tags", "");
+                            return;
+                          }
+                          setFieldValue("tags", e.target.value);
+                        }}
+                        onKeyDown={(e) => handleKeyDown(e, setFieldValue)}
+                        size="medium"
+                        autoFocus
+                        placeholder={
+                          itemId
+                            ? "Enter <Space> to add tag or click on one to change"
+                            : "Enter <Space> to add tag"
+                        }
+                        autoComplete="off"
+                        list="tags"
+                      />
+                      <datalist id="tags">
+                        {availableTags.map((tag) => (
+                          <option
+                            key={tag._id}
+                            value={tag.name}
+                            onClick={() => handleTagClick(tag, setFieldValue)}
+                          />
+                        ))}
+                      </datalist>
+                    </>
                   )}
                 </Field>
               </div>
+
               <div className="flex flex-wrap w-full max-h-46  max-w-lg overflow-auto mb-6">
                 {tags.map((tag, index) => (
                   <Chip

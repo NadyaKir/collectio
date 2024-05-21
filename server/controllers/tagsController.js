@@ -2,7 +2,7 @@ import Tag from "../models/tagSchema.js";
 
 export const getAllTags = async (req, res) => {
   try {
-    const tags = await Tag.find();
+    const tags = await Tag.find().sort({ _id: -1 });
 
     res.json(tags);
   } catch (error) {

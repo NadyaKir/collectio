@@ -1,29 +1,11 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { SERVER_URL } from "../utils/config";
+import { useSelector } from "react-redux";
 import { TagCloud } from "react-tagcloud";
+import { useFetchTags } from "../hooks/useFetchTags";
 
 export default function TagsCloud() {
-  const [tags, setTags] = useState([]);
+  useFetchTags();
 
-  useEffect(() => {
-    const fetchTags = async () => {
-      try {
-        const response = await axios.get(`${SERVER_URL}/api/tags`);
-
-        const tags = response.data;
-        const reversedTags = [...tags].reverse();
-
-        setTags(reversedTags);
-        return tags;
-      } catch (error) {
-        console.error("Fetch tags error:", error);
-        throw error;
-      }
-    };
-
-    fetchTags();
-  }, []);
+  const tags = useSelector((state) => state.tags.tags);
 
   const modifiedTags = tags.map((tag) => ({
     value: tag.name,
