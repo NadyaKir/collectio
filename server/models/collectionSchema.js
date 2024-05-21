@@ -1,6 +1,17 @@
 import mongoose from "mongoose";
 
-const enumCategories = ["Books", "Signs", "Silverware", "Other"];
+const enumCategories = [
+  "Chronological collection",
+  "General collection",
+  "Documentary collection",
+  "Research collection",
+  "Thematic collection",
+  "Postal history collection",
+  "Airmail collection",
+  "Postmark collection",
+  "Specialized collection",
+  "Other",
+];
 
 const collectionSchema = new mongoose.Schema({
   _id: {
