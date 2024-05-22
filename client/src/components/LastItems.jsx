@@ -32,17 +32,28 @@ export default function LastItems() {
           className="flex flex-col justify-between h-full border p-4 rounded-lg"
         >
           <h2 className="text-xl font-bold">
-            <Link className=" hover:text-teal-600">{item.title}</Link>
+            <Link
+              to={`/collections/${item.collectionId._id}/items/${item._id}?userId=${item.createdBy._id}`}
+              className=" hover:text-teal-600"
+            >
+              {item.title}
+            </Link>
           </h2>
           <div>
             Collection:{" "}
-            <Link className=" hover:text-teal-600">
+            <Link
+              to={`/collections/${item.collectionId._id}/items?userId=${item.createdBy._id}`}
+              className=" hover:text-teal-600"
+            >
               {item.collectionId.title}
             </Link>
           </div>
           <div>
             Created by:{" "}
-            <Link className="text-lg hover:text-teal-600">
+            <Link
+              to={`/collections?userId=${item.createdBy._id}&&collectionId=${item.collectionId._id}`}
+              className="text-lg hover:text-teal-600"
+            >
               {item.createdBy.username}
             </Link>
           </div>

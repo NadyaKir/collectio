@@ -18,6 +18,8 @@ const itemSchema = new mongoose.Schema({
   likes: { type: Number, default: 0 },
 });
 
+itemSchema.index({ title: "text" });
+
 const Item = mongoose.model("Item", itemSchema);
 
 export default Item;

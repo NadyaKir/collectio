@@ -31,6 +31,8 @@ const collectionSchema = new mongoose.Schema({
   items: [{ type: mongoose.Schema.Types.ObjectId, ref: "Item" }],
 });
 
+collectionSchema.index({ title: "text", description: "text" });
+
 const Collection = mongoose.model("Collection", collectionSchema);
 
 export default Collection;

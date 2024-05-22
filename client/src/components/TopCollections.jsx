@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { SERVER_URL } from "../utils/config";
@@ -55,7 +55,10 @@ export default function TopCollections() {
               </span>
             </td>
             <td className="py-2 px-1 text-center">
-              <Link className="hover:text-teal-700 cursor-pointer">
+              <Link
+                to={`/collections/${collection.collectionId}/items?userId=${collection.userId}`}
+                className="hover:text-teal-700 cursor-pointer"
+              >
                 {collection.title}
               </Link>
             </td>
@@ -63,8 +66,11 @@ export default function TopCollections() {
               {collection.numberOfItems}
             </td>
             <td className="py-2 px-1 text-center">
-              <Link className="hover:text-teal-700 cursor-pointer">
-                {collection.userName}
+              <Link
+                to={`/collections?userId=${collection.userId}&&collectionId=${collection.collectionId}`}
+                className="hover:text-teal-700 cursor-pointer"
+              >
+                {collection.username}
               </Link>
             </td>
           </tr>

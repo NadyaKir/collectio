@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, Link, useParams } from "react-router-dom";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import ToolBar from "./Toolbar/ToolBar";
 import ToolButton from "./Toolbar/ToolButton";
@@ -7,20 +7,27 @@ import { useEffect, useState } from "react";
 import { useCollectionActions } from "../hooks/useCollectionActions";
 import axios from "axios";
 import { SERVER_URL } from "../utils/config";
-import { setCollections } from "../store/collectionsSlice";
 import Spinner from "./Spinner";
 import { useDispatch } from "react-redux";
 import { useCollections } from "../hooks/useCollections";
+import getTokenData from "../utils/getTokenData";
 
-export default function CollectionCard() {
+export default function CollectionsTable() {
   const navigate = useNavigate();
   const [selectedCollections, setSelectedCollections] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const dispatch = useDispatch();
+  const location = useLocation();
+  const { search } = location;
+  const queryParams = new URLSearchParams(search);
+  const collectionUserId = queryParams.get("userId");
+  const { isAdmin, userId } = getTokenData();
+  const { collectionId } = useParams();
+  console.log(isAdmin, userId, collectionUserId);
 
   const { selectedImage, setSelectedImage } = useCollectionActions(dispatch);
   const { collections, fetchUserCollections, isLoading, error } =
-    useCollections();
+    useCollections(collectionUserId);
 
   useEffect(() => {
     if (
@@ -57,7 +64,7 @@ export default function CollectionCard() {
   };
 
   const handleRowClick = (collectionId) => {
-    navigate(`/collections/${collectionId}/items`);
+    navigate(`/collections/${collectionId}/items?userId=${collectionUserId}`);
   };
 
   const handleDeleteCollections = async (collectionId) => {
@@ -80,32 +87,38 @@ export default function CollectionCard() {
     }
   };
 
+  const isHaveRightToChange =
+    userId && (isAdmin || (userId === collectionUserId && !isAdmin));
+
   return (
     <>
-      <ToolBar>
-        <ToolButton
-          title="Add"
-          handleAction={() => navigate("/collections/add")}
-        >
-          Add
-        </ToolButton>
-        <ToolButton
-          handleAction={() =>
-            handleDeleteCollections(
-              selectedCollections.length > 0 ? undefined : selectedCollections
-            )
-          }
-        >
-          Delete all
-        </ToolButton>
-      </ToolBar>
+      {isHaveRightToChange && (
+        <ToolBar>
+          <ToolButton
+            title="Add"
+            handleAction={() => navigate("/collections/add")}
+          >
+            Add
+          </ToolButton>
+          <ToolButton
+            handleAction={() =>
+              handleDeleteCollections(
+                selectedCollections.length > 0 ? undefined : selectedCollections
+              )
+            }
+          >
+            Delete all
+          </ToolButton>
+        </ToolBar>
+      )}
+
       <div className="flex flex-col h-full overflow-x-auto relative border rounded-md">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y border-collapse border-b divide-gray-200">
             <thead className="bg-gray-50">
               <tr className="h-12 text-center divide-gray-200">
                 <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {collections.length > 0 && (
+                  {collections.length > 0 && isHaveRightToChange && (
                     <input
                       type="checkbox"
                       className="form-checkbox h-5 w-5"
@@ -130,7 +143,7 @@ export default function CollectionCard() {
                   Description
                 </th>
                 <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
+                  {isHaveRightToChange ? "Actions" : null}
                 </th>
               </tr>
             </thead>
@@ -142,16 +155,20 @@ export default function CollectionCard() {
                   onClick={() => handleRowClick(collection._id)}
                 >
                   <td className="px-4 whitespace-nowrap">
-                    <input
-                      type="checkbox"
-                      className="form-checkbox h-5 w-5"
-                      checked={selectedCollections.includes(collection._id)}
-                      onChange={() => handleSelectCollection(collection._id)}
-                      onClick={(e) => e.stopPropagation()}
-                    />
+                    {isHaveRightToChange && (
+                      <input
+                        type="checkbox"
+                        className="form-checkbox h-5 w-5"
+                        checked={selectedCollections.includes(collection._id)}
+                        onChange={() => handleSelectCollection(collection._id)}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                    )}
                   </td>
                   <td className="px-4 whitespace-nowrap w-1/8">
-                    {collection._id}
+                    <Link to={`/collections/${collectionId}/`}>
+                      {collection._id}
+                    </Link>
                   </td>
                   <td className="px-4 whitespace-nowrap w-1/4">
                     <img
@@ -184,24 +201,26 @@ export default function CollectionCard() {
                     </ReactMarkdown>
                   </td>
                   <td className="text-center px-4 whitespace-nowrap w-1/4">
-                    <>
-                      <button
-                        onClick={(e) => {
-                          handleEditCollection(collection._id);
-                          e.stopPropagation();
-                        }}
-                      >
-                        <EditOutlined className="text-2xl mr-4 text-gray-500 hover:text-gray-700" />
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteCollections(collection._id);
-                        }}
-                      >
-                        <DeleteOutlined className="text-2xl text-gray-500 hover:text-gray-700" />
-                      </button>
-                    </>
+                    {isHaveRightToChange && (
+                      <>
+                        <button
+                          onClick={(e) => {
+                            handleEditCollection(collection._id);
+                            e.stopPropagation();
+                          }}
+                        >
+                          <EditOutlined className="text-2xl mr-4 text-gray-500 hover:text-gray-700" />
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteCollections(collection._id);
+                          }}
+                        >
+                          <DeleteOutlined className="text-2xl text-gray-500 hover:text-gray-700" />
+                        </button>
+                      </>
+                    )}
                   </td>
                 </tr>
               ))}

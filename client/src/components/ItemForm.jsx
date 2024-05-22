@@ -4,7 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Input } from "antd";
 import axios from "axios";
 import { SERVER_URL } from "../utils/config";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import getTokenData from "../utils/getTokenData";
 import Chip from "./Chip";
 import { useFetchTags } from "../hooks/useFetchTags";
@@ -14,6 +14,7 @@ const ItemForm = ({ initialValues, tags, setTags }) => {
   const [editingTagIndex, setEditingTagIndex] = useState(null);
   const { userId } = getTokenData();
   const { collectionId, itemId } = useParams();
+  console.log(collectionId, itemId);
   const navigate = useNavigate();
 
   useFetchTags();

@@ -56,6 +56,7 @@ export const getTopCollections = async (_, res) => {
       {
         $addFields: {
           numberOfItems: { $size: "$itemsData" },
+          collectionId: "$_id",
         },
       },
       {
@@ -73,7 +74,8 @@ export const getTopCollections = async (_, res) => {
       },
       {
         $addFields: {
-          userName: { $arrayElemAt: ["$userData.username", 0] },
+          userId: { $arrayElemAt: ["$userData._id", 0] },
+          username: { $arrayElemAt: ["$userData.username", 0] },
         },
       },
       {
@@ -81,7 +83,9 @@ export const getTopCollections = async (_, res) => {
           _id: 1,
           title: 1,
           numberOfItems: 1,
-          userName: 1,
+          userId: 1,
+          username: 1,
+          collectionId: 1,
         },
       },
       { $sort: { numberOfItems: -1 } },

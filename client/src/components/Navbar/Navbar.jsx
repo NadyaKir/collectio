@@ -8,7 +8,7 @@ import getTokenData from "../../utils/getTokenData";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated, signout } = useAuth();
-  const { isAdmin } = getTokenData();
+  const { isAdmin, userId } = getTokenData();
 
   const handleIsOpen = () => {
     setIsOpen(!isOpen);
@@ -70,7 +70,7 @@ export default function Navbar() {
               )}
               {isAuthenticated && (
                 <Link
-                  to="/collections"
+                  to={`/collections?userId=${userId}`}
                   className="block my-3 lg:my-0 lg:inline-block rounded hover:text-teal-700 lg:mr-3"
                 >
                   My collections
