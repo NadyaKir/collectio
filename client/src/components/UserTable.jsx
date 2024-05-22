@@ -13,14 +13,27 @@ import Spinner from "../components/Spinner";
 export default function UserTable() {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
-  const { signin, signout } = useAuth();
+  const { signout } = useAuth();
 
   const { userId } = getTokenData();
   const { users, setUsers, updateUserList, fetchUsers, isLoading, error } =
     useUsers();
 
+  useEffect(() => {
+    if (selectedUsers.length === users.length && users.length !== 0) {
+      setSelectAll(true);
+    } else {
+      setSelectAll(false);
+    }
+  }, [selectedUsers, users]);
+
   const handleBlockUsers = async () => {
     try {
+      if (selectedUsers.includes(userId)) {
+        await signout();
+        return;
+      }
+
       await axios.put(`${SERVER_URL}/api/users/block`, {
         userIds: selectedUsers,
       });
@@ -63,14 +76,6 @@ export default function UserTable() {
     }
   };
 
-  useEffect(() => {
-    if (selectedUsers.length === users.length && users.length !== 0) {
-      setSelectAll(true);
-    } else {
-      setSelectAll(false);
-    }
-  }, [selectedUsers, users]);
-
   const handleSelectAll = () => {
     setSelectAll(!selectAll);
     if (!selectAll) {
@@ -97,6 +102,7 @@ export default function UserTable() {
 
   const handleChangeRole = async (userId, role) => {
     const isAdmin = role === "admin";
+    const currentUserId = getTokenData().userId;
 
     try {
       const updatedUsers = users.map((user) => {
@@ -112,17 +118,8 @@ export default function UserTable() {
         isAdmin,
       });
 
-      const currentUser = users.find((user) => user._id === userId);
-
-      const newToken = await signin({
-        email: currentUser.email,
-        password: currentUser.password,
-        lastLoginDate: currentUser.lastLoginDate,
-      });
-
-      if (userId === currentUser._id && !isAdmin) {
-        signout();
-        return;
+      if (userId === currentUserId && !isAdmin) {
+        await signout();
       }
     } catch (error) {
       const prevUserRole = users.find((user) => user._id === userId).isAdmin;
