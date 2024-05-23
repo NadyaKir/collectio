@@ -18,13 +18,13 @@ const SearchPage = () => {
 
   useEffect(() => {
     const handleSearch = async () => {
-      setIsLoading(true); // Устанавливаем состояние загрузки в true перед началом запроса
+      setIsLoading(true);
       try {
         const response = await axios.get(
           `${SERVER_URL}/api/search?q=${searchQuery}`
         );
         setSearchResults(response.data);
-        setIsLoading(false); // Устанавливаем состояние загрузки в false после получения данных
+        setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
         console.error("Error during search:", error);
@@ -41,7 +41,7 @@ const SearchPage = () => {
         Search results for <strong>"{searchQuery}"</strong>
       </h2>
       {isLoading && (
-        <div className="flex justify-center items-center h-full">
+        <div className="flex flex-1 justify-center items-center h-full">
           <Spinner />
         </div>
       )}
@@ -63,7 +63,7 @@ const SearchPage = () => {
       {!isLoading &&
       searchResults.collections.length === 0 &&
       searchResults.items.length === 0 ? (
-        <div className="flex justify-center items-center h-full text-gray-500">
+        <div className="flex flex-1 justify-center items-center h-full text-gray-500">
           <p>No collections or items found.</p>
         </div>
       ) : (

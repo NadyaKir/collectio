@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"; // Импортируем Link из rea
 import { setSearchQuery } from "../store/searchSlice";
 import { TagCloud } from "react-tagcloud";
 import { useFetchTags } from "../hooks/useFetchTags";
+import Chip from "./Chip";
 
 export default function TagsCloud() {
   const dispatch = useDispatch();
@@ -15,43 +16,18 @@ export default function TagsCloud() {
     dispatch(setSearchQuery(""));
   };
 
-  const modifiedTags = tags.map((tag) => ({
-    value: tag.name,
-    count: Math.floor(Math.random() * 11) + 20,
-    ...tag,
-  }));
-
-  const customRenderer = (tag, size, color) => (
-    <Link key={tag.value} to={`/search?searchQuery=${tag.value}`}>
-      <span
-        style={{
-          animation: "blinker 3s linear infinite",
-          animationDelay: `${Math.random() * 2}s`,
-          fontSize: `${size / 2}em`,
-          border: `1px solid ${color}`,
-          borderRadius: "0.6em",
-          padding: "0.1rem 1rem",
-          margin: "0.1rem 0.3rem",
-          display: "inline-block",
-          color: "black",
-          cursor: "pointer",
-        }}
-      >
-        #{tag.value}
-      </span>
+  const customRenderer = (tag) => (
+    <Link key={tag._id} to={`/search?searchQuery=${tag.value}`}>
+      <Chip title={tag.name} marginRight="mr-2" />
     </Link>
   );
 
   return (
-    <div className="h-40 flex flex-1 overflow-y-scroll">
+    <div className="overflow-y-scroll">
       <TagCloud
-        tags={modifiedTags}
+        tags={tags}
         minSize={1}
         maxSize={3}
-        colorOptions={{
-          luminosity: "dark",
-          hue: "blue",
-        }}
         renderer={customRenderer}
         onClick={(tag) => handleTagClick(tag)}
       />

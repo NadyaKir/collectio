@@ -4,7 +4,7 @@ import TagsCloud from "../components/TagsCloud";
 
 export default function HomePage() {
   return (
-    <div className="p-4">
+    <>
       <div className="mb-8">
         <h2 className="text-xl font-bold mb-2">Last items</h2>
         <LastItems />
@@ -13,12 +13,10 @@ export default function HomePage() {
         <h2 className="text-xl font-bold mb-2">Top biggest collections</h2>
         <TopCollections />
       </div>
-      <div>
+      <div className="items-center">
         <h2 className="text-xl font-bold mb-2">Tags cloud</h2>
-        <div className="flex flex-wrap items-center">
-          <TagsCloud />
-        </div>
+        <TagsCloud />
       </div>
-    </div>
+    </>
   );
 }

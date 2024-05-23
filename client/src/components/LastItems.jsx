@@ -25,11 +25,11 @@ export default function LastItems() {
   }, []);
 
   return (
-    <div className="grid  xs:grid-col-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4">
+    <div className="grid xs:grid-col-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-1">
       {lastItems.map((item) => (
         <div
           key={item._id}
-          className="flex flex-col justify-between h-full border p-4 rounded-lg"
+          className="flex flex-col justify-between h-full border p-2 rounded-lg"
         >
           <h2 className="text-xl font-bold">
             <Link

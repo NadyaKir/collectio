@@ -14,7 +14,7 @@ export default function Chip({
 
   return (
     <div
-      className={`relative grid select-none items-center whitespace-nowrap rounded-xl border border-gray-300 bg-gray-100 hover:border-gray-500 py-1.5 px-3 font-sans text-xs uppercase text-black ${marginRight}`}
+      className={`relative inline-block select-none items-center whitespace-nowrap rounded-xl border border-gray-300 bg-gray-100 hover:border-gray-500 py-1.5 px-3 font-sans text-xs uppercase text-black ${marginRight} mb-2`}
       onClick={handleClick}
     >
       <span className={`${dismissible ? "mr-5" : "mr-0"} overflow-auto`}>
