@@ -10,11 +10,9 @@ export const search = async (req, res) => {
       $text: { $search: searchText },
     });
 
-    // Поиск тега по имени
     const tag = await Tag.findOne({ name: searchText });
 
     if (tag) {
-      // Если тег найден, ищем элементы, связанные с этим тегом
       const itemResults = await Item.find({ tags: tag._id });
 
       const results = {
@@ -24,7 +22,6 @@ export const search = async (req, res) => {
 
       res.status(200).json(results);
     } else {
-      // Если тег не найден, продолжаем поиск элементов по тексту
       const itemResultsByText = await Item.find({
         $text: { $search: searchText },
       });
