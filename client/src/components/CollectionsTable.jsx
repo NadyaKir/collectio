@@ -241,7 +241,9 @@ export default function CollectionsTable() {
         )}
         {collections.length === 0 && !isLoading && !error && (
           <div className="flex flex-1 h-full justify-center items-center text-gray-500">
-            No collections found. Create a new collection to get started!
+            {isHaveRightToChange
+              ? "No collections found. Create a new collection to get started!"
+              : "No collections found. User has not created any collection yet"}
           </div>
         )}
       </div>
