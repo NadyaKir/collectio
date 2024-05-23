@@ -22,11 +22,7 @@ export default function TagsCloud() {
   }));
 
   const customRenderer = (tag, size, color) => (
-    <Link
-      key={tag.value}
-      to={`/search?searchQuery=${tag.value}`}
-      style={{ textDecoration: "none" }}
-    >
+    <Link key={tag.value} to={`/search?searchQuery=${tag.value}`}>
       <span
         style={{
           animation: "blinker 3s linear infinite",

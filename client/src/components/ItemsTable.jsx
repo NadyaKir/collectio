@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {
-  EditOutlined,
-  SaveOutlined,
-  CloseOutlined,
-  DeleteOutlined,
-} from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
 import ToolBar from "../components/Toolbar/ToolBar";
 import ToolButton from "../components/Toolbar/ToolButton";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
-import Link from "antd/es/typography/Link";
+import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 import { SERVER_URL } from "../utils/config";
 import Chip from "../components/Chip";
 import { useItems } from "../hooks/useItems";
@@ -84,7 +78,6 @@ export default function ItemsTable() {
     }
   };
 
-  console.log(items);
   const isHaveRightToChange =
     userId && (isAdmin || (userId === collectionUserId && !isAdmin));
 
@@ -175,14 +168,18 @@ export default function ItemsTable() {
                     <div className="flex items-center">
                       {item.tags.length > 0 ? (
                         item.tags.map((tag, index) => (
-                          <Chip
+                          <Link
                             key={tag._id}
-                            title={tag.name}
-                            marginRight={
-                              index === item.tags.length - 1 ? "mr-0" : "mr-2"
-                            }
-                            dismissible={false}
-                          />
+                            to={`/search?searchQuery=${tag.name}`}
+                          >
+                            <Chip
+                              title={tag.name}
+                              marginRight={
+                                index === item.tags.length - 1 ? "mr-0" : "mr-2"
+                              }
+                              dismissible={false}
+                            />
+                          </Link>
                         ))
                       ) : (
                         <span className="w-full">No tags</span>

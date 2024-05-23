@@ -25,7 +25,7 @@ export default function CollectionItemPage() {
   }, []);
 
   return (
-    <div>
+    <div className="flex flex-col h-full">
       <ItemCard item={item} />
     </div>
   );
