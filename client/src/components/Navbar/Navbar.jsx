@@ -21,6 +21,7 @@ export default function Navbar() {
       navigate(`/search?searchQuery=${trimmedQuery}`);
       dispatch(setSearchQuery(""));
       setIsOpen(!isOpen);
+      e.target.blur();
     }
   };
 
