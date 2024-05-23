@@ -90,7 +90,6 @@ export default function CollectionsTable() {
   const isHaveRightToChange =
     userId && (isAdmin || (userId === collectionUserId && !isAdmin));
 
-  //TODO:bug whe go from home page to collection and back to my
   return (
     <>
       {isHaveRightToChange && (

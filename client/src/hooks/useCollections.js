@@ -32,7 +32,7 @@ export const useCollections = (collectionUserId) => {
 
   useEffect(() => {
     fetchUserCollections();
-  }, []);
+  }, [collectionUserId]);
 
   return {
     collections,
