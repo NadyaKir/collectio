@@ -1,14 +1,32 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LanguageSwitcher from "./LanguageSwitcher";
 import ThemeSwitcher from "./ThemeSwitcher";
 import useAuth from "../../hooks/useAuth";
 import getTokenData from "../../utils/getTokenData";
+import { useDispatch, useSelector } from "react-redux";
+import { setSearchQuery } from "../../store/searchSlice";
 
 export default function Navbar() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const searchQuery = useSelector((state) => state.search.searchQuery);
   const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated, signout } = useAuth();
   const { isAdmin, userId } = getTokenData();
+
+  const handleSearch = (e) => {
+    if (e.key === "Enter") {
+      const trimmedQuery = searchQuery.trim();
+      navigate(`/search?searchQuery=${trimmedQuery}`);
+      dispatch(setSearchQuery(""));
+      setIsOpen(!isOpen);
+    }
+  };
+
+  const handleChange = (e) => {
+    dispatch(setSearchQuery(e.target.value));
+  };
 
   const handleIsOpen = () => {
     setIsOpen(!isOpen);
@@ -53,6 +71,9 @@ export default function Navbar() {
                 type="search"
                 name="search"
                 placeholder="Search"
+                value={searchQuery}
+                onChange={handleChange}
+                onKeyDown={handleSearch}
               />
               <button
                 type="submit"
