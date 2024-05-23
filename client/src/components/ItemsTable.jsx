@@ -105,7 +105,7 @@ export default function ItemsTable() {
         </ToolBar>
       )}
 
-      <div className="flex flex-col flex-1 h-full overflow-x-auto relative border rounded-md">
+      <div className="flex flex-col flex-1 max-h-[40rem] overflow-x-auto relative border rounded-md">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y border-collapse border-b divide-gray-200">
             <thead className="bg-gray-50">

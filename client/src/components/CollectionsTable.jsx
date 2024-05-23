@@ -90,6 +90,7 @@ export default function CollectionsTable() {
   const isHaveRightToChange =
     userId && (isAdmin || (userId === collectionUserId && !isAdmin));
 
+  //TODO:bug whe go from home page to collection and back to my
   return (
     <>
       {isHaveRightToChange && (
@@ -112,8 +113,8 @@ export default function CollectionsTable() {
         </ToolBar>
       )}
 
-      <div className="flex flex-col flex-1 h-full overflow-x-auto relative border rounded-md">
-        <div className="overflow-x-auto">
+      <div className="flex flex-col flex-1 max-h-[40rem] overflow-x-auto relative border rounded-md">
+        <div className="overflow-x-auto overflow-y-scroll ">
           <table className="min-w-full divide-y border-collapse border-b divide-gray-200">
             <thead className="bg-gray-50">
               <tr className="h-12 text-center divide-gray-200">
