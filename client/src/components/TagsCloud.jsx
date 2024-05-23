@@ -12,6 +12,7 @@ export default function TagsCloud() {
 
   const handleTagClick = (tag) => {
     dispatch(setSearchQuery(tag.value));
+    dispatch(setSearchQuery(""));
   };
 
   const modifiedTags = tags.map((tag) => ({
