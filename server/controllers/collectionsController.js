@@ -34,9 +34,18 @@ export const getCollectionsByUser = async (req, res) => {
   try {
     const userId = req.params.userId;
 
-    const collections = await Collection.find({ createdBy: userId });
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 8;
 
-    res.json(collections);
+    const collections = await Collection.find({ createdBy: userId })
+      .skip((page - 1) * pageSize)
+      .limit(pageSize);
+
+    const totalCollections = await Collection.countDocuments({
+      createdBy: userId,
+    });
+
+    res.json({ collections, totalCollections });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

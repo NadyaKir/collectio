@@ -98,9 +98,19 @@ export const getAllLastItems = async (req, res) => {
 export const getAllCollectionItems = async (req, res) => {
   try {
     const { collectionId } = req.params;
-    const items = await Item.find({ collectionId });
 
-    res.status(200).json({ items });
+    const page = parseInt(req.query.page);
+    const pageSize = parseInt(req.query.pageSize) || 4;
+    console.log(`Page: ${page}, PageSize: ${pageSize}`);
+    const items = await Item.find({ collectionId })
+      .skip((page - 1) * pageSize)
+      .limit(pageSize);
+    console.log(`Items fetched: ${items.length}`);
+    const totalItems = await Item.countDocuments({
+      collectionId: collectionId,
+    });
+    console.log(`Total items in collection: ${totalItems}`);
+    res.status(200).json({ items, totalItems });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error fetching items" });

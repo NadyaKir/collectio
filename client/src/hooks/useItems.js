@@ -3,24 +3,31 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SERVER_URL } from "../utils/config";
 import { setItems } from "../store/itemSlice";
-import { useParams } from "react-router-dom";
 
 export const useItems = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const items = useSelector((state) => state.items.items);
   const dispatch = useDispatch();
-  const { collectionId } = useParams();
 
-  const fetchItems = async () => {
+  const [totalItems, setTotalItems] = useState(0);
+
+  const fetchItems = async (collectionId, currentPage, pageSize) => {
     setIsLoading(true);
     dispatch(setItems([]));
     try {
       const response = await axios.get(
-        `${SERVER_URL}/api/items/collection/${collectionId}`
+        `${SERVER_URL}/api/items/collection/${collectionId}`,
+        {
+          params: {
+            page: currentPage,
+            pageSize: pageSize,
+          },
+        }
       );
 
       const items = response.data.items;
+      const totalItems = response.data.totalItems;
 
       const tagIds = items.reduce((acc, item) => {
         acc.push(...item.tags);
@@ -45,7 +52,10 @@ export const useItems = () => {
         })),
       }));
 
+      console.log(updatedItems);
       dispatch(setItems(updatedItems));
+      setTotalItems(totalItems);
+      console.log(totalItems);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching items:", error);
@@ -54,13 +64,10 @@ export const useItems = () => {
     }
   };
 
-  useEffect(() => {
-    fetchItems();
-  }, [collectionId, dispatch]);
-
   return {
     items,
     fetchItems,
+    totalItems,
     isLoading,
     error,
   };
