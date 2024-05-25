@@ -9,15 +9,26 @@ import ToolBar from "../components/Toolbar/ToolBar";
 import ToolButton from "../components/Toolbar/ToolButton";
 import { useUsers } from "../hooks/useUsers";
 import Spinner from "../components/Spinner";
+import TablePagination from "./TablePagination";
 
 export default function UserTable() {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const { signout } = useAuth();
-
   const { userId } = getTokenData();
-  const { users, setUsers, updateUserList, fetchUsers, isLoading, error } =
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(8);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+  const { users, setUsers, fetchUsers, totalUsers, isLoading, error } =
     useUsers();
+
+  useEffect(() => {
+    fetchUsers(currentPage, pageSize);
+  }, [currentPage, pageSize]);
 
   useEffect(() => {
     if (selectedUsers.length === users.length && users.length !== 0) {
@@ -151,142 +162,146 @@ export default function UserTable() {
           Delete all
         </ToolButton>
       </ToolBar>
-      <div className="flex flex-col h-full overflow-x-auto relative border rounded-md">
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y border-collapse border-b divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr className="h-12 text-center divide-gray-200">
-                <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {users.length > 0 && (
-                    <input
-                      type="checkbox"
-                      className="form-checkbox h-5 w-5"
-                      checked={selectAll}
-                      onChange={handleSelectAll}
-                    />
-                  )}
-                </th>
-                <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider w-16">
-                  ID
-                </th>
-                <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Name
-                </th>
-                <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Email
-                </th>
-                <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Registration Date
-                </th>
-                <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Last Login Date
-                </th>
-                <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Role
-                </th>
-                <th className="px-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody className="h-full w-full bg-white divide-y divide-gray-200">
-              {users.map((user) => (
-                <tr
-                  key={user._id}
-                  className="text-center hover:bg-gray-100 cursor-pointer"
-                  onClick={() => handleRowClick(user._id)}
-                >
-                  <td className="px-2 py-2 whitespace-nowrap">
-                    <input
-                      type="checkbox"
-                      className="form-checkbox h-5 w-5"
-                      checked={selectedUsers.includes(user._id)}
-                      onChange={() => handleSelectUser(user._id)}
-                    />
-                  </td>
-                  <td className="px-2 py-2 whitespace-nowrap w-1">
-                    {user._id}
-                  </td>
-                  <td className="px-2 py-2 whitespace-nowrap">
-                    {user.username}
-                  </td>
-                  <td
-                    className={`px-2 py-2 whitespace-nowrap ${
-                      userId === user._id ? "font-bold" : ""
-                    }`}
-                  >
-                    {user.email}
-                    {userId === user._id ? " (you)" : ""}
-                  </td>
-                  <td className="text-center px-2 py-2 whitespace-nowrap">
-                    {user.registrationDate}
-                  </td>
-                  <td className="text-center px-2 py-2 whitespace-nowrap">
-                    {user.lastLoginDate ? user.lastLoginDate : "-"}
-                  </td>
-                  <td className="px-2 py-2 whitespace-nowrap">
-                    <select
-                      value={user.isAdmin ? "admin" : "user"}
-                      onChange={(e) =>
-                        handleChangeRole(user._id, e.target.value)
-                      }
-                      onClick={(e) => e.stopPropagation()}
-                      className="block w-full py-1 px-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
-                    >
-                      <option value="user">User</option>
-                      <option value="admin">Admin</option>
-                    </select>
-                  </td>
-                  <td className="px-2 py-2 whitespace-nowrap">
-                    <div className="flex justify-center items-center">
-                      <span
-                        className={`inline-block w-16 text-center rounded-full px-2 py-1 text-xs font-semibold ${getStatusColor(
-                          user.isBlocked
-                        )}`}
-                      >
-                        {user.isBlocked ? "Blocked" : "Active"}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="px-2 text-center py-2 whitespace-nowrap">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteUsers(user._id);
-                      }}
-                    >
-                      <DeleteOutlined className="text-2xl text-gray-500 hover:text-gray-700" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {isLoading && users.length === 0 && (
+        <div className="flex flex-1 h-full justify-center items-center text-gray-500">
+          <Spinner />
         </div>
-        {isLoading && users.length === 0 && (
-          <div className="flex flex-1 h-full justify-center items-center text-gray-500">
-            <Spinner />
+      )}
+      {error && !isLoading && (
+        <div className="flex flex-1 h-full justify-center items-center text-gray-500">
+          <div className="text-center text-red-500">Error: {error.message}</div>
+        </div>
+      )}
+      {users.length === 0 && !isLoading && !error && (
+        <div className="flex flex-1 h-full justify-center items-center text-gray-500">
+          No users found.
+        </div>
+      )}
+      {!isLoading && users.length > 0 && (
+        <div className="h-full w-full overflow-x-auto relative border rounded-md">
+          <div className=" overflow-x-auto overflow-y-scroll">
+            <table className="h-full min-w-full divide-y border-collapse border-b divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr className="h-12 text-center divide-gray-200">
+                  <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    {users.length > 0 && (
+                      <input
+                        type="checkbox"
+                        className="form-checkbox h-5 w-5"
+                        checked={selectAll}
+                        onChange={handleSelectAll}
+                      />
+                    )}
+                  </th>
+                  <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider w-16">
+                    ID
+                  </th>
+                  <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Name
+                  </th>
+                  <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Email
+                  </th>
+                  <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Registration Date
+                  </th>
+                  <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Last Login Date
+                  </th>
+                  <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Role
+                  </th>
+                  <th className="px-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="h-full w-full bg-white divide-y divide-gray-200">
+                {users.map((user) => (
+                  <tr
+                    key={user._id}
+                    className="text-center hover:bg-gray-100 cursor-pointer"
+                    onClick={() => handleRowClick(user._id)}
+                  >
+                    <td className="px-2 py-2 whitespace-nowrap">
+                      <input
+                        type="checkbox"
+                        className="form-checkbox h-5 w-5"
+                        checked={selectedUsers.includes(user._id)}
+                        onChange={() => handleSelectUser(user._id)}
+                      />
+                    </td>
+                    <td className="px-2 py-2 whitespace-nowrap w-1">
+                      {user._id}
+                    </td>
+                    <td className="px-2 py-2 whitespace-nowrap">
+                      {user.username}
+                    </td>
+                    <td
+                      className={`px-2 py-2 whitespace-nowrap ${
+                        userId === user._id ? "font-bold" : ""
+                      }`}
+                    >
+                      {user.email}
+                      {userId === user._id ? " (you)" : ""}
+                    </td>
+                    <td className="text-center px-2 py-2 whitespace-nowrap">
+                      {user.registrationDate}
+                    </td>
+                    <td className="text-center px-2 py-2 whitespace-nowrap">
+                      {user.lastLoginDate ? user.lastLoginDate : "-"}
+                    </td>
+                    <td className="px-2 py-2 whitespace-nowrap">
+                      <select
+                        value={user.isAdmin ? "admin" : "user"}
+                        onChange={(e) =>
+                          handleChangeRole(user._id, e.target.value)
+                        }
+                        onClick={(e) => e.stopPropagation()}
+                        className="block w-full py-1 px-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+                      >
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                      </select>
+                    </td>
+                    <td className="px-2 py-2 whitespace-nowrap">
+                      <div className="flex justify-center items-center">
+                        <span
+                          className={`inline-block w-16 text-center rounded-full px-2 py-1 text-xs font-semibold ${getStatusColor(
+                            user.isBlocked
+                          )}`}
+                        >
+                          {user.isBlocked ? "Blocked" : "Active"}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="px-2 text-center py-2 whitespace-nowrap">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteUsers(user._id);
+                        }}
+                      >
+                        <DeleteOutlined className="text-2xl text-gray-500 hover:text-gray-700" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-        )}
-        {error && !isLoading && (
-          <div
-            div
-            className="flex flex-1 h-full justify-center items-center text-gray-500"
-          >
-            <div className="text-center text-red-500">
-              Error: {error.message}
-            </div>
-          </div>
-        )}
-        {users.length === 0 && !isLoading && !error && (
-          <div className="flex flex-1 h-full justify-center items-center text-gray-500">
-            No users found.
-          </div>
-        )}
-      </div>
+        </div>
+      )}
+
+      <TablePagination
+        currentPage={currentPage}
+        pageSize={pageSize}
+        total={totalUsers}
+        handlePageChange={handlePageChange}
+      />
     </>
   );
 }

@@ -25,15 +25,13 @@ export default function ItemsTable() {
   const { collectionId } = useParams();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(1);
+  const [pageSize, setPageSize] = useState(8);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
   const { items, fetchItems, totalItems, isLoading, error } = useItems();
-
-  console.log(collectionId);
 
   useEffect(() => {
     fetchItems(collectionId, currentPage, pageSize);
@@ -168,7 +166,6 @@ export default function ItemsTable() {
                   </th>
                 </tr>
               </thead>
-
               <tbody className="h-full w-full bg-white divide-y divide-gray-200">
                 {items.map((item) => (
                   <tr
@@ -253,7 +250,7 @@ export default function ItemsTable() {
       <TablePagination
         currentPage={currentPage}
         pageSize={pageSize}
-        totalCollections={totalItems}
+        total={totalItems}
         handlePageChange={handlePageChange}
       />
     </>

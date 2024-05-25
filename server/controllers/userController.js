@@ -1,9 +1,18 @@
 import User from "../models/userSchema.js";
 
-export const getUsers = async (_, res) => {
+export const getUsers = async (req, res) => {
   try {
-    const users = await User.find();
-    const formattedUsers = users.map((user) => {
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 8;
+
+    console.log(page, pageSize);
+    const usersData = await User.find()
+      .skip((page - 1) * pageSize)
+      .limit(pageSize);
+
+    const totalUsers = await User.countDocuments();
+    console.log(usersData);
+    const users = usersData.map((user) => {
       return {
         ...user.toJSON(),
         registrationDate: user.registrationDate.toLocaleString(),
@@ -13,7 +22,7 @@ export const getUsers = async (_, res) => {
       };
     });
 
-    res.json(formattedUsers);
+    res.json({ users, totalUsers });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

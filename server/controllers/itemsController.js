@@ -99,17 +99,17 @@ export const getAllCollectionItems = async (req, res) => {
   try {
     const { collectionId } = req.params;
 
-    const page = parseInt(req.query.page);
-    const pageSize = parseInt(req.query.pageSize) || 4;
-    console.log(`Page: ${page}, PageSize: ${pageSize}`);
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 8;
+
     const items = await Item.find({ collectionId })
       .skip((page - 1) * pageSize)
       .limit(pageSize);
-    console.log(`Items fetched: ${items.length}`);
+
     const totalItems = await Item.countDocuments({
       collectionId: collectionId,
     });
-    console.log(`Total items in collection: ${totalItems}`);
+
     res.status(200).json({ items, totalItems });
   } catch (error) {
     console.error(error);

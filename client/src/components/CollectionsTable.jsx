@@ -24,7 +24,7 @@ export default function CollectionsTable() {
   const { isAdmin, userId } = getTokenData();
   const { collectionId } = useParams();
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(1);
+  const [pageSize, setPageSize] = useState(8);
 
   console.log(currentPage);
 

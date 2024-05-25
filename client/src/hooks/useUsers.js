@@ -6,12 +6,24 @@ export const useUsers = () => {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [totalUsers, setTotalUsers] = useState(0);
 
-  const fetchUsers = async () => {
+  const fetchUsers = async (currentPage, pageSize) => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`${SERVER_URL}/api/users/getUsers`);
-      setUsers(response.data);
+      const response = await axios.get(`${SERVER_URL}/api/users/getUsers`, {
+        params: {
+          page: currentPage,
+          pageSize: pageSize,
+        },
+      });
+      const users = response.data.users;
+      const totalUsers = response.data.totalUsers;
+
+      console.log(users);
+
+      setUsers(users);
+      setTotalUsers(totalUsers);
       setIsLoading(false);
     } catch (error) {
       console.error("Error get users: ", error);
@@ -20,9 +32,5 @@ export const useUsers = () => {
     }
   };
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  return { users, setUsers, fetchUsers, isLoading, error };
+  return { users, setUsers, fetchUsers, totalUsers, isLoading, error };
 };
