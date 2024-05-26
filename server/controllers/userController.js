@@ -5,13 +5,12 @@ export const getUsers = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || 8;
 
-    console.log(page, pageSize);
     const usersData = await User.find()
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 
     const totalUsers = await User.countDocuments();
-    console.log(usersData);
+
     const users = usersData.map((user) => {
       return {
         ...user.toJSON(),

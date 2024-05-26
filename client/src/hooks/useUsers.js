@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { SERVER_URL } from "../utils/config";
 
@@ -17,10 +17,9 @@ export const useUsers = () => {
           pageSize: pageSize,
         },
       });
+
       const users = response.data.users;
       const totalUsers = response.data.totalUsers;
-
-      console.log(users);
 
       setUsers(users);
       setTotalUsers(totalUsers);

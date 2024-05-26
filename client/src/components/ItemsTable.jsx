@@ -166,6 +166,7 @@ export default function ItemsTable() {
                   </th>
                 </tr>
               </thead>
+
               <tbody className="h-full w-full bg-white divide-y divide-gray-200">
                 {items.map((item) => (
                   <tr

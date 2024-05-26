@@ -41,7 +41,7 @@ export default function UserTable() {
   const handleBlockUsers = async () => {
     try {
       if (selectedUsers.includes(userId)) {
-        await signout();
+        signout();
         return;
       }
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SERVER_URL } from "../utils/config";
 import { setItems } from "../store/itemSlice";
@@ -52,10 +52,8 @@ export const useItems = () => {
         })),
       }));
 
-      console.log(updatedItems);
       dispatch(setItems(updatedItems));
       setTotalItems(totalItems);
-      console.log(totalItems);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching items:", error);
