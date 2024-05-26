@@ -1,4 +1,4 @@
-import { useNavigate, useLocation, Link, useParams } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import ToolBar from "./Toolbar/ToolBar";
 import ToolButton from "./Toolbar/ToolButton";
@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { SERVER_URL } from "../utils/config";
 import Spinner from "./Spinner";
-import { useDispatch } from "react-redux";
 import { useCollections } from "../hooks/useCollections";
 import getTokenData from "../utils/getTokenData";
 import TablePagination from "./TablePagination";
@@ -16,17 +15,16 @@ export default function CollectionsTable() {
   const navigate = useNavigate();
   const [selectedCollections, setSelectedCollections] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
-  const dispatch = useDispatch();
   const location = useLocation();
   const { search } = location;
   const queryParams = new URLSearchParams(search);
   const collectionUserId = queryParams.get("userId");
+  const collectionId = queryParams.get("collectionId");
   const { isAdmin, userId } = getTokenData();
-  const { collectionId } = useParams();
+
+  console.log(collectionId);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(8);
-
-  console.log(currentPage);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -111,7 +109,13 @@ export default function CollectionsTable() {
         <ToolBar>
           <ToolButton
             title="Add"
-            handleAction={() => navigate("/collections/add")}
+            handleAction={() =>
+              navigate(
+                `/collections/add?userId=${collectionUserId}${
+                  collectionId ? `&&collectionId=${collectionId}` : ""
+                }`
+              )
+            }
           >
             Add
           </ToolButton>

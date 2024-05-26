@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { SERVER_URL } from "../utils/config";
 import axios from "axios";
 import getTokenData from "../utils/getTokenData";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { Input } from "antd";
 import { useSelector } from "react-redux";
 import defaultImage from "../assets/placeholder-image.png";
@@ -23,7 +23,13 @@ import MDEditor from "@uiw/react-md-editor";
 
 const CollectionForm = ({ initialValues }) => {
   const { userId } = getTokenData();
-  const { collectionId } = useParams();
+  const location = useLocation();
+  const pathname = location.pathname;
+  const { search } = location;
+  const queryParams = new URLSearchParams(search);
+  const collectionUserId = queryParams.get("userId");
+  console.log(collectionUserId);
+  const collectionId = queryParams.get("collectionId");
   const categories = useSelector((state) => state.collections.categories);
   const [selectedImage, setSelectedImage] = useState(
     initialValues.image ? initialValues.image : defaultImage
@@ -47,26 +53,28 @@ const CollectionForm = ({ initialValues }) => {
     const updatedValuesWithBase64Image = {
       ...values,
       image: image64,
-      createdBy: userId,
+      createdBy: collectionUserId,
     };
 
+    console.log(updatedValuesWithBase64Image);
+
     try {
-      if (collectionId) {
-        console.log(updatedValuesWithBase64Image);
-        console.log("i am here");
+      if (pathname === "/collections/update") {
         await axios.put(
           `${SERVER_URL}/api/collections/update/${collectionId}`,
           updatedValuesWithBase64Image
         );
-        console.log("Collection updated successfully");
       } else {
         await axios.post(
           `${SERVER_URL}/api/collections/addCollection`,
           updatedValuesWithBase64Image
         );
-        console.log("Collection added successfully");
       }
-      navigate("/collections");
+      navigate(
+        `/collections?userId=${collectionUserId}${
+          collectionId ? `&&collectionId=${collectionId}` : ""
+        }`
+      );
     } catch (error) {
       console.error("Error:", error);
     }
@@ -233,7 +241,7 @@ const CollectionForm = ({ initialValues }) => {
                 disabled={isSubmitting}
                 className="bg-teal-500 text-white py-2 px-4 rounded-md hover:bg-teal-600"
               >
-                {collectionId
+                {pathname === "/collections/update"
                   ? isSubmitting
                     ? "Updating..."
                     : "Update collection"

@@ -14,7 +14,6 @@ const ItemForm = ({ initialValues, tags, setTags }) => {
   const [editingTagIndex, setEditingTagIndex] = useState(null);
   const { userId } = getTokenData();
   const { collectionId, itemId } = useParams();
-  console.log(collectionId, itemId);
   const navigate = useNavigate();
 
   useFetchTags();
@@ -29,7 +28,7 @@ const ItemForm = ({ initialValues, tags, setTags }) => {
           tags,
         });
         resetForm();
-        navigate(`/collections/${collectionId}/items`);
+        navigate(`/collections/${collectionId}/items?userId=${userId}`);
       } catch (error) {
         console.error(error.response.data.message);
       } finally {
@@ -45,7 +44,7 @@ const ItemForm = ({ initialValues, tags, setTags }) => {
         });
         console.log(response.data.message);
         resetForm();
-        navigate(`/collections/${collectionId}/items`);
+        navigate(`/collections/${collectionId}/items?userId=${userId}`);
       } catch (error) {
         console.error(error.response.data.message);
       } finally {

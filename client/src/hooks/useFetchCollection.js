@@ -34,6 +34,6 @@ export const useFetchCollection = (collectionId) => {
 
     fetchCollection();
   }, [collectionId]);
-  console.log(initialValues);
+
   return initialValues;
 };
