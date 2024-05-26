@@ -261,7 +261,7 @@ export default function UserTable() {
                           handleChangeRole(user._id, e.target.value)
                         }
                         onClick={(e) => e.stopPropagation()}
-                        className="block w-full py-1 px-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+                        className="block w-full py-1 px-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-teal-600 focus:border-teal-700 sm:text-sm"
                       >
                         <option value="user">User</option>
                         <option value="admin">Admin</option>

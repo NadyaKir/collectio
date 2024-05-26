@@ -33,17 +33,29 @@ export const getCollectionById = async (req, res) => {
 export const getCollectionsByUser = async (req, res) => {
   try {
     const userId = req.params.userId;
-
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || 8;
+    const category = req.query.category;
+    const searchText = req.query.search;
 
-    const collections = await Collection.find({ createdBy: userId })
+    let query = { createdBy: userId };
+
+    if (category) {
+      query.category = category;
+    }
+
+    if (searchText) {
+      query.$or = [
+        { title: { $regex: searchText, $options: "i" } },
+        { description: { $regex: searchText, $options: "i" } },
+      ];
+    }
+
+    const collections = await Collection.find(query)
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 
-    const totalCollections = await Collection.countDocuments({
-      createdBy: userId,
-    });
+    const totalCollections = await Collection.countDocuments(query);
 
     res.json({ collections, totalCollections });
   } catch (err) {

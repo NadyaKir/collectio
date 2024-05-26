@@ -18,7 +18,9 @@ export const useCollections = () => {
   const fetchUserCollections = async (
     collectionUserId,
     currentPage,
-    pageSize
+    pageSize,
+    selectedCategory,
+    searchText
   ) => {
     setIsLoading(true);
     dispatch(setCollections([]));
@@ -31,6 +33,8 @@ export const useCollections = () => {
           params: {
             page: currentPage,
             pageSize: pageSize,
+            category: selectedCategory,
+            search: searchText,
           },
         }
       );

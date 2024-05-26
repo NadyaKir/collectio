@@ -3,7 +3,6 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { SERVER_URL } from "../utils/config";
 import axios from "axios";
-import getTokenData from "../utils/getTokenData";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Input } from "antd";
 import { useSelector } from "react-redux";
@@ -22,13 +21,11 @@ import { fileToBase64 } from "file64";
 import MDEditor from "@uiw/react-md-editor";
 
 const CollectionForm = ({ initialValues }) => {
-  const { userId } = getTokenData();
   const location = useLocation();
   const pathname = location.pathname;
   const { search } = location;
   const queryParams = new URLSearchParams(search);
   const collectionUserId = queryParams.get("userId");
-  console.log(collectionUserId);
   const collectionId = queryParams.get("collectionId");
   const categories = useSelector((state) => state.collections.categories);
   const [selectedImage, setSelectedImage] = useState(

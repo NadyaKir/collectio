@@ -3,26 +3,31 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import ToolBar from "./Toolbar/ToolBar";
 import ToolButton from "./Toolbar/ToolButton";
 import ReactMarkdown from "react-markdown";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { SERVER_URL } from "../utils/config";
 import Spinner from "./Spinner";
 import { useCollections } from "../hooks/useCollections";
 import getTokenData from "../utils/getTokenData";
 import TablePagination from "./TablePagination";
+import CategoryFilter from "./CategoryFilter";
+import useCategoryFilter from "../hooks/useCategoryFilter";
+import { debounce } from "lodash";
 
 export default function CollectionsTable() {
   const navigate = useNavigate();
   const [selectedCollections, setSelectedCollections] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
+  const { categories, selectedCategory, setSelectedCategory } =
+    useCategoryFilter();
+  const [searchText, setSearchText] = useState("");
+
   const location = useLocation();
   const { search } = location;
   const queryParams = new URLSearchParams(search);
   const collectionUserId = queryParams.get("userId");
   const collectionId = queryParams.get("collectionId");
   const { isAdmin, userId } = getTokenData();
-
-  console.log(collectionId);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(8);
 
@@ -39,8 +44,14 @@ export default function CollectionsTable() {
   } = useCollections();
 
   useEffect(() => {
-    fetchUserCollections(collectionUserId, currentPage, pageSize);
-  }, [collectionUserId, currentPage, pageSize]);
+    fetchUserCollections(
+      collectionUserId,
+      currentPage,
+      pageSize,
+      selectedCategory,
+      searchText
+    );
+  }, [collectionUserId, currentPage, pageSize, selectedCategory, searchText]);
 
   useEffect(() => {
     if (
@@ -105,31 +116,50 @@ export default function CollectionsTable() {
 
   return (
     <>
-      {isHaveRightToChange && (
-        <ToolBar>
-          <ToolButton
-            title="Add"
-            handleAction={() =>
-              navigate(
-                `/collections/add?userId=${collectionUserId}${
-                  collectionId ? `&&collectionId=${collectionId}` : ""
-                }`
-              )
-            }
-          >
-            Add
-          </ToolButton>
-          <ToolButton
-            handleAction={() =>
-              handleDeleteCollections(
-                selectedCollections.length > 0 ? undefined : selectedCollections
-              )
-            }
-          >
-            Delete all
-          </ToolButton>
-        </ToolBar>
-      )}
+      <div className="flex justify-between flex-wrap md:flex-nowrap mb-2 md:mb-0">
+        {isHaveRightToChange && (
+          <ToolBar>
+            <ToolButton
+              title="Add"
+              handleAction={() =>
+                navigate(
+                  `/collections/add?userId=${collectionUserId}${
+                    collectionId ? `&&collectionId=${collectionId}` : ""
+                  }`
+                )
+              }
+            >
+              Add
+            </ToolButton>
+            <ToolButton
+              handleAction={() =>
+                handleDeleteCollections(
+                  selectedCollections.length > 0
+                    ? undefined
+                    : selectedCollections
+                )
+              }
+            >
+              Delete all
+            </ToolButton>
+          </ToolBar>
+        )}
+        <div className="flex self-center">
+          <CategoryFilter
+            categories={categories}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+          />
+          <input
+            className="w-full px-3 lg:w-auto border-2 border-gray-300 bg-white h-10 rounded-lg text-sm focus:outline-none"
+            type="text"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            placeholder="Search..."
+          />
+        </div>
+      </div>
+
       {isLoading && (
         <div className="flex flex-1 h-full justify-center items-center text-gray-500">
           <Spinner />
