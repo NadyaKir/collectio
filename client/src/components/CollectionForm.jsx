@@ -7,18 +7,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Input } from "antd";
 import { useSelector } from "react-redux";
 import defaultImage from "../assets/placeholder-image.png";
-import {
-  MDXEditor,
-  UndoRedo,
-  BoldItalicUnderlineToggles,
-  toolbarPlugin,
-  headingsPlugin,
-  linkPlugin,
-  linkDialogPlugin,
-  CreateLink,
-} from "@mdxeditor/editor";
 import { fileToBase64 } from "file64";
-import MDEditor from "@uiw/react-md-editor";
 
 const CollectionForm = ({ initialValues }) => {
   const location = useLocation();
@@ -122,48 +111,6 @@ const CollectionForm = ({ initialValues }) => {
                 <label htmlFor="description" className="block mb-2">
                   Description
                 </label>
-                {/* <Field name="description">
-                  {({ field }) => {
-                    console.log("Field value:", field.value);
-                    return (
-                      <MDEditor
-                        id="description"
-                        defaultValue={field.value}
-                        value={values.description}
-                        onChange={(value) => {
-                          field.onChange({
-                            target: {
-                              name: field.name,
-                              value: value,
-                            },
-                          });
-                        }}
-                      />
-                    );
-                  }}
-                </Field> */}
-                {/* <MDXEditor
-                  id="description"
-                  name="description"
-                  markdown={values.description}
-                  onChange={(value) => {
-                    setFieldValue("description", value);
-                  }}
-                  plugins={[
-                    linkPlugin(),
-                    linkDialogPlugin(),
-                    headingsPlugin(),
-                    toolbarPlugin({
-                      toolbarContents: () => (
-                        <>
-                          <UndoRedo />
-                          <BoldItalicUnderlineToggles />
-                          <CreateLink />
-                        </>
-                      ),
-                    }),
-                  ]}
-                /> */}
                 <Field
                   as="textarea"
                   id="description"

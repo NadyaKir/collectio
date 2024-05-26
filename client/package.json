@@ -11,9 +11,7 @@
   },
   "dependencies": {
     "@material-tailwind/html": "^2.2.2",
-    "@mdxeditor/editor": "^3.0.6",
     "@reduxjs/toolkit": "^2.2.3",
-    "@uiw/react-md-editor": "^4.0.4",
     "antd": "^5.17.0",
     "axios": "^1.6.8",
     "file64": "^1.0.3",
