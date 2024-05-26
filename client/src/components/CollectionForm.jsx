@@ -21,7 +21,6 @@ const CollectionForm = ({ initialValues }) => {
     initialValues.image ? initialValues.image : defaultImage
   );
   const navigate = useNavigate();
-
   useEffect(() => {
     setSelectedImage(initialValues.image);
   }, [initialValues]);
@@ -41,8 +40,6 @@ const CollectionForm = ({ initialValues }) => {
       image: image64,
       createdBy: collectionUserId,
     };
-
-    console.log(updatedValuesWithBase64Image);
 
     try {
       if (pathname === "/collections/update") {
@@ -75,7 +72,6 @@ const CollectionForm = ({ initialValues }) => {
     image: Yup.mixed().nullable(),
   });
 
-  //TODO:fix editor
   return (
     <Formik
       initialValues={initialValues}

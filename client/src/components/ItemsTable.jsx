@@ -112,7 +112,9 @@ export default function ItemsTable() {
             <ToolButton
               title="Add"
               handleAction={() =>
-                navigate(`/collections/${collectionId}/items/addItem`)
+                navigate(
+                  `/collections/${collectionId}/items/addItem?userId=${collectionUserId}`
+                )
               }
             >
               Add

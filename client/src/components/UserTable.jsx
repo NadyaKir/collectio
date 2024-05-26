@@ -36,7 +36,7 @@ export default function UserTable() {
 
   useEffect(() => {
     fetchUsers(currentPage, pageSize, searchText);
-  }, [currentPage, pageSize]);
+  }, []);
 
   useEffect(() => {
     debouncedFetchUsers(currentPage, pageSize, searchText);

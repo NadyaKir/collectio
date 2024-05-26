@@ -109,8 +109,6 @@ export default function Navbar() {
                 </Link>
               </button>
             </div>
-            <LanguageSwitcher />
-            <ThemeSwitcher />
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Input } from "antd";
 import axios from "axios";
 import { SERVER_URL } from "../utils/config";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import getTokenData from "../utils/getTokenData";
 import Chip from "./Chip";
 import { useFetchTags } from "../hooks/useFetchTags";
@@ -14,21 +14,28 @@ const ItemForm = ({ initialValues, tags, setTags }) => {
   const [editingTagIndex, setEditingTagIndex] = useState(null);
   const { userId } = getTokenData();
   const { collectionId, itemId } = useParams();
+  const location = useLocation();
+  const pathname = location.pathname;
+  const { search } = location;
+  const queryParams = new URLSearchParams(search);
+  const collectionUserId = queryParams.get("userId");
   const navigate = useNavigate();
-
+  console.log(pathname);
   useFetchTags();
 
   const availableTags = useSelector((state) => state.tags.tags);
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
-    if (itemId) {
+    if (pathname === `/collections/${collectionId}/items/update`) {
       try {
         await axios.put(`${SERVER_URL}/api/items/update/${itemId}`, {
           ...values,
           tags,
         });
         resetForm();
-        navigate(`/collections/${collectionId}/items?userId=${userId}`);
+        navigate(
+          `/collections/${collectionId}/items?userId=${collectionUserId}`
+        );
       } catch (error) {
         console.error(error.response.data.message);
       } finally {
@@ -40,11 +47,13 @@ const ItemForm = ({ initialValues, tags, setTags }) => {
           ...values,
           tags: tags.map((tag) => tag.name),
           collectionId,
-          userId,
+          userId: collectionUserId,
         });
         console.log(response.data.message);
         resetForm();
-        navigate(`/collections/${collectionId}/items?userId=${userId}`);
+        navigate(
+          `/collections/${collectionId}/items?userId=${collectionUserId}`
+        );
       } catch (error) {
         console.error(error.response.data.message);
       } finally {

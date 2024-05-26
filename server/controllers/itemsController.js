@@ -6,7 +6,7 @@ export const addItem = async (req, res) => {
   try {
     const { title, tags, collectionId, userId } = req.body;
 
-    if (!title || !tags || !collectionId || !userId) {
+    if (!title || !collectionId || !userId) {
       return res.status(400).json({ message: "Not all fields" });
     }
 
