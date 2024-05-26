@@ -38,6 +38,7 @@ export default function CollectionsTable() {
   const {
     collections,
     fetchUserCollections,
+    debouncedFetchUserCollections,
     totalCollections,
     isLoading,
     error,
@@ -51,7 +52,17 @@ export default function CollectionsTable() {
       selectedCategory,
       searchText
     );
-  }, [collectionUserId, currentPage, pageSize, selectedCategory, searchText]);
+  }, [collectionUserId, currentPage, pageSize, selectedCategory]);
+
+  useEffect(() => {
+    debouncedFetchUserCollections(
+      collectionUserId,
+      currentPage,
+      pageSize,
+      selectedCategory,
+      searchText
+    );
+  }, [searchText]);
 
   useEffect(() => {
     if (

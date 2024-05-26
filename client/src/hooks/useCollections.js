@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCollections } from "../store/collectionsSlice";
 import { SERVER_URL } from "../utils/config";
 import getToketData from "../utils/getTokenData";
+import { debounce } from "lodash";
 
 export const useCollections = () => {
   const dispatch = useDispatch();
@@ -51,10 +52,13 @@ export const useCollections = () => {
     }
   };
 
+  const debouncedFetchUserCollections = debounce(fetchUserCollections, 500);
+
   return {
     collections,
     totalCollections,
     fetchUserCollections,
+    debouncedFetchUserCollections,
     isLoading,
     error,
   };
