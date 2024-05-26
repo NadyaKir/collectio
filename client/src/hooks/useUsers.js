@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { SERVER_URL } from "../utils/config";
+import { debounce } from "lodash";
 
 export const useUsers = () => {
   const [users, setUsers] = useState([]);
@@ -8,13 +9,14 @@ export const useUsers = () => {
   const [error, setError] = useState(null);
   const [totalUsers, setTotalUsers] = useState(0);
 
-  const fetchUsers = async (currentPage, pageSize) => {
+  const fetchUsers = async (currentPage, pageSize, searchText) => {
     setIsLoading(true);
     try {
       const response = await axios.get(`${SERVER_URL}/api/users/getUsers`, {
         params: {
           page: currentPage,
           pageSize: pageSize,
+          search: searchText,
         },
       });
 
@@ -31,5 +33,15 @@ export const useUsers = () => {
     }
   };
 
-  return { users, setUsers, fetchUsers, totalUsers, isLoading, error };
+  const debouncedFetchUsers = debounce(fetchUsers, 500);
+
+  return {
+    users,
+    setUsers,
+    fetchUsers,
+    debouncedFetchUsers,
+    totalUsers,
+    isLoading,
+    error,
+  };
 };

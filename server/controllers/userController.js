@@ -4,12 +4,22 @@ export const getUsers = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || 8;
+    const searchText = req.query.search;
 
-    const usersData = await User.find()
+    const query = searchText
+      ? {
+          $or: [
+            { username: { $regex: searchText, $options: "i" } },
+            { email: { $regex: searchText, $options: "i" } },
+          ],
+        }
+      : {};
+
+    const usersData = await User.find(query)
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 
-    const totalUsers = await User.countDocuments();
+    const totalUsers = await User.countDocuments(query);
 
     const users = usersData.map((user) => {
       return {

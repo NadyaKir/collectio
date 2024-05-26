@@ -101,13 +101,18 @@ export const getAllCollectionItems = async (req, res) => {
 
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || 8;
+    const searchText = req.query.search;
 
-    const items = await Item.find({ collectionId })
+    const items = await Item.find({
+      collectionId: collectionId,
+      $or: [{ title: { $regex: searchText, $options: "i" } }],
+    })
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 
     const totalItems = await Item.countDocuments({
       collectionId: collectionId,
+      $or: [{ title: { $regex: searchText, $options: "i" } }],
     });
 
     res.status(200).json({ items, totalItems });

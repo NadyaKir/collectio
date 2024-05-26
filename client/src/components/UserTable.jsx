@@ -14,6 +14,7 @@ import TablePagination from "./TablePagination";
 export default function UserTable() {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
+  const [searchText, setSearchText] = useState("");
   const { signout } = useAuth();
   const { userId } = getTokenData();
 
@@ -23,12 +24,23 @@ export default function UserTable() {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-  const { users, setUsers, fetchUsers, totalUsers, isLoading, error } =
-    useUsers();
+  const {
+    users,
+    setUsers,
+    fetchUsers,
+    debouncedFetchUsers,
+    totalUsers,
+    isLoading,
+    error,
+  } = useUsers();
 
   useEffect(() => {
-    fetchUsers(currentPage, pageSize);
+    fetchUsers(currentPage, pageSize, searchText);
   }, [currentPage, pageSize]);
+
+  useEffect(() => {
+    debouncedFetchUsers(currentPage, pageSize, searchText);
+  }, [searchText]);
 
   useEffect(() => {
     if (selectedUsers.length === users.length && users.length !== 0) {
@@ -149,19 +161,31 @@ export default function UserTable() {
 
   return (
     <>
-      <ToolBar>
-        <ToolButton handleAction={handleBlockUsers}>Block</ToolButton>
-        <ToolButton handleAction={handleUnblockUsers}>Unblock</ToolButton>
-        <ToolButton
-          handleAction={() =>
-            handleDeleteUsers(
-              selectedUsers.length > 0 ? undefined : selectedUsers
-            )
-          }
-        >
-          Delete all
-        </ToolButton>
-      </ToolBar>
+      <div className="flex justify-between flex-wrap md:flex-nowrap mb-2 md:mb-0">
+        <ToolBar>
+          <ToolButton handleAction={handleBlockUsers}>Block</ToolButton>
+          <ToolButton handleAction={handleUnblockUsers}>Unblock</ToolButton>
+          <ToolButton
+            handleAction={() =>
+              handleDeleteUsers(
+                selectedUsers.length > 0 ? undefined : selectedUsers
+              )
+            }
+          >
+            Delete all
+          </ToolButton>
+        </ToolBar>
+        <div className="flex self-center">
+          <input
+            className="w-full px-3 lg:w-auto border-2 border-gray-300 bg-white h-10 rounded-lg text-sm focus:outline-none"
+            type="text"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            placeholder="Search..."
+          />
+        </div>
+      </div>
+
       {isLoading && users.length === 0 && (
         <div className="flex flex-1 h-full justify-center items-center text-gray-500">
           <Spinner />

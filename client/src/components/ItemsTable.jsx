@@ -14,8 +14,8 @@ import TablePagination from "./TablePagination";
 export default function ItemsTable() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
+  const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
-
   const location = useLocation();
   const { search } = location;
   const queryParams = new URLSearchParams(search);
@@ -31,11 +31,22 @@ export default function ItemsTable() {
     setCurrentPage(page);
   };
 
-  const { items, fetchItems, totalItems, isLoading, error } = useItems();
+  const {
+    items,
+    fetchItems,
+    debouncedFetchItems,
+    totalItems,
+    isLoading,
+    error,
+  } = useItems();
 
   useEffect(() => {
-    fetchItems(collectionId, currentPage, pageSize);
+    fetchItems(collectionId, currentPage, pageSize, searchText);
   }, [collectionId, currentPage, pageSize]);
+
+  useEffect(() => {
+    debouncedFetchItems(collectionId, currentPage, pageSize, searchText);
+  }, [searchText]);
 
   useEffect(() => {
     if (selectedItems.length === items.length && items.length !== 0) {
@@ -95,27 +106,39 @@ export default function ItemsTable() {
 
   return (
     <>
-      {isHaveRightToChange && (
-        <ToolBar>
-          <ToolButton
-            title="Add"
-            handleAction={() =>
-              navigate(`/collections/${collectionId}/items/addItem`)
-            }
-          >
-            Add
-          </ToolButton>
-          <ToolButton
-            handleAction={() =>
-              handleDeleteItems(
-                selectedItems.length > 0 ? undefined : selectedItems
-              )
-            }
-          >
-            Delete all
-          </ToolButton>
-        </ToolBar>
-      )}
+      <div className="flex justify-between flex-wrap md:flex-nowrap mb-2 md:mb-0">
+        {isHaveRightToChange && (
+          <ToolBar>
+            <ToolButton
+              title="Add"
+              handleAction={() =>
+                navigate(`/collections/${collectionId}/items/addItem`)
+              }
+            >
+              Add
+            </ToolButton>
+            <ToolButton
+              handleAction={() =>
+                handleDeleteItems(
+                  selectedItems.length > 0 ? undefined : selectedItems
+                )
+              }
+            >
+              Delete all
+            </ToolButton>
+          </ToolBar>
+        )}
+        <div className="flex self-center">
+          <input
+            className="w-full px-3 lg:w-auto border-2 border-gray-300 bg-white h-10 rounded-lg text-sm focus:outline-none"
+            type="text"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            placeholder="Search..."
+          />
+        </div>
+      </div>
+
       {isLoading && items.length === 0 && (
         <div className="flex flex-1 h-full justify-center items-center text-gray-500">
           <Spinner />

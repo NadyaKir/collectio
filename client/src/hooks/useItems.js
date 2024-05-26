@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SERVER_URL } from "../utils/config";
 import { setItems } from "../store/itemSlice";
+import { debounce } from "lodash";
 
 export const useItems = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -12,7 +13,12 @@ export const useItems = () => {
 
   const [totalItems, setTotalItems] = useState(0);
 
-  const fetchItems = async (collectionId, currentPage, pageSize) => {
+  const fetchItems = async (
+    collectionId,
+    currentPage,
+    pageSize,
+    searchText
+  ) => {
     setIsLoading(true);
     dispatch(setItems([]));
     try {
@@ -22,6 +28,7 @@ export const useItems = () => {
           params: {
             page: currentPage,
             pageSize: pageSize,
+            search: searchText,
           },
         }
       );
@@ -62,9 +69,12 @@ export const useItems = () => {
     }
   };
 
+  const debouncedFetchItems = debounce(fetchItems, 500);
+
   return {
     items,
     fetchItems,
+    debouncedFetchItems,
     totalItems,
     isLoading,
     error,
