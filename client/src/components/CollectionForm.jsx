@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { SERVER_URL } from "../utils/config";
 import axios from "axios";
 import getTokenData from "../utils/getTokenData";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Input } from "antd";
 import { useSelector } from "react-redux";
 import defaultImage from "../assets/placeholder-image.png";
