@@ -5,14 +5,12 @@ import { Input } from "antd";
 import axios from "axios";
 import { SERVER_URL } from "../utils/config";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-import getTokenData from "../utils/getTokenData";
 import Chip from "./Chip";
 import { useFetchTags } from "../hooks/useFetchTags";
 import { useSelector } from "react-redux";
 
 const ItemForm = ({ initialValues, tags, setTags }) => {
   const [editingTagIndex, setEditingTagIndex] = useState(null);
-  const { userId } = getTokenData();
   const { collectionId, itemId } = useParams();
   const location = useLocation();
   const pathname = location.pathname;
@@ -20,7 +18,6 @@ const ItemForm = ({ initialValues, tags, setTags }) => {
   const queryParams = new URLSearchParams(search);
   const collectionUserId = queryParams.get("userId");
   const navigate = useNavigate();
-  console.log(pathname);
   useFetchTags();
 
   const availableTags = useSelector((state) => state.tags.tags);
@@ -193,7 +190,8 @@ const ItemForm = ({ initialValues, tags, setTags }) => {
                 type="submit"
                 disabled={isSubmitting}
               >
-                {itemId
+                {pathname ===
+                `/collections/${collectionId}/items/update/${itemId}`
                   ? isSubmitting
                     ? "Updating..."
                     : "Update item"
