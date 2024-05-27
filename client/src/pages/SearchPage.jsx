@@ -77,7 +77,6 @@ const SearchPage = () => {
               >
                 {collection.title}
               </Link>
-              by {collection.createdBy}
             </li>
           ))}
           {searchResults.items.map((item) => (
