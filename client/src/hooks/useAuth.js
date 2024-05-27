@@ -40,6 +40,8 @@ const useAuth = () => {
       Cookies.set("token", token, {
         expires: 7,
         sameSite: "None",
+        secure: true,
+        httpOnly: true,
       });
       dispatch(setAuthenticated(true));
       navigate("/");
