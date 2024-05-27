@@ -1,3 +1,3 @@
-const SERVER_URL = "http://localhost:8081";
+const SERVER_URL = "https://course-project-ju69.onrender.com";
 
 export { SERVER_URL };
