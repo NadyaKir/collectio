@@ -1,17 +1,16 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import LanguageSwitcher from "./LanguageSwitcher";
-import ThemeSwitcher from "./ThemeSwitcher";
 import useAuth from "../../hooks/useAuth";
 import getTokenData from "../../utils/getTokenData";
 import { useDispatch, useSelector } from "react-redux";
 import { setSearchQuery } from "../../store/searchSlice";
 
 export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const searchQuery = useSelector((state) => state.search.searchQuery);
-  const [isOpen, setIsOpen] = useState(false);
+
   const { isAuthenticated, signout } = useAuth();
   const { isAdmin, userId } = getTokenData();
 
