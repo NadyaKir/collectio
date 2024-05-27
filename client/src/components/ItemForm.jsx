@@ -46,7 +46,6 @@ const ItemForm = ({ initialValues, tags, setTags }) => {
           collectionId,
           userId: collectionUserId,
         });
-        console.log(response.data.message);
         resetForm();
         navigate(
           `/collections/${collectionId}/items?userId=${collectionUserId}`
@@ -73,7 +72,6 @@ const ItemForm = ({ initialValues, tags, setTags }) => {
   };
 
   const handleTagClick = (tag) => {
-    console.log("tag");
     if (!tags.some((t) => t.name === tag.name)) {
       setTags([...tags, tag]);
     }
