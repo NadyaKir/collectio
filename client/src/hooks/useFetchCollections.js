@@ -4,9 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCollections } from "../store/collectionsSlice";
 import { SERVER_URL } from "../utils/config";
 import getToketData from "../utils/getTokenData";
-import { debounce } from "lodash";
 
-export const useCollections = () => {
+export const useFetchCollections = () => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -52,13 +51,10 @@ export const useCollections = () => {
     }
   };
 
-  const debouncedFetchUserCollections = debounce(fetchUserCollections, 500);
-
   return {
     collections,
     totalCollections,
     fetchUserCollections,
-    debouncedFetchUserCollections,
     isLoading,
     error,
   };

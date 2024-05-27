@@ -6,15 +6,17 @@ import ToolButton from "../components/Toolbar/ToolButton";
 import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 import { SERVER_URL } from "../utils/config";
 import Chip from "../components/Chip";
-import { useItems } from "../hooks/useItems";
+import { useFetchItems } from "../hooks/useFetchItems";
 import Spinner from "../components/Spinner";
 import getTokenData from "../utils/getTokenData";
 import TablePagination from "./TablePagination";
+import { useDebounce } from "../hooks/useDebounce";
 
 export default function ItemsTable() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const debouncedSearchText = useDebounce(searchText, 500);
   const navigate = useNavigate();
   const location = useLocation();
   const { search } = location;
@@ -31,22 +33,11 @@ export default function ItemsTable() {
     setCurrentPage(page);
   };
 
-  const {
-    items,
-    fetchItems,
-    debouncedFetchItems,
-    totalItems,
-    isLoading,
-    error,
-  } = useItems();
+  const { items, fetchItems, totalItems, isLoading, error } = useFetchItems();
 
   useEffect(() => {
-    fetchItems(collectionId, currentPage, pageSize, searchText);
-  }, [collectionId, currentPage, pageSize]);
-
-  useEffect(() => {
-    debouncedFetchItems(collectionId, currentPage, pageSize, searchText);
-  }, [searchText]);
+    fetchItems(collectionId, currentPage, pageSize, debouncedSearchText);
+  }, [collectionId, currentPage, pageSize, debouncedSearchText]);
 
   useEffect(() => {
     if (selectedItems.length === items.length && items.length !== 0) {

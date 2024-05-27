@@ -3,9 +3,8 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SERVER_URL } from "../utils/config";
 import { setItems } from "../store/itemSlice";
-import { debounce } from "lodash";
 
-export const useItems = () => {
+export const useFetchItems = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const items = useSelector((state) => state.items.items);
@@ -69,12 +68,9 @@ export const useItems = () => {
     }
   };
 
-  const debouncedFetchItems = debounce(fetchItems, 500);
-
   return {
     items,
     fetchItems,
-    debouncedFetchItems,
     totalItems,
     isLoading,
     error,

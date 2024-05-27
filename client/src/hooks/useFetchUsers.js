@@ -1,7 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
 import { SERVER_URL } from "../utils/config";
-import { debounce } from "lodash";
 
 export const useUsers = () => {
   const [users, setUsers] = useState([]);
@@ -33,13 +32,10 @@ export const useUsers = () => {
     }
   };
 
-  const debouncedFetchUsers = debounce(fetchUsers, 500);
-
   return {
     users,
     setUsers,
     fetchUsers,
-    debouncedFetchUsers,
     totalUsers,
     isLoading,
     error,

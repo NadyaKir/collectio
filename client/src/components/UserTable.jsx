@@ -7,14 +7,17 @@ import getTokenData from "../utils/getTokenData";
 import { DeleteOutlined } from "@ant-design/icons";
 import ToolBar from "../components/Toolbar/ToolBar";
 import ToolButton from "../components/Toolbar/ToolButton";
-import { useUsers } from "../hooks/useUsers";
+import { useUsers } from "../hooks/useFetchUsers";
 import Spinner from "../components/Spinner";
 import TablePagination from "./TablePagination";
+import { useDebounce } from "../hooks/useDebounce";
 
 export default function UserTable() {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const debouncedSearchText = useDebounce(searchText, 500);
+
   const { signout } = useAuth();
   const { userId } = getTokenData();
 
@@ -24,23 +27,13 @@ export default function UserTable() {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-  const {
-    users,
-    setUsers,
-    fetchUsers,
-    debouncedFetchUsers,
-    totalUsers,
-    isLoading,
-    error,
-  } = useUsers();
+
+  const { users, setUsers, fetchUsers, totalUsers, isLoading, error } =
+    useUsers();
 
   useEffect(() => {
-    fetchUsers(currentPage, pageSize, searchText);
-  }, []);
-
-  useEffect(() => {
-    debouncedFetchUsers(currentPage, pageSize, searchText);
-  }, [searchText]);
+    fetchUsers(currentPage, pageSize, debouncedSearchText);
+  }, [currentPage, pageSize, debouncedSearchText]);
 
   useEffect(() => {
     if (selectedUsers.length === users.length && users.length !== 0) {

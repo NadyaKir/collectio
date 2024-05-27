@@ -3,16 +3,16 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import ToolBar from "./Toolbar/ToolBar";
 import ToolButton from "./Toolbar/ToolButton";
 import ReactMarkdown from "react-markdown";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { SERVER_URL } from "../utils/config";
 import Spinner from "./Spinner";
-import { useCollections } from "../hooks/useCollections";
+import { useFetchCollections } from "../hooks/useFetchCollections";
 import getTokenData from "../utils/getTokenData";
 import TablePagination from "./TablePagination";
 import CategoryFilter from "./CategoryFilter";
 import useCategoryFilter from "../hooks/useCategoryFilter";
-import { debounce } from "lodash";
+import { useDebounce } from "../hooks/useDebounce";
 
 export default function CollectionsTable() {
   const navigate = useNavigate();
@@ -21,6 +21,7 @@ export default function CollectionsTable() {
   const { categories, selectedCategory, setSelectedCategory } =
     useCategoryFilter();
   const [searchText, setSearchText] = useState("");
+  const debouncedSearchText = useDebounce(searchText, 500);
 
   const location = useLocation();
   const { search } = location;
@@ -28,6 +29,7 @@ export default function CollectionsTable() {
   const collectionUserId = queryParams.get("userId");
   const collectionId = queryParams.get("collectionId");
   const { isAdmin, userId } = getTokenData();
+
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(8);
 
@@ -38,11 +40,10 @@ export default function CollectionsTable() {
   const {
     collections,
     fetchUserCollections,
-    debouncedFetchUserCollections,
     totalCollections,
     isLoading,
     error,
-  } = useCollections();
+  } = useFetchCollections();
 
   useEffect(() => {
     fetchUserCollections(
@@ -50,19 +51,15 @@ export default function CollectionsTable() {
       currentPage,
       pageSize,
       selectedCategory,
-      searchText
+      debouncedSearchText
     );
-  }, [collectionUserId, currentPage, pageSize, selectedCategory]);
-
-  useEffect(() => {
-    debouncedFetchUserCollections(
-      collectionUserId,
-      currentPage,
-      pageSize,
-      selectedCategory,
-      searchText
-    );
-  }, [searchText]);
+  }, [
+    collectionUserId,
+    currentPage,
+    pageSize,
+    selectedCategory,
+    debouncedSearchText,
+  ]);
 
   useEffect(() => {
     if (
