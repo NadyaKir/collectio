@@ -5,7 +5,7 @@ export default function Chip({
   marginRight,
   dismissible,
   onClick,
-  chipAction,
+  chipAction = () => {},
 }) {
   const handleClick = (e) => {
     e.stopPropagation();
