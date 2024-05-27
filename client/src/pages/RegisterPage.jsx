@@ -1,15 +1,17 @@
-import React from "react";
-import AuthForm from "../components/AuthForm";
-import AuthImage from "../components/AuthImage";
+import AuthForm from "../components/Auth/AuthForm";
+import AuthImage from "../components/Auth/AuthImage";
+import useAuth from "../hooks/useAuth";
 
 export default function RegisterPage() {
-  const handleSubmit = () => {};
+  const { error, register } = useAuth();
 
   return (
     <div className="h-screen flex">
       <AuthImage />
-      <div className="flex w-full lg:w-1/2 justify-center items-center bg-white space-y-8">
-        <AuthForm title="Register" onSubmit={handleSubmit} />
+      <div className="flex flex-col w-full h-sreen lg:w-1/2 justify-center items-center bg-white space-y-8">
+        <div className="flex flex-1 w-full justify-center items-center">
+          <AuthForm title="Register" onSubmit={register} error={error} />
+        </div>
       </div>
     </div>
   );

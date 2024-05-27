@@ -1,12 +1,10 @@
-import { Provider } from "react-redux";
-import store from "./store/store";
-import { Outlet } from "react-router-dom";
+import PageLayuout from "./components/Layout/PageLayuout";
 
 const App = () => {
   return (
-    <Provider store={store}>
-      <Outlet />
-    </Provider>
+    <div className="flex flex-col min-h-screen min-w-screen">
+      <PageLayuout />
+    </div>
   );
 };
 
