@@ -18,10 +18,25 @@ const server = http.createServer(app);
 
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
+
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
     credentials: true,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+    allowedHeaders:
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+  })
+);
+
+app.options(
+  "*",
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+    allowedHeaders:
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization",
   })
 );
 
