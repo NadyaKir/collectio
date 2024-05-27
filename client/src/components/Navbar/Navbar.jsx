@@ -103,7 +103,7 @@ export default function Navbar() {
               <button onClick={signout}>
                 <Link
                   to={isAuthenticated ? "/" : "/login"}
-                  className="block text-md p-2 rounded border border-teal-600 font-bold hover:text-teal-700 mt-4 lg:mt-0"
+                  className="block text-md p-2 rounded border border-teal-600 font-bold hover:text-teal-700 lg:mt-0"
                 >
                   {isAuthenticated ? "Sign out" : "Sign in"}
                 </Link>
