@@ -37,7 +37,10 @@ const useAuth = () => {
         lastLoginDate: new Date(),
       });
       const token = response.data.token;
-      Cookies.set("token", token, { expires: 7 });
+      Cookies.set("token", token, {
+        expires: 7,
+        sameSite: "None",
+      });
       dispatch(setAuthenticated(true));
       navigate("/");
     } catch (error) {
