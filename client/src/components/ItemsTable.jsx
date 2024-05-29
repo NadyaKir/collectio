@@ -75,10 +75,10 @@ export default function ItemsTable() {
 
   const handleDeleteItems = async (itemId) => {
     const itemIdsToDelete = itemId ? [itemId] : [];
-    console.log("itemIdsToDelete", itemIdsToDelete);
+
     const selectedIds =
       itemIdsToDelete.length > 0 ? itemIdsToDelete : selectedItems;
-    console.log("selectedIds", selectedIds);
+
     try {
       await axios.delete(`${SERVER_URL}/api/items/delete`, {
         data: { itemIds: selectedIds },
@@ -93,8 +93,6 @@ export default function ItemsTable() {
 
   const isHaveRightToChange =
     userId && (isAdmin || (userId === collectionUserId && !isAdmin));
-
-  console.log(selectedItems);
 
   return (
     <>

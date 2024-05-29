@@ -99,8 +99,6 @@ const ItemForm = ({ initialValues, tags, setTags }) => {
     title: Yup.string().required("Title is required"),
   });
 
-  console.log(tags);
-
   return (
     <div className="flex justify-center items-center h-full">
       <div className="w-full">
