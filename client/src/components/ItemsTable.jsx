@@ -25,7 +25,7 @@ export default function ItemsTable() {
 
   const { isAdmin, userId } = getTokenData();
   const { collectionId } = useParams();
-
+  console.log(collectionId);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(8);
 
@@ -65,7 +65,9 @@ export default function ItemsTable() {
   };
 
   const handleEditItem = (itemId) => {
-    navigate(`/collections/${collectionId}/items/update/${itemId}`);
+    navigate(
+      `/collections/${collectionId}/items/update/${itemId}?userId=${collectionUserId}`
+    );
   };
 
   const handleRowClick = (itemId) => {
@@ -216,7 +218,7 @@ export default function ItemsTable() {
                         {item.tags.length > 0 ? (
                           item.tags.map((tag, index) => (
                             <Link
-                              key={tag._id}
+                              key={`${tag._id}-${index}`}
                               to={`/search?searchQuery=${tag.name}`}
                             >
                               <Chip

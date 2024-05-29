@@ -23,7 +23,7 @@ const ItemForm = ({ initialValues, tags, setTags }) => {
   const availableTags = useSelector((state) => state.tags.tags);
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
-    if (pathname === `/collections/${collectionId}/items/update`) {
+    if (pathname === `/collections/${collectionId}/items/update/${itemId}`) {
       try {
         await axios.put(`${SERVER_URL}/api/items/update/${itemId}`, {
           ...values,
@@ -40,7 +40,7 @@ const ItemForm = ({ initialValues, tags, setTags }) => {
       }
     } else {
       try {
-        const response = await axios.post(`${SERVER_URL}/api/items/addItem`, {
+        await axios.post(`${SERVER_URL}/api/items/addItem`, {
           ...values,
           tags: tags.map((tag) => tag.name),
           collectionId,
@@ -103,6 +103,8 @@ const ItemForm = ({ initialValues, tags, setTags }) => {
     title: Yup.string().required("Title is required"),
   });
 
+  console.log(tags);
+
   return (
     <div className="flex justify-center items-center h-full">
       <div className="w-full">
@@ -134,16 +136,14 @@ const ItemForm = ({ initialValues, tags, setTags }) => {
                     <>
                       <Input
                         {...field}
-                        onChange={(e) => {
+                        onSelect={(value) => {
                           const selectedTag = availableTags.find(
-                            (tag) => tag.name === e.target.value
+                            (tag) => tag.name === value
                           );
                           if (selectedTag) {
                             handleTagClick(selectedTag);
                             setFieldValue("tags", "");
-                            return;
                           }
-                          setFieldValue("tags", e.target.value);
                         }}
                         onKeyDown={(e) => handleKeyDown(e, setFieldValue)}
                         size="medium"
@@ -156,6 +156,7 @@ const ItemForm = ({ initialValues, tags, setTags }) => {
                         autoComplete="off"
                         list="tags"
                       />
+
                       <datalist id="tags">
                         {availableTags.map((tag) => (
                           <option

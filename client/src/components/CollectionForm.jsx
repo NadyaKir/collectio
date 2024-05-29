@@ -10,6 +10,7 @@ import defaultImage from "../assets/placeholder-image.png";
 import { fileToBase64 } from "file64";
 
 const CollectionForm = ({ initialValues }) => {
+  const navigate = useNavigate();
   const location = useLocation();
   const pathname = location.pathname;
   const { search } = location;
@@ -20,9 +21,7 @@ const CollectionForm = ({ initialValues }) => {
   const [selectedImage, setSelectedImage] = useState(
     initialValues.image ? initialValues.image : defaultImage
   );
-  const navigate = useNavigate();
 
-  console.log(pathname, collectionId, collectionUserId);
   useEffect(() => {
     setSelectedImage(initialValues.image);
   }, [initialValues]);

@@ -54,22 +54,29 @@ export const updateItem = async (req, res) => {
     }
 
     if (tags && Array.isArray(tags)) {
-      for (const tag of tags) {
-        const existingTag = item.tags.find(
-          (itemTag) => itemTag.name === tag.name
-        );
+      const tagIds = tags.map((tag) => tag._id);
 
-        if (!existingTag) {
-          let newTag = await Tag.findOne({ name: tag.name });
+      item.tags = item.tags.filter((tagId) =>
+        tagIds.includes(tagId.toString())
+      );
 
-          if (!newTag) {
-            newTag = new Tag({ name: tag.name });
+      await Promise.all(
+        tags.map(async (tag) => {
+          let existingTag = await Tag.findOne({ name: tag.name });
+
+          if (existingTag) {
+            if (!item.tags.includes(existingTag._id)) {
+              item.tags.push(existingTag._id);
+            }
+          } else {
+            let newTag = new Tag({ name: tag.name });
+
             await newTag.save();
-          }
 
-          item.tags.push(newTag);
-        }
-      }
+            item.tags.push(newTag._id);
+          }
+        })
+      );
     }
 
     await item.save();

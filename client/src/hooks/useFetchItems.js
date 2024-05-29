@@ -20,6 +20,7 @@ export const useFetchItems = () => {
   ) => {
     setIsLoading(true);
     dispatch(setItems([]));
+
     try {
       const response = await axios.get(
         `${SERVER_URL}/api/items/collection/${collectionId}`,
