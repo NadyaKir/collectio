@@ -5,17 +5,18 @@ export default function Chip({
   marginRight,
   dismissible,
   onClick,
-  chipAction = () => {},
+  // chipAction = () => {},
 }) {
-  const handleClick = (e) => {
-    e.stopPropagation();
-    chipAction();
-  };
+  // const handleClick = (e) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  //   chipAction();
+  // };
 
   return (
     <div
       className={`relative inline-block select-none items-center whitespace-nowrap rounded-xl border border-gray-300 bg-gray-100 hover:border-gray-500 py-1.5 px-3 font-sans text-xs uppercase text-black ${marginRight} mb-2`}
-      onClick={handleClick}
+      // onClick={handleClick}
     >
       <span className={`${dismissible ? "mr-5" : "mr-0"} overflow-auto`}>
         #{title}
