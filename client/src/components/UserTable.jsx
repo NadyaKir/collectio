@@ -54,7 +54,7 @@ export default function UserTable() {
         userIds: selectedUsers,
       });
 
-      fetchUsers();
+      fetchUsers(currentPage, pageSize, debouncedSearchText);
       setSelectedUsers([]);
     } catch (error) {
       console.error("Error blocking users:", error);
@@ -67,7 +67,7 @@ export default function UserTable() {
         userIds: selectedUsers,
       });
 
-      fetchUsers();
+      fetchUsers(currentPage, pageSize, debouncedSearchText);
       setSelectedUsers([]);
     } catch (error) {
       console.error("Error unblocking users:", error);
@@ -179,7 +179,7 @@ export default function UserTable() {
         </div>
       </div>
 
-      {isLoading && users.length === 0 && (
+      {isLoading && (
         <div className="flex flex-1 h-full justify-center items-center text-gray-500">
           <Spinner />
         </div>
