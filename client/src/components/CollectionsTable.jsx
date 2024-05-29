@@ -10,7 +10,7 @@ import Spinner from "./Spinner";
 import { useFetchCollections } from "../hooks/useFetchCollections";
 import getTokenData from "../utils/getTokenData";
 import TablePagination from "./TablePagination";
-import CategoryFilter from "./CategoryFilter";
+import Filter from "./Filter";
 import useCategoryFilter from "../hooks/useCategoryFilter";
 import { useDebounce } from "../hooks/useDebounce";
 import useRouterParams from "../hooks/useRouterParams";
@@ -156,7 +156,7 @@ export default function CollectionsTable() {
           </ToolBar>
         )}
         <div className="flex self-center mb-4">
-          <CategoryFilter
+          <Filter
             categories={categories}
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}

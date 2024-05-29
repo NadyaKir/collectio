@@ -1,4 +1,4 @@
-export default function CategoryFilter({
+export default function Filter({
   categories,
   selectedCategory,
   setSelectedCategory,
