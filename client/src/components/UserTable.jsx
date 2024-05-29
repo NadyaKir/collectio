@@ -168,7 +168,7 @@ export default function UserTable() {
             Delete all
           </ToolButton>
         </ToolBar>
-        <div className="flex self-center">
+        <div className="flex self-center mb-4">
           <input
             className="w-full px-3 lg:w-auto border-2 border-gray-300 bg-white h-10 rounded-lg text-sm focus:outline-none"
             type="text"

@@ -84,7 +84,8 @@ export default function Navbar() {
               {isAdmin && isAuthenticated && (
                 <Link
                   to="/users"
-                  className="block my-3 lg:my-0 lg:inline-block lg:mt-0  rounded hover:text-teal-700 mr-4"
+                  onClick={handleIsOpen}
+                  className="block border-b-2 border-teal-600 p-2 md:p-0 md:border-none my-3 lg:inline-block lg:my-0 lg:mt-0 hover:text-teal-700 lg:mr-4"
                 >
                   Users
                 </Link>
@@ -92,13 +93,14 @@ export default function Navbar() {
               {isAuthenticated && (
                 <Link
                   to={`/collections?userId=${userId}`}
-                  className="block my-3 lg:my-0 lg:inline-block rounded hover:text-teal-700 lg:mr-3"
+                  onClick={handleIsOpen}
+                  className="block border-b-2 border-teal-600 p-2 md:p-0 md:border-none my-3 lg:inline-block lg:my-0 lg:mt-0 hover:text-teal-700 lg:mr-4"
                 >
                   My collections
                 </Link>
               )}
             </div>
-            <div className="flex mb-4 lg:mb-0">
+            <div className="flex mt-6 lg:mt-0">
               <button onClick={signout}>
                 <Link
                   to={isAuthenticated ? "/" : "/login"}

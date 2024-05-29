@@ -158,7 +158,7 @@ export default function CollectionsTable() {
             </ToolButton>
           </ToolBar>
         )}
-        <div className="flex self-center">
+        <div className="flex self-center mb-4">
           <CategoryFilter
             categories={categories}
             selectedCategory={selectedCategory}
