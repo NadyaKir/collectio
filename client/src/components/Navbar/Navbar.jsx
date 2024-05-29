@@ -4,6 +4,7 @@ import useAuth from "../../hooks/useAuth";
 import getTokenData from "../../utils/getTokenData";
 import { useDispatch, useSelector } from "react-redux";
 import { setSearchQuery } from "../../store/searchSlice";
+import ThemeSwitcher from "./ThemeSwitcher";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,10 +34,10 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="flex items-center justify-between flex-wrap bg-white py-4 shadow border-solid border-t-8 border-teal-700 mb-4">
+    <nav className="flex items-center justify-between flex-wrap py-4 shadow border-solid border-t-8 border-teal-700">
       <div className="lg:flex w-full justify-between mx-10">
         <div className="flex justify-between lg:w-auto w-full lg:border-b-0 pr-2 border-solid border-b-2 border-gray-300 pb-5 lg:pb-0">
-          <div className="flex items-center flex-shrink-0 text-gray-800 mr-16">
+          <div className="flex items-center flex-shrink-0 text-gray-800 dark:text-gray-200 mr-16">
             <span className="font-bold text-2xl tracking-tight">
               <Link to="/">Collectio</Link>
             </span>
@@ -65,9 +66,9 @@ export default function Navbar() {
           }  w-full lg:flex lg:items-center lg:w-auto`}
         >
           <div className="lg:flex items-center">
-            <div className="flex flex-grow mt-6 lg:mt-0  text-gray-600 lg:block">
+            <div className="flex flex-grow mt-6 lg:mt-0  text-gray-600 dark:text-white lg:block">
               <input
-                className="w-full px-3 lg:w-auto border-2 border-gray-300 bg-white h-10 rounded-lg text-sm focus:outline-none"
+                className="w-full px-3 lg:w-auto border-2 border-gray-300 h-10 rounded-lg text-sm focus:outline-none dark:bg-gray-800/[.3]"
                 type="search"
                 name="search"
                 placeholder="Search"
@@ -110,6 +111,7 @@ export default function Navbar() {
                 </Link>
               </button>
             </div>
+            <ThemeSwitcher />
           </div>
         </div>
       </div>

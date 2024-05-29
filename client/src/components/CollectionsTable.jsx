@@ -28,7 +28,7 @@ export default function CollectionsTable() {
   const { navigate, collectionId, collectionUserId } = useRouterParams();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(8);
+  const [pageSize, setPageSize] = useState(6);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -162,7 +162,7 @@ export default function CollectionsTable() {
             setSelectedCategory={setSelectedCategory}
           />
           <input
-            className="w-full px-3 lg:w-auto border-2 border-gray-300 bg-white h-10 rounded-lg text-sm focus:outline-none"
+            className="w-full px-3 lg:w-auto text-gray-600 dark:text-white  border-2 border-gray-300 dark:bg-gray-800/[.3] h-10 rounded-lg text-sm focus:outline-none"
             type="text"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
@@ -192,9 +192,9 @@ export default function CollectionsTable() {
         <div className="h-full w-full overflow-x-auto relative border rounded-md">
           <div className=" overflow-x-auto overflow-y-scroll">
             <table className="h-full min-w-full divide-y border-collapse border-b divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr className="h-12 text-center divide-gray-200">
-                  <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <thead className="bg-gray-50 dark:bg-gray-800/[.7]">
+                <tr className="h-12 text-center text-gray-600 dark:text-white divide-gray-200">
+                  <th className="px-4 py-3 text-xs font-medium uppercase tracking-wider">
                     {collections.length > 0 && isHaveRightToChange && (
                       <input
                         type="checkbox"
@@ -204,32 +204,32 @@ export default function CollectionsTable() {
                       />
                     )}
                   </th>
-                  <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 text-xs font-medium uppercase tracking-wider">
                     ID
                   </th>
-                  <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 text-xs font-medium uppercase tracking-wider">
                     Image
                   </th>
-                  <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 text-xs font-medium uppercase tracking-wider">
                     Title
                   </th>
-                  <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 text-xs font-medium uppercase tracking-wider">
                     Category
                   </th>
-                  <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 text-xs font-medium uppercase tracking-wider">
                     Description
                   </th>
-                  <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 text-xs font-medium uppercase tracking-wider">
                     {isHaveRightToChange ? "Actions" : null}
                   </th>
                 </tr>
               </thead>
 
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="divide-y divide-gray-200">
                 {collections.map((collection) => (
                   <tr
                     key={collection._id}
-                    className="text-left hover:bg-gray-100 cursor-pointer h-16"
+                    className="text-left hover:bg-gray-100 dark:hover:bg-gray-800/[.3] cursor-pointer h-16"
                     onClick={() => handleRowClick(collection._id)}
                   >
                     <td className="px-4 whitespace-nowrap">
@@ -245,19 +245,15 @@ export default function CollectionsTable() {
                         />
                       )}
                     </td>
-                    <td className="px-4 whitespace-nowrap w-1/8">
+                    <td className="px-4 whitespace-nowrap">
                       <Link to={`/collections/${collectionId}/`}>
                         {collection._id}
                       </Link>
                     </td>
-                    <td className="px-4 whitespace-nowrap">
-                      <img
-                        src={collection.image}
-                        alt={collection.title}
-                        className="w-full h-auto"
-                      />
+                    <td className="px-4 text-center whitespace-nowrap w-2/12">
+                      <img src={collection.image} alt={collection.title} />
                     </td>
-                    <td className="px-4 text-center whitespace-nowrap w-1/4">
+                    <td className="px-4 text-center whitespace-nowrap">
                       {collections.includes(collection._id) ? (
                         <input
                           type="checkbox"
@@ -272,17 +268,17 @@ export default function CollectionsTable() {
                       )}
                     </td>
 
-                    <td className="px-4 text-center whitespace-nowrap w-1/4">
+                    <td className="px-4 text-center whitespace-nowrap">
                       {collection.category}
                     </td>
-                    <td className="text-center px-4 whitespace-nowrap w-1/4">
+                    <td className="text-center px-4 whitespace-nowrap">
                       <ReactMarkdown>
                         {collection.description
                           ? collection.description
                           : "No description"}
                       </ReactMarkdown>
                     </td>
-                    <td className="text-center px-4 whitespace-nowrap w-1/4">
+                    <td className="text-center px-4 whitespace-nowrap">
                       {isHaveRightToChange && (
                         <>
                           <button

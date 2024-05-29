@@ -5,7 +5,7 @@ import TagsCloud from "../components/TagsCloud";
 export default function HomePage() {
   return (
     <>
-      <div className="mb-8">
+      <div className="mt-6 mb-8">
         <h2 className="text-xl font-bold mb-4">Last items</h2>
         <LastItems />
       </div>

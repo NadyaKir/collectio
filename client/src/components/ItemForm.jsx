@@ -118,6 +118,7 @@ const ItemForm = ({ initialValues, tags, setTags }) => {
                 <Field
                   id="title"
                   name="title"
+                  className="dark:text-white dark:bg-gray-800/[.3] dark:placeholder-gray-600"
                   as={Input}
                   value={values.title}
                   placeholder="Item name"
@@ -142,6 +143,7 @@ const ItemForm = ({ initialValues, tags, setTags }) => {
                         onKeyDown={(e) => handleKeyDown(e, setFieldValue)}
                         size="medium"
                         autoFocus
+                        className="dark:text-white dark:bg-gray-800/[.3] dark:placeholder-gray-600"
                         placeholder={
                           itemId
                             ? "Enter <Space> to add tag or click on one to change"

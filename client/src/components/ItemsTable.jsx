@@ -24,7 +24,7 @@ export default function ItemsTable() {
   const { navigate, collectionId, collectionUserId } = useRouterParams();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(8);
+  const [pageSize, setPageSize] = useState(6);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -122,7 +122,7 @@ export default function ItemsTable() {
         )}
         <div className="flex self-center mb-4">
           <input
-            className="w-full px-3 lg:w-auto border-2 border-gray-300 bg-white h-10 rounded-lg text-sm focus:outline-none"
+            className="w-full px-3 lg:w-auto text-gray-600 dark:text-white border-2 border-gray-300 dark:bg-gray-800/[.3] h-10 rounded-lg text-sm focus:outline-none"
             type="text"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
@@ -152,9 +152,9 @@ export default function ItemsTable() {
         <div className="h-full w-full overflow-x-auto relative border rounded-md">
           <div className=" overflow-x-auto overflow-y-scroll">
             <table className="h-full min-w-full divide-y border-collapse border-b divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr className="h-12 text-center divide-gray-200">
-                  <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <thead className="bg-gray-50 dark:bg-gray-800/[.3]">
+                <tr className="h-12 text-center text-gray-600 dark:text-white divide-gray-200">
+                  <th className="px-4 py-3 text-xs font-medium uppercase tracking-wider">
                     {items.length > 0 &&
                       userId &&
                       userId === collectionUserId && (
@@ -166,30 +166,30 @@ export default function ItemsTable() {
                         />
                       )}
                   </th>
-                  <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 text-xs font-medium uppercase tracking-wider">
                     ID
                   </th>
-                  <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 text-xs font-medium uppercase tracking-wider">
                     Name
                   </th>
-                  <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 text-xs font-medium uppercase tracking-wider">
                     Tags
                   </th>
 
-                  <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 text-xs font-medium uppercase tracking-wider">
                     {isHaveRightToChange ? "Actions" : null}
                   </th>
                 </tr>
               </thead>
 
-              <tbody className="h-full w-full bg-white divide-y divide-gray-200">
+              <tbody className="h-full w-full divide-y divide-gray-200">
                 {items.map((item) => (
                   <tr
                     key={item._id}
-                    className="text-left hover:bg-gray-100 cursor-pointer h-16"
+                    className="text-left hover:bg-gray-100 dark:hover:bg-gray-800/[.3] cursor-pointer h-16"
                     onClick={() => handleRowClick(item._id)}
                   >
-                    <td className="px-4 py-2 whitespace-nowrap">
+                    <td className="px-4 py-2 ">
                       {isHaveRightToChange && (
                         <input
                           type="checkbox"
@@ -200,17 +200,15 @@ export default function ItemsTable() {
                         />
                       )}
                     </td>
-                    <td className="px-4 py-2 whitespace-nowrap w-1/4">
+                    <td className="px-4 py-2  w-1/4">
                       <Link
                         to={`/collections/${collectionId}/items/${item._id}`}
                       >
                         {item._id}
                       </Link>
                     </td>
-                    <td className="px-4 py-2 whitespace-nowrap w-1/4">
-                      {item.title}
-                    </td>
-                    <td className="text-center px-4 py-2 whitespace-nowrap w-1/4">
+                    <td className="px-4 py-2  w-1/4">{item.title}</td>
+                    <td className="text-center px-4 py-2  w-1/4">
                       <div className="flex items-center">
                         {item.tags.length > 0 ? (
                           item.tags.map((tag, index) => (
@@ -234,7 +232,7 @@ export default function ItemsTable() {
                         )}
                       </div>
                     </td>
-                    <td className="text-center px-4 py-2 whitespace-nowrap w-1/4">
+                    <td className="text-center px-4 py-2  w-1/4">
                       {isHaveRightToChange && (
                         <>
                           <button

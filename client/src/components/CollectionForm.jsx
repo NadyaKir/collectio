@@ -91,7 +91,7 @@ const CollectionForm = ({ initialValues }) => {
                   onChange={(e) => {
                     setFieldValue("title", e.target.value);
                   }}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-teal-700 dark:text-white dark:bg-gray-800/[.3] dark:placeholder-gray-600"
                   required
                 />
                 <ErrorMessage
@@ -112,7 +112,7 @@ const CollectionForm = ({ initialValues }) => {
                   onChange={(e) => {
                     setFieldValue("description", e.target.value);
                   }}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-teal-700 dark:text-white dark:bg-gray-800/[.3] dark:placeholder-gray-600"
                 />
                 <ErrorMessage
                   name="description"
@@ -132,7 +132,7 @@ const CollectionForm = ({ initialValues }) => {
                   onChange={(e) => {
                     setFieldValue("category", e.target.value);
                   }}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-teal-700 dark:text-white dark:bg-gray-800/[.3] dark:placeholder-gray-600"
                   required
                 >
                   <option value="">Select category...</option>
@@ -155,6 +155,7 @@ const CollectionForm = ({ initialValues }) => {
                 <Input
                   type="file"
                   name="image"
+                  className="hover:border-teal-700 focus:border-teal-700 dark:text-white dark:bg-gray-800/[.3] dark:placeholder-gray-600"
                   onChange={(e) => {
                     const file = e.target.files[0];
                     if (file && file.type.startsWith("image/")) {

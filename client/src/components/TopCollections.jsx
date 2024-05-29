@@ -48,7 +48,7 @@ export default function TopCollections() {
     <div className="overflow-x-auto">
       <table className="w-full table-auto border-collapse border border-gray-200">
         <thead>
-          <tr className="bg-gray-50">
+          <tr className="bg-gray-50 dark:bg-gray-800/[.3]">
             <th className="px-4 py-2">Position</th>
             <th className="px-4 py-2">Title</th>
             <th className="px-4 py-2">Number of items</th>
@@ -70,7 +70,7 @@ export default function TopCollections() {
               <td className="px-4 py-2 font-bold text-center">
                 {collection.numberOfItems}
               </td>
-              <td className="px-4 py-2">
+              <td className="px-4 py-2 text-center">
                 <Link
                   to={`/collections?userId=${collection.userId}&&collectionId=${collection.collectionId}`}
                   className="hover:text-teal-700 cursor-pointer"

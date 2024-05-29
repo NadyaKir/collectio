@@ -22,7 +22,7 @@ export default function UserTable() {
   const { userId } = getTokenData();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(8);
+  const [pageSize, setPageSize] = useState(6);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -170,7 +170,7 @@ export default function UserTable() {
         </ToolBar>
         <div className="flex self-center mb-4">
           <input
-            className="w-full px-3 lg:w-auto border-2 border-gray-300 bg-white h-10 rounded-lg text-sm focus:outline-none"
+            className="w-full px-3 lg:w-auto border-2 text-gray-600 dark:text-white  border-gray-300 dark:bg-gray-800/[.3] h-10 rounded-lg text-sm focus:outline-none"
             type="text"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
@@ -198,8 +198,8 @@ export default function UserTable() {
         <div className="h-full w-full overflow-x-auto relative border rounded-md">
           <div className=" overflow-x-auto overflow-y-scroll">
             <table className="h-full min-w-full divide-y border-collapse border-b divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr className="h-12 text-center divide-gray-200">
+              <thead className="bg-gray-50 dark:bg-gray-800/[.3]">
+                <tr className="h-12 text-center text-gray-600 dark:text-white divide-gray-200">
                   <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
                     {users.length > 0 && (
                       <input
@@ -210,40 +210,38 @@ export default function UserTable() {
                       />
                     )}
                   </th>
-                  <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider w-16">
+                  <th className="px-4 text-xs font-medium uppercase tracking-wider w-16">
                     ID
                   </th>
-                  <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 text-xs font-medium uppercase tracking-wider">
                     Name
                   </th>
-                  <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 text-xs font-medium uppercase tracking-wider">
                     Email
                   </th>
-                  <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 text-xs font-medium uppercase tracking-wider">
                     Registration Date
                   </th>
-                  <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 text-xs font-medium uppercase tracking-wider">
                     Last Login Date
                   </th>
-                  <th className="px-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 text-xs font-medium uppercase tracking-wider">
                     Role
                   </th>
-                  <th className="px-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="px-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-2 ">Status</th>
+                  <th className="px-2 text-xs font-medium uppercase tracking-wider">
                     Action
                   </th>
                 </tr>
               </thead>
-              <tbody className="h-full w-full bg-white divide-y divide-gray-200">
+              <tbody className="h-full w-full divide-y divide-gray-200">
                 {users.map((user) => (
                   <tr
                     key={user._id}
-                    className="text-center hover:bg-gray-100 cursor-pointer"
+                    className="text-center hover:bg-gray-100 dark:hover:bg-gray-800/[.3] cursor-pointer"
                     onClick={() => handleRowClick(user._id)}
                   >
-                    <td className="px-2 py-2 whitespace-nowrap">
+                    <td className="px-2 py-2 ">
                       <input
                         type="checkbox"
                         className="form-checkbox h-5 w-5"
@@ -251,40 +249,36 @@ export default function UserTable() {
                         onChange={() => handleSelectUser(user._id)}
                       />
                     </td>
-                    <td className="px-2 py-2 whitespace-nowrap w-1">
-                      {user._id}
-                    </td>
-                    <td className="px-2 py-2 whitespace-nowrap">
-                      {user.username}
-                    </td>
+                    <td className="px-2 py-2  w-1">{user._id}</td>
+                    <td className="px-2 py-2 ">{user.username}</td>
                     <td
-                      className={`px-2 py-2 whitespace-nowrap ${
+                      className={`px-2 py-2  ${
                         userId === user._id ? "font-bold" : ""
                       }`}
                     >
                       {user.email}
                       {userId === user._id ? " (you)" : ""}
                     </td>
-                    <td className="text-center px-2 py-2 whitespace-nowrap">
+                    <td className="text-center px-2 py-2 ">
                       {user.registrationDate}
                     </td>
-                    <td className="text-center px-2 py-2 whitespace-nowrap">
+                    <td className="text-center px-2 py-2 ">
                       {user.lastLoginDate ? user.lastLoginDate : "-"}
                     </td>
-                    <td className="px-2 py-2 whitespace-nowrap">
+                    <td className="px-2 py-2 ">
                       <select
                         value={user.isAdmin ? "admin" : "user"}
                         onChange={(e) =>
                           handleChangeRole(user._id, e.target.value)
                         }
                         onClick={(e) => e.stopPropagation()}
-                        className="block w-full py-1 px-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-teal-600 focus:border-teal-700 sm:text-sm"
+                        className="block w-full py-1 px-2 border border-gray-300 bg-white dark:bg-gray-800/[.3] rounded-md shadow-sm focus:outline-none focus:ring-teal-600 focus:border-teal-700 sm:text-sm"
                       >
                         <option value="user">User</option>
                         <option value="admin">Admin</option>
                       </select>
                     </td>
-                    <td className="px-2 py-2 whitespace-nowrap">
+                    <td className="px-2 py-2 ">
                       <div className="flex justify-center items-center">
                         <span
                           className={`inline-block w-16 text-center rounded-full px-2 py-1 text-xs font-semibold ${getStatusColor(
@@ -295,7 +289,7 @@ export default function UserTable() {
                         </span>
                       </div>
                     </td>
-                    <td className="px-2 text-center py-2 whitespace-nowrap">
+                    <td className="px-2 text-center py-2 ">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
