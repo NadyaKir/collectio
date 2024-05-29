@@ -92,7 +92,7 @@ export default function CollectionsTable() {
   };
 
   const handleEditCollection = (collectionId) => {
-    navigate(`/collections/update/${collectionId}`);
+    navigate(`/collections/update/${collectionId}?userId=${collectionUserId}`);
   };
 
   const handleRowClick = (collectionId) => {

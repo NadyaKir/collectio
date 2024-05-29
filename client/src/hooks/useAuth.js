@@ -41,7 +41,6 @@ const useAuth = () => {
         expires: 7,
         sameSite: "None",
         secure: true,
-        httpOnly: true,
       });
       dispatch(setAuthenticated(true));
       navigate("/");

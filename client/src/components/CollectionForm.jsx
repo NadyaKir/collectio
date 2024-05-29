@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { SERVER_URL } from "../utils/config";
 import axios from "axios";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { Input } from "antd";
 import { useSelector } from "react-redux";
 import defaultImage from "../assets/placeholder-image.png";
@@ -15,12 +15,14 @@ const CollectionForm = ({ initialValues }) => {
   const { search } = location;
   const queryParams = new URLSearchParams(search);
   const collectionUserId = queryParams.get("userId");
-  const collectionId = queryParams.get("collectionId");
+  const { collectionId } = useParams();
   const categories = useSelector((state) => state.collections.categories);
   const [selectedImage, setSelectedImage] = useState(
     initialValues.image ? initialValues.image : defaultImage
   );
   const navigate = useNavigate();
+
+  console.log(pathname, collectionId, collectionUserId);
   useEffect(() => {
     setSelectedImage(initialValues.image);
   }, [initialValues]);
@@ -42,7 +44,7 @@ const CollectionForm = ({ initialValues }) => {
     };
 
     try {
-      if (pathname === "/collections/update") {
+      if (pathname === `/collections/update/${collectionId}`) {
         await axios.put(
           `${SERVER_URL}/api/collections/update/${collectionId}`,
           updatedValuesWithBase64Image
@@ -181,7 +183,7 @@ const CollectionForm = ({ initialValues }) => {
                 disabled={isSubmitting}
                 className="bg-teal-500 text-white py-2 px-4 rounded-md hover:bg-teal-600"
               >
-                {pathname === "/collections/update"
+                {pathname === `/collections/update/${collectionId}`
                   ? isSubmitting
                     ? "Updating..."
                     : "Update collection"
