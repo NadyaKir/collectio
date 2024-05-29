@@ -7,7 +7,7 @@ import getTokenData from "../utils/getTokenData";
 import { DeleteOutlined } from "@ant-design/icons";
 import ToolBar from "../components/Toolbar/ToolBar";
 import ToolButton from "../components/Toolbar/ToolButton";
-import { useUsers } from "../hooks/useFetchUsers";
+import { useFetchUsers } from "../hooks/useFetchUsers";
 import Spinner from "../components/Spinner";
 import TablePagination from "./TablePagination";
 import { useDebounce } from "../hooks/useDebounce";
@@ -29,7 +29,7 @@ export default function UserTable() {
   };
 
   const { users, setUsers, fetchUsers, totalUsers, isLoading, error } =
-    useUsers();
+    useFetchUsers();
 
   useEffect(() => {
     fetchUsers(currentPage, pageSize, debouncedSearchText);

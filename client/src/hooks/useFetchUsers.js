@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { SERVER_URL } from "../utils/config";
 
-export const useUsers = () => {
+export const useFetchUsers = () => {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
