@@ -1,4 +1,4 @@
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import ToolBar from "./Toolbar/ToolBar";
 import ToolButton from "./Toolbar/ToolButton";
@@ -13,9 +13,9 @@ import TablePagination from "./TablePagination";
 import CategoryFilter from "./CategoryFilter";
 import useCategoryFilter from "../hooks/useCategoryFilter";
 import { useDebounce } from "../hooks/useDebounce";
+import useRouterParams from "../hooks/useRouterParams";
 
 export default function CollectionsTable() {
-  const navigate = useNavigate();
   const [selectedCollections, setSelectedCollections] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const { categories, selectedCategory, setSelectedCategory } =
@@ -23,12 +23,9 @@ export default function CollectionsTable() {
   const [searchText, setSearchText] = useState("");
   const debouncedSearchText = useDebounce(searchText, 500);
 
-  const location = useLocation();
-  const { search } = location;
-  const queryParams = new URLSearchParams(search);
-  const collectionUserId = queryParams.get("userId");
-  const collectionId = queryParams.get("collectionId");
   const { isAdmin, userId } = getTokenData();
+
+  const { navigate, collectionId, collectionUserId } = useRouterParams();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(8);

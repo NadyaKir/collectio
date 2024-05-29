@@ -3,7 +3,7 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
 import ToolBar from "../components/Toolbar/ToolBar";
 import ToolButton from "../components/Toolbar/ToolButton";
-import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { SERVER_URL } from "../utils/config";
 import Chip from "../components/Chip";
 import { useFetchItems } from "../hooks/useFetchItems";
@@ -11,20 +11,18 @@ import Spinner from "../components/Spinner";
 import getTokenData from "../utils/getTokenData";
 import TablePagination from "./TablePagination";
 import { useDebounce } from "../hooks/useDebounce";
+import useRouterParams from "../hooks/useRouterParams";
 
 export default function ItemsTable() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [searchText, setSearchText] = useState("");
   const debouncedSearchText = useDebounce(searchText, 500);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { search } = location;
-  const queryParams = new URLSearchParams(search);
-  const collectionUserId = queryParams.get("userId");
 
   const { isAdmin, userId } = getTokenData();
-  const { collectionId } = useParams();
+
+  const { navigate, collectionId, collectionUserId } = useRouterParams();
+
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(8);
 

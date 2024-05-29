@@ -4,20 +4,16 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Input } from "antd";
 import axios from "axios";
 import { SERVER_URL } from "../utils/config";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
 import Chip from "./Chip";
 import { useFetchTags } from "../hooks/useFetchTags";
 import { useSelector } from "react-redux";
+import useRouterParams from "../hooks/useRouterParams";
 
 const ItemForm = ({ initialValues, tags, setTags }) => {
   const [editingTagIndex, setEditingTagIndex] = useState(null);
-  const { collectionId, itemId } = useParams();
-  const location = useLocation();
-  const pathname = location.pathname;
-  const { search } = location;
-  const queryParams = new URLSearchParams(search);
-  const collectionUserId = queryParams.get("userId");
-  const navigate = useNavigate();
+
+  const { navigate, pathname, collectionId, itemId, collectionUserId } =
+    useRouterParams();
   useFetchTags();
 
   const availableTags = useSelector((state) => state.tags.tags);

@@ -3,20 +3,16 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { SERVER_URL } from "../utils/config";
 import axios from "axios";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { Input } from "antd";
 import { useSelector } from "react-redux";
 import defaultImage from "../assets/placeholder-image.png";
 import { fileToBase64 } from "file64";
+import useRouterParams from "../hooks/useRouterParams";
 
 const CollectionForm = ({ initialValues }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const pathname = location.pathname;
-  const { search } = location;
-  const queryParams = new URLSearchParams(search);
-  const collectionUserId = queryParams.get("userId");
-  const { collectionId } = useParams();
+  const { navigate, pathname, collectionId, collectionUserId } =
+    useRouterParams();
+
   const categories = useSelector((state) => state.collections.categories);
   const [selectedImage, setSelectedImage] = useState(
     initialValues.image ? initialValues.image : defaultImage
