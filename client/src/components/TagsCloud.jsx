@@ -5,10 +5,11 @@ import { setSearchQuery } from "../store/searchSlice";
 import { TagCloud } from "react-tagcloud";
 import { useFetchTags } from "../hooks/useFetchTags";
 import Chip from "./Chip";
+import Spinner from "./Spinner";
 
 export default function TagsCloud() {
   const dispatch = useDispatch();
-  useFetchTags();
+  const { isLoading, error } = useFetchTags();
 
   const tags = useSelector((state) => state.tags.tags);
   const location = useLocation();
@@ -27,6 +28,18 @@ export default function TagsCloud() {
       <Chip title={tag.name} marginRight="mr-2" />
     </Link>
   );
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  if (!isLoading && tags.length === 0) {
+    return <div>No tags</div>;
+  }
 
   return (
     <div className="overflow-y-scroll">

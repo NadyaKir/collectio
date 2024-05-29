@@ -1,28 +1,46 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { SERVER_URL } from "../utils/config";
 import { useDispatch, useSelector } from "react-redux";
 import { setLastItems } from "../store/itemSlice";
+import Spinner from "../components/Spinner";
 
 export default function LastItems() {
   const dispatch = useDispatch();
   const lastItems = useSelector((state) => state.items.lastItems);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchLastItems = async () => {
+      setIsLoading(true);
       try {
         const response = await axios.get(`${SERVER_URL}/api/items`);
-
         const items = response.data.items;
         dispatch(setLastItems(items));
+        setIsLoading(false);
       } catch (error) {
-        console.error("Fetch tags error:", error);
-        throw error;
+        console.error("Fetch last items error:", error);
+        setError(error);
+        setIsLoading(false);
       }
     };
+
     fetchLastItems();
-  }, []);
+  }, [dispatch]);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  if (!isLoading && lastItems.length === 0) {
+    return <div>No last items</div>;
+  }
 
   return (
     <div className="grid xs:grid-col-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-1">

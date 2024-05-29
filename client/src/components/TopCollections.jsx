@@ -1,29 +1,48 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { SERVER_URL } from "../utils/config";
 import { setTopCollections } from "../store/collectionsSlice";
 import { useDispatch, useSelector } from "react-redux";
+import Spinner from "./Spinner";
 
 export default function TopCollections() {
   const dispatch = useDispatch();
   const topCollections = useSelector(
     (state) => state.collections.topCollections
   );
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchTopCollections = async () => {
+      setIsLoading(true);
       try {
         const response = await axios.get(`${SERVER_URL}/api/collections/top`);
         const topCollections = response.data;
         dispatch(setTopCollections(topCollections));
+        setIsLoading(false);
       } catch (error) {
         console.error("Error while getting top collections:", error);
+        setError(error);
+        setIsLoading(false);
       }
     };
 
     fetchTopCollections();
   }, [dispatch]);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  if (!isLoading && topCollections.length === 0) {
+    return <div>No top collections</div>;
+  }
 
   return (
     <div className="overflow-x-auto">
