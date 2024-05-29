@@ -85,7 +85,7 @@ export default function UserTable() {
         data: { userIds: selectedIds },
       });
 
-      fetchUsers();
+      fetchUsers(currentPage, pageSize, debouncedSearchText);
       setSelectedUsers([]);
     } catch (error) {
       console.error("Error deleting users:", error);

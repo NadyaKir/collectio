@@ -112,7 +112,13 @@ export default function CollectionsTable() {
         data: { collectionsIds: selectedIds },
       });
 
-      fetchUserCollections();
+      fetchUserCollections(
+        collectionUserId,
+        currentPage,
+        pageSize,
+        selectedCategory,
+        debouncedSearchText
+      );
       setSelectedCollections([]);
     } catch (error) {
       console.error("Error deleting collections:", error);

@@ -25,7 +25,6 @@ export default function ItemsTable() {
 
   const { isAdmin, userId } = getTokenData();
   const { collectionId } = useParams();
-  console.log(collectionId);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(8);
 
@@ -78,16 +77,16 @@ export default function ItemsTable() {
 
   const handleDeleteItems = async (itemId) => {
     const itemIdsToDelete = itemId ? [itemId] : [];
-
+    console.log("itemIdsToDelete", itemIdsToDelete);
     const selectedIds =
       itemIdsToDelete.length > 0 ? itemIdsToDelete : selectedItems;
-
+    console.log("selectedIds", selectedIds);
     try {
       await axios.delete(`${SERVER_URL}/api/items/delete`, {
         data: { itemIds: selectedIds },
       });
 
-      fetchItems();
+      fetchItems(collectionId, currentPage, pageSize, searchText);
       setSelectedItems([]);
     } catch (error) {
       console.error("Error deleting items:", error);
@@ -96,6 +95,8 @@ export default function ItemsTable() {
 
   const isHaveRightToChange =
     userId && (isAdmin || (userId === collectionUserId && !isAdmin));
+
+  console.log(selectedItems);
 
   return (
     <>
