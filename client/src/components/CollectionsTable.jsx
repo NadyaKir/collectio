@@ -189,8 +189,8 @@ export default function CollectionsTable() {
         </div>
       )}
       {!isLoading && collections.length > 0 && (
-        <div className="h-full w-full overflow-x-auto relative border rounded-md">
-          <div className=" overflow-x-auto overflow-y-scroll">
+        <div className="flex flex-1 h-full w-full overflow-x-auto relative border rounded-md">
+          <div className="w-full overflow-x-auto overflow-y-scroll">
             <table className="h-full min-w-full divide-y border-collapse border-b divide-gray-200">
               <thead className="bg-gray-50 dark:bg-gray-800/[.7]">
                 <tr className="h-12 text-center text-gray-600 dark:text-white divide-gray-200">
