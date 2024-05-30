@@ -228,7 +228,9 @@ export default function UserTable() {
                   <th className="px-4 text-xs font-medium uppercase tracking-wider">
                     Role
                   </th>
-                  <th className="px-2 ">Status</th>
+                  <th className="px-2 text-xs font-medium uppercase tracking-wider">
+                    Status
+                  </th>
                   <th className="px-2 text-xs font-medium uppercase tracking-wider">
                     Action
                   </th>
