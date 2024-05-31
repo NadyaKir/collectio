@@ -215,6 +215,7 @@ export default function ItemsTable() {
                             <Link
                               key={`${tag._id}-${index}`}
                               to={`/search?searchQuery=${tag.name}`}
+                              onClick={(e) => e.stopPropagation()}
                             >
                               <Chip
                                 title={tag.name}
