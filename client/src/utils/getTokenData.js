@@ -8,11 +8,13 @@ const getTokenData = () => {
     return {
       userId: decodedToken.userId,
       isAdmin: decodedToken.isAdmin,
+      email: decodedToken.email,
     };
   }
   return {
     userId: null,
     isAdmin: false,
+    email: null,
   };
 };
 

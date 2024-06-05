@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { SERVER_URL } from "../utils/config";
 import { CloseOutlined } from "@ant-design/icons";
+import getTokenData from "../utils/getTokenData";
 
 export default function TicketModal({ closeModal }) {
   const [description, setDescription] = useState("");
@@ -12,11 +13,11 @@ export default function TicketModal({ closeModal }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const userEmail = "example@gmail.com";
+    const { email } = getTokenData();
 
     try {
       const ticket = await axios.post(`${SERVER_URL}/api/jira/issue/create`, {
-        email: userEmail,
+        email,
       });
 
       console.log(ticket);
