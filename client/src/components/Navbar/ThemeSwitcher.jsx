@@ -21,7 +21,7 @@ export default function ThemeSwitcher() {
   };
 
   return (
-    <div className="flex justify-start items-center mt-2 md:mt-0 md:ml-4">
+    <div className="flex justify-start items-center mt-2 lg:mt-0 lg:ml-4">
       <span className="mr-2 text-2xl font-medium text-gray-900 dark:text-gray-300">
         {isDarkMode ? <MoonOutlined /> : <SunOutlined />}
       </span>
