@@ -23,6 +23,7 @@ import UpdateCollectionPage from "./pages/UpdateCollectionPage.jsx";
 import UpdateItemPage from "./pages/UpdateItemPage.jsx";
 import AddItemPage from "./pages/AddItemPage.jsx";
 import SearchPage from "./pages/SearchPage.jsx";
+import IssuesPage from "./pages/IssuesPage.jsx";
 
 const appRoutes = (
   <Route path="/" element={<App />}>
@@ -31,6 +32,7 @@ const appRoutes = (
       <Route path="/users" element={<AdminPage />} />
     </Route>
     <Route path="/collections" element={<CollectionsPage />} />
+    <Route path="/issues" element={<IssuesPage />} />
     <Route path="/collections/add" element={<AddCollectionPage />} />
     <Route
       path="/collections/update/:collectionId"
