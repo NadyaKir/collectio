@@ -9,6 +9,14 @@ import useRouterParams from "../hooks/useRouterParams";
 import { useFetchCollection } from "../hooks/useFetchCollection";
 import getTokenData from "../utils/getTokenData";
 
+const priorityOptions = {
+  Highest: "1",
+  High: "2",
+  Medium: "3",
+  Low: "4",
+  Lowest: "5",
+};
+
 const initialValues = {
   description: "",
   priority: "Medium",
@@ -125,11 +133,11 @@ export default function TicketModal({ closeModal }) {
                     className="block w-full py-1 px-2 border border-gray-300 bg-white dark:bg-gray-800/[.3] rounded-md shadow-sm focus:outline-none focus:ring-teal-600 focus:border-teal-700 sm:text-sm"
                     required
                   >
-                    <option value="Highest">Highest</option>
-                    <option value="High">High</option>
-                    <option value="Medium">Medium</option>
-                    <option value="Low">Low</option>
-                    <option value="Lowest">Lowest</option>
+                    {Object.keys(priorityOptions).map((priority) => (
+                      <option key={priority} value={priorityOptions[priority]}>
+                        {priority}
+                      </option>
+                    ))}
                   </Field>
                   <ErrorMessage
                     name="priority"
