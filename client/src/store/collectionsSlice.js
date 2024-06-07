@@ -3,18 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 const collectionsSlice = createSlice({
   name: "collections",
   initialState: {
-    categories: [
-      "Chronological collection",
-      "General collection",
-      "Documentary collection",
-      "Research collection",
-      "Thematic collection",
-      "Postal history collection",
-      "Airmail collection",
-      "Postmark collection",
-      "Specialized collection",
-      "Other",
-    ],
     collections: [],
     editingCollections: [],
     topCollections: [],

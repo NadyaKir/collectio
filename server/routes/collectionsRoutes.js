@@ -1,6 +1,7 @@
 import express from "express";
 import {
   getAllCollections,
+  getCategories,
   addCollection,
   deleteCollections,
   updateCollection,
@@ -12,6 +13,7 @@ import {
 const collectionRoute = express.Router();
 
 collectionRoute.get("/", getAllCollections);
+collectionRoute.get("/categories", getCategories);
 collectionRoute.get("/collection/:collectionId", getCollectionById);
 collectionRoute.get("/top", getTopCollections);
 collectionRoute.get("/:userId", getCollectionsByUser);

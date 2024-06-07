@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const enumCategories = [
+export const enumCategories = [
   "Chronological collection",
   "General collection",
   "Documentary collection",

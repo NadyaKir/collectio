@@ -19,7 +19,7 @@ export const useFetchCollections = () => {
     collectionUserId,
     currentPage,
     pageSize,
-    selectedCategory,
+    selectedValue,
     searchText
   ) => {
     setIsLoading(true);
@@ -33,7 +33,7 @@ export const useFetchCollections = () => {
           params: {
             page: currentPage,
             pageSize: pageSize,
-            category: selectedCategory,
+            category: selectedValue,
             search: searchText,
           },
         }

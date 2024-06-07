@@ -11,15 +11,16 @@ import { useFetchCollections } from "../hooks/useFetchCollections";
 import getTokenData from "../utils/getTokenData";
 import TablePagination from "./TablePagination";
 import Filter from "./Filter";
-import useCategoryFilter from "../hooks/useCategoryFilter";
+import useFilter from "../hooks/useFilter";
 import { useDebounce } from "../hooks/useDebounce";
 import useRouterParams from "../hooks/useRouterParams";
 
 export default function CollectionsTable() {
   const [selectedCollections, setSelectedCollections] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
-  const { categories, selectedCategory, setSelectedCategory } =
-    useCategoryFilter();
+  const { values, selectedValue, setSelectedValues } = useFilter(
+    "collections/categories"
+  );
   const [searchText, setSearchText] = useState("");
   const debouncedSearchText = useDebounce(searchText, 500);
 
@@ -47,14 +48,14 @@ export default function CollectionsTable() {
       collectionUserId,
       currentPage,
       pageSize,
-      selectedCategory,
+      selectedValue,
       debouncedSearchText
     );
   }, [
     collectionUserId,
     currentPage,
     pageSize,
-    selectedCategory,
+    selectedValue,
     debouncedSearchText,
   ]);
 
@@ -113,7 +114,7 @@ export default function CollectionsTable() {
         collectionUserId,
         currentPage,
         pageSize,
-        selectedCategory,
+        selectedValue,
         debouncedSearchText
       );
       setSelectedCollections([]);
@@ -157,9 +158,9 @@ export default function CollectionsTable() {
         )}
         <div className="flex self-center mb-4">
           <Filter
-            categories={categories}
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
+            values={values}
+            selectedValue={selectedValue}
+            setSelectedValues={setSelectedValues}
           />
           <input
             className="w-full px-3 lg:w-auto text-gray-600 dark:text-white  border-2 border-gray-300 dark:bg-gray-800/[.3] h-10 rounded-lg text-sm focus:outline-none"

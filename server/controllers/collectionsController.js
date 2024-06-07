@@ -2,13 +2,21 @@ import Collection from "../models/collectionSchema.js";
 import Item from "../models/itemSchema.js";
 import dotenv from "dotenv";
 import uploadImageToImgbb from "../utils/fileUpload.js";
-
+import { enumCategories } from "../models/collectionSchema.js";
 dotenv.config();
 
 export const getAllCollections = async (_, res) => {
   try {
     const collections = await Collection.find();
     res.json(collections);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const getCategories = async (_, res) => {
+  try {
+    res.json(enumCategories);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
