@@ -25,7 +25,6 @@ const TablePagination = ({
         pageSize={pageSize}
         total={total}
         onChange={handlePageChange}
-        hideOnSinglePage
       />
     </ConfigProvider>
   );
