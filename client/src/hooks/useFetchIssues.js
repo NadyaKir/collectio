@@ -9,8 +9,7 @@ export const useFetchIssues = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  //   const { email } = getTokenData();
-  const email = "liletoj191@jadsys.com";
+  const { email } = getTokenData();
 
   const fetchIssues = async (page, pageSize, status, search) => {
     setIsLoading(true);
@@ -26,9 +25,9 @@ export const useFetchIssues = () => {
       });
 
       const issues = response.data.issues;
-      console.log(response.data);
+      const total = response.data.total;
       setIssues(issues);
-      setTotalIssues(response.data.total);
+      setTotalIssues(total);
       setIsLoading(false);
     } catch (error) {
       console.error("Error get issues: ", error);

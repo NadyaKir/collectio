@@ -62,7 +62,7 @@ export default function TicketModal({ closeModal }) {
 
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-6 rounded-md shadow-md">
+      <div className="bg-white dark:bg-gray-900 p-6 rounded-md shadow-md">
         <button
           className="text-right w-full mb-2 text-sm text-gray-600 no-underline hover:underline"
           onClick={closeModal}
@@ -94,27 +94,27 @@ export default function TicketModal({ closeModal }) {
               <Form>
                 <div className="mb-4">
                   <label
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block text-sm font-medium text-gray-700 dark:text-white mb-1"
                     htmlFor="description"
                   >
                     Description:
                   </label>
+                  <ErrorMessage
+                    name="description"
+                    component="div"
+                    className="text-red-500 text-sm mb-2"
+                  />
                   <Field
                     id="description"
                     name="description"
                     as="textarea"
-                    className="form-textarea w-full"
+                    className="form-textarea w-full dark:bg-gray-900"
                     required
-                  />
-                  <ErrorMessage
-                    name="description"
-                    component="div"
-                    className="text-red-500 text-sm"
                   />
                 </div>
                 <div className="mb-4">
                   <label
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block text-sm font-medium text-gray-700 dark:text-white mb-1"
                     htmlFor="priority"
                   >
                     Priority:

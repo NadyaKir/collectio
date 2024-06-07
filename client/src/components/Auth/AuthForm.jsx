@@ -12,7 +12,7 @@ export default function AuthForm({ title, onSubmit, error }) {
   const validationSchema = generateValidationSchema(title);
 
   return (
-    <div className="w-full px-8 md:px-32 lg:px-24">
+    <div className="w-full px-8 md:px-32 lg:px-24 ">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -22,11 +22,11 @@ export default function AuthForm({ title, onSubmit, error }) {
         }}
       >
         {({ isSubmitting }) => (
-          <Form className="bg-white rounded-md shadow-2xl p-5">
-            <h1 className="text-gray-800 font-bold text-2xl mb-1">
+          <Form className="rounded-md shadow-2xl p-5 dark:bg-gray-800/[.1]">
+            <h1 className="text-gray-800 dark:text-white  font-bold text-2xl mb-1">
               {title === "Login" ? "Hello Again!" : "Welcome!"}
             </h1>
-            <p className="text-sm font-normal text-gray-600 mb-4">
+            <p className="text-sm font-normal text-gray-600 dark:text-white mb-4">
               {title === "Login" ? "Welcome Back" : "Nice to meet you"}
             </p>
             {error && (
@@ -58,7 +58,7 @@ export default function AuthForm({ title, onSubmit, error }) {
                   </svg>
                   <Field
                     id="username"
-                    className="pl-2 w-full outline-none border-none"
+                    className="pl-2 w-full outline-none border-none dark:bg-gray-800/[.1]"
                     type="text"
                     name="username"
                     placeholder="Username"
@@ -89,7 +89,7 @@ export default function AuthForm({ title, onSubmit, error }) {
               </svg>
               <Field
                 id="email"
-                className="pl-2 w-full outline-none border-none"
+                className="pl-2 w-full outline-none border-none dark:bg-gray-800/[.1]"
                 type="email"
                 name="email"
                 placeholder="Email Address"
@@ -114,7 +114,7 @@ export default function AuthForm({ title, onSubmit, error }) {
                 />
               </svg>
               <Field
-                className="pl-2 w-full outline-none border-none"
+                className="pl-2 w-full outline-none border-none dark:bg-gray-800/[.1]"
                 type="password"
                 name="password"
                 id="password"

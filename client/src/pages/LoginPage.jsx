@@ -8,8 +8,7 @@ export default function LoginPage() {
   return (
     <div className="h-screen flex">
       <AuthImage />
-      <div className="absolute right-0"></div>
-      <div className="flex flex-col w-full h-sreen lg:w-1/2 justify-center items-center bg-white space-y-8">
+      <div className="flex flex-col w-full h-sreen lg:w-1/2 justify-center items-center space-y-8">
         <div className="flex flex-1 w-full justify-center items-center">
           <AuthForm title="Login" onSubmit={signin} error={error} />
         </div>
