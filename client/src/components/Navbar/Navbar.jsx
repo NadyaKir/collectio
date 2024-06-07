@@ -92,13 +92,22 @@ export default function Navbar() {
                 </Link>
               )}
               {isAuthenticated && (
-                <Link
-                  to={`/collections?userId=${userId}`}
-                  onClick={handleIsOpen}
-                  className="block border-b-2 border-teal-600 p-2 md:p-0 md:border-none my-3 lg:inline-block lg:my-0 lg:mt-0 hover:text-teal-700 lg:mr-4"
-                >
-                  My collections
-                </Link>
+                <>
+                  <Link
+                    to={`/collections?userId=${userId}`}
+                    onClick={handleIsOpen}
+                    className="block border-b-2 border-teal-600 p-2 lg:p-0 lg:border-none my-3 lg:inline-block lg:my-0 lg:mt-0 hover:text-teal-700 lg:mr-4"
+                  >
+                    My collections
+                  </Link>
+                  <Link
+                    to={`/issues`}
+                    onClick={handleIsOpen}
+                    className="block border-b-2 border-teal-600 p-2 lg:p-0 lg:border-none my-3 lg:inline-block lg:my-0 lg:mt-0 hover:text-teal-700 lg:mr-4"
+                  >
+                    My issues
+                  </Link>
+                </>
               )}
             </div>
             <div className="flex mt-6 lg:mt-0">
