@@ -1,22 +1,9 @@
 import React from "react";
 
-export default function Chip({
-  title,
-  marginRight,
-  dismissible,
-  onClick,
-  // chipAction = () => {},
-}) {
-  // const handleClick = (e) => {
-  //   e.preventDefault();
-  //   e.stopPropagation();
-  //   chipAction();
-  // };
-
+export default function Chip({ title, marginRight, dismissible, onClick }) {
   return (
     <div
       className={`relative inline-block select-none items-center  rounded-xl border border-gray-300 bg-gray-100 hover:border-gray-500 py-1.5 px-3 font-sans text-xs uppercase text-black ${marginRight} mb-2`}
-      // onClick={handleClick}
     >
       <span className={`${dismissible ? "mr-5" : "mr-0"} overflow-auto`}>
         #{title}
