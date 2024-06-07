@@ -110,7 +110,7 @@ export default function Navbar() {
                 </>
               )}
             </div>
-            <div className="flex mt-6 lg:mt-0">
+            <div className="flex justify-between mt-6 lg:mt-0">
               <button onClick={signout}>
                 <Link
                   to={isAuthenticated ? "/" : "/login"}
@@ -119,8 +119,8 @@ export default function Navbar() {
                   {isAuthenticated ? "Sign out" : "Sign in"}
                 </Link>
               </button>
+              <ThemeSwitcher />
             </div>
-            <ThemeSwitcher />
           </div>
         </div>
       </div>
