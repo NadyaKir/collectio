@@ -15,7 +15,7 @@ const initialValues = {
 };
 
 export default function TicketModal({ closeModal }) {
-  // const { email } = getTokenData();
+  const { email } = getTokenData();
   const { queryParams, currentUrl } = useRouterParams();
   const [collectionTitle, setCollectionTitle] = useState("");
   const [issueKey, setIssueKey] = useState("");
@@ -40,7 +40,6 @@ export default function TicketModal({ closeModal }) {
   });
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
-    const email = "liletoj191@jadsys.com";
     const { description, priority } = values;
 
     try {

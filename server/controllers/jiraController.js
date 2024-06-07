@@ -87,7 +87,7 @@ const getReporterAccountId = async (email) => {
 export const createJiraIssue = async (req, res) => {
   try {
     const email = req.body.email;
-
+    console.log(email);
     const reporterAccountId = await getReporterAccountId(email);
     const assigneeAccountId = "6318aec5b433b060db5729b6";
 
@@ -156,7 +156,14 @@ export const getIssuesByUserAndProject = async (req, res) => {
   const search = req.query.search;
   const status = req.query.status;
 
-  const reporterAccountId = await getReporterAccountId(email);
+  let reporterAccountId;
+
+  reporterAccountId = await findJiraUser(email);
+
+  if (!reporterAccountId.length) {
+    res.status(200).json({ issues: [], total: 0 });
+    return;
+  }
 
   try {
     let jqlQuery = `${JIRA_URL}/rest/api/3/search?jql=project=${JIRA_PROJECT_KEY} AND reporter=${reporterAccountId}`;
