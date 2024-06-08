@@ -28,11 +28,13 @@ import IssuesPage from "./pages/IssuesPage.jsx";
 const appRoutes = (
   <Route path="/" element={<App />}>
     <Route path="/" element={<HomePage />} />
-    <Route element={<ProtectedRoutes />}>
+    <Route element={<ProtectedRoutes requireAdmin={true} />}>
       <Route path="/users" element={<AdminPage />} />
     </Route>
-    <Route path="/collections" element={<CollectionsPage />} />
-    <Route path="/issues" element={<IssuesPage />} />
+    <Route element={<ProtectedRoutes />}>
+      <Route path="/collections" element={<CollectionsPage />} />
+      <Route path="/issues" element={<IssuesPage />} />
+    </Route>
     <Route path="/collections/add" element={<AddCollectionPage />} />
     <Route
       path="/collections/update/:collectionId"
