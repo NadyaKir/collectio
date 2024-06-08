@@ -152,23 +152,18 @@ export const createJiraIssue = async (req, res) => {
 };
 
 export const getIssuesByUserAndProject = async (req, res) => {
-  const email = req.query.email;
-  const page = req.query.page || 1;
-  const pageSize = req.query.pageSize || 7;
-  const search = req.query.search;
-  const status = req.query.status;
-
-  let reporterAccountId;
-
-  reporterAccountId = await findJiraUser(email);
-
-  if (!reporterAccountId.length) {
-    res.status(200).json({ issues: [], total: 0 });
-    return;
-  }
+  const { email, page = 1, pageSize = 7, search, status } = req.query;
 
   try {
-    let jqlQuery = `${JIRA_URL}/rest/api/3/search?jql=project=${JIRA_PROJECT_KEY} AND reporter=${reporterAccountId}`;
+    const reporter = await findJiraUser(email);
+
+    if (!reporter.length) {
+      return res.status(200).json({ issues: [], total: 0 });
+    }
+
+    const accountId = reporter[0].accountId;
+
+    let jqlQuery = `${JIRA_URL}/rest/api/3/search?jql=project=${JIRA_PROJECT_KEY} AND reporter=${accountId}`;
 
     if (search) {
       jqlQuery += ` AND summary~"${search}"`;
