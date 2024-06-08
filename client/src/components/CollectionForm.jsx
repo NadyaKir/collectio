@@ -4,16 +4,17 @@ import * as Yup from "yup";
 import { SERVER_URL } from "../utils/config";
 import axios from "axios";
 import { Input } from "antd";
-import { useSelector } from "react-redux";
 import defaultImage from "../assets/placeholder-image.png";
 import { fileToBase64 } from "file64";
 import useRouterParams from "../hooks/useRouterParams";
+import useFilter from "../hooks/useFilter";
 
 const CollectionForm = ({ initialValues }) => {
   const { navigate, pathname, collectionId, collectionUserId } =
     useRouterParams();
 
-  const categories = useSelector((state) => state.collections.categories);
+  const { values: categories } = useFilter("collections/categories");
+
   const [selectedImage, setSelectedImage] = useState(
     initialValues.image ? initialValues.image : defaultImage
   );
