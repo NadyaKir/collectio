@@ -32,9 +32,9 @@ const appRoutes = (
       <Route path="/users" element={<AdminPage />} />
     </Route>
     <Route element={<ProtectedRoutes />}>
-      <Route path="/collections" element={<CollectionsPage />} />
       <Route path="/issues" element={<IssuesPage />} />
     </Route>
+    <Route path="/collections" element={<CollectionsPage />} />
     <Route path="/collections/add" element={<AddCollectionPage />} />
     <Route
       path="/collections/update/:collectionId"
