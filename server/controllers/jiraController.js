@@ -86,7 +86,8 @@ const getReporterAccountId = async (email) => {
 
 export const createJiraIssue = async (req, res) => {
   try {
-    const email = req.body.email;
+    const { email, description, collectionTitle, currentUrl, priority } =
+      req.body;
 
     const reporterAccountId = await getReporterAccountId(email);
 
@@ -99,7 +100,7 @@ export const createJiraIssue = async (req, res) => {
       },
       body: JSON.stringify({
         fields: {
-          summary: req.body.description,
+          summary: description,
           description: {
             type: "doc",
             version: 1,
@@ -109,16 +110,16 @@ export const createJiraIssue = async (req, res) => {
                 content: [
                   {
                     type: "text",
-                    text: req.body.description,
+                    text: description,
                   },
                 ],
               },
             ],
           },
-          customfield_10063: req.body.collectionTitle,
-          customfield_10062: req.body.currentUrl,
+          customfield_10063: collectionTitle,
+          customfield_10062: currentUrl,
           priority: {
-            id: req.body.priority,
+            id: priority,
           },
           project: {
             key: JIRA_PROJECT_KEY,

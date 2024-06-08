@@ -19,7 +19,7 @@ const priorityOptions = {
 
 const initialValues = {
   description: "",
-  priority: "Medium",
+  priority: "3",
 };
 
 export default function TicketModal({ closeModal }) {
