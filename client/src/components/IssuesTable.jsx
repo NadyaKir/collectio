@@ -75,7 +75,7 @@ export default function IssuesTable() {
         </div>
       )}
       {!isLoading && issues.length > 0 && (
-        <div className="flex flex-1  w-full overflow-x-auto relative border rounded-md">
+        <div className="flex flex-1 w-full overflow-x-auto relative border rounded-md">
           <div className="flex flex-1 flex-col w-full overflow-x-auto overflow-y-scroll">
             <table className="h-full min-w-full divide-y border-collapse border-b divide-gray-200">
               <thead className="bg-gray-50 dark:bg-gray-800/[.7]">

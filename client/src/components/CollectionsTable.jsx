@@ -190,11 +190,11 @@ export default function CollectionsTable() {
         </div>
       )}
       {!isLoading && collections.length > 0 && (
-        <div className="flex flex-1 h-full w-full overflow-x-auto relative border rounded-md">
-          <div className="w-full overflow-x-auto overflow-y-scroll">
+        <div className="flex flex-1 w-full overflow-x-auto relative border rounded-md">
+          <div className="flex flex-1 flex-col w-full overflow-x-auto overflow-y-scroll">
             <table className="h-full min-w-full divide-y border-collapse border-b divide-gray-200">
               <thead className="bg-gray-50 dark:bg-gray-800/[.7]">
-                <tr className="h-12 text-center text-gray-600 dark:text-white divide-gray-200">
+                <tr className="h-16 text-center text-gray-600 dark:text-white divide-gray-200">
                   <th className="px-4 py-3 text-xs font-medium uppercase tracking-wider">
                     {collections.length > 0 && isHaveRightToChange && (
                       <input
@@ -230,7 +230,7 @@ export default function CollectionsTable() {
                 {collections.map((collection) => (
                   <tr
                     key={collection._id}
-                    className="text-left hover:bg-gray-100 dark:hover:bg-gray-800/[.3] cursor-pointer h-16"
+                    className="h-fit text-left hover:bg-gray-100 dark:hover:bg-gray-800/[.3] cursor-pointer"
                     onClick={() => handleRowClick(collection._id)}
                   >
                     <td className="px-4 whitespace-nowrap">
