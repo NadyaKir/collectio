@@ -89,7 +89,6 @@ export const createJiraIssue = async (req, res) => {
     const email = req.body.email;
 
     const reporterAccountId = await getReporterAccountId(email);
-    const assigneeAccountId = "6318aec5b433b060db5729b6";
 
     const response = await fetch(`${JIRA_URL}/rest/api/3/issue`, {
       method: "POST",
@@ -126,9 +125,6 @@ export const createJiraIssue = async (req, res) => {
           },
           issuetype: {
             name: "Task",
-          },
-          assignee: {
-            id: assigneeAccountId,
           },
           reporter: {
             id: reporterAccountId,
